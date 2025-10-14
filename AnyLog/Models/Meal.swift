@@ -8,6 +8,7 @@
 import Foundation
 import SwiftData
 
+
 @Model
 final class Meal {
     var mealType: MealType
@@ -29,3 +30,4 @@ enum MealType: String, Codable {
     case dinner = "저녁"
     case snack = "간식"
 }
+
