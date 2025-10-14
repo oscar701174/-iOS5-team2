@@ -5,7 +5,7 @@ import SwiftData
 struct ContentView: View {
     var body: some View {
         TabView {
-            MainView()
+            HomeView()
                 .tabItem {
                     Image(systemName: "house")
                     Text("홈")
