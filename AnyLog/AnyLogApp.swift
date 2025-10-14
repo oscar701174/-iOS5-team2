@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct AnyLogApp: App {
+    @StateObject private var dateHolder = DateHolder()
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Meal.self,
@@ -25,7 +26,8 @@ struct AnyLogApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            ContentView()
+                .environmentObject(dateHolder)
         }
         .modelContainer(sharedModelContainer)
     }
