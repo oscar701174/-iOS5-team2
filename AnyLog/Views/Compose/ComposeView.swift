@@ -8,6 +8,8 @@ struct ComposeView: View {
     @State private var time = Date()
     
     @State private var mealText = ""
+
+    
     
     var body: some View {
         
@@ -41,13 +43,25 @@ struct ComposeView: View {
                     DatePicker("", selection: $date, displayedComponents: .date)
                         .datePickerStyle(.compact)
                         .labelsHidden()
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국식 표기
+                        .environment(\.locale, Locale(identifier: "ko_KR"))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
+                        .frame(height: 48)
+                        .colorMultiply(.clear)
+                        .opacity(0.1)
+                        .contentShape(Rectangle())
                         .background(
                             RoundedRectangle(cornerRadius: 20)
                                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                        )
+                        .overlay(
+                            HStack {
+                                Text(dateFormatter.string(from: date))
+                                    .foregroundColor(.primary)
+                                Spacer()
+                            }
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 14)
+                                .allowsHitTesting(false)
                         )
                 }
                 .padding(.bottom, 26)
@@ -95,7 +109,7 @@ struct ComposeView: View {
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
                             .scrollContentBackground(.hidden)
-                            .frame(height: 80)
+                            .frame(height: 200)
                             .padding(10)
                             .background(
                                 RoundedRectangle(cornerRadius: 18)
@@ -129,12 +143,11 @@ struct ComposeView: View {
     }
     
     
-    private func format(_ d: Date) -> String {
-        let f = DateFormatter()
-        f.locale    = Locale(identifier: "ko_KR")
-        f.calendar  = Calendar(identifier: .gregorian)
-        f.dateFormat = "yyyy년 M월 d일"
-        return f.string(from: d)
+    private var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "YYYY년 M월 d일"
+        return formatter
     }
     
     private func registerMeal() {
