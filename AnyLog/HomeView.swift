@@ -39,15 +39,15 @@ struct HomeView: View {
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 15))
                     
                     
-                    // 선택된 날짜 표시
+                    // 선택된 날짜 표시,버튼
                     HStack(spacing: 8) {
                         Text(selectedDate.formatted(date: .long, time: .omitted))
                             .font(.title3).bold()
                         
                         Spacer()
                         
-                        Button {
-                            // 액션
+                        NavigationLink {
+                            ComposeView()
                         } label: {
                             Image(systemName: "plus")
                                 .font(.system(size: 16, weight: .bold))
@@ -95,10 +95,11 @@ struct HomeView: View {
                 }
                 .padding()
                 
-            }
+            } // ScrollView
             .navigationTitle("오늘의 식단")
-        }
-    }
+        } // NavigationStack
+        .padding(.top, -100)
+    } // body
 }
 
 
