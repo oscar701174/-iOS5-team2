@@ -9,7 +9,43 @@ import SwiftUI
 
 struct ComposeView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack {
+            // 식사 종류
+            VStack{
+                Text("식사 종류")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                HStack(spacing: 6) {
+                    Button {
+                        
+                    } label: {
+                        Text("아침")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("점심")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("저녁")
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        Text("간식")
+                    }
+                    
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+        }
     }
 }
 
