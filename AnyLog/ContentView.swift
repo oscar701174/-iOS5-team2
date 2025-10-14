@@ -8,6 +8,7 @@ struct ContentView: View {
         
         Text("Project for team2")
         Text("Logging of my daily meal")
+        Text("Logging of my daily meal")
     }
     
     }
