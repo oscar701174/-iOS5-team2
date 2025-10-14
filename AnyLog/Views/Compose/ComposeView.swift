@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct ComposeView: View {
-    @State private var SelectedTag: String? = nil
+    @State private var selectedTag: String? = nil
     @State private var date = Date()
     @State private var time = Date()
     
@@ -24,10 +24,10 @@ struct ComposeView: View {
                         .padding(.bottom, 11)
                     
                     HStack(spacing: 8) {
-                        TagButton(title: "아침")
-                        TagButton(title: "점심")
-                        TagButton(title: "저녁")
-                        TagButton(title: "간식")
+                        TagButton(title: "아침", selectedTag: $selectedTag)
+                        TagButton(title: "점심", selectedTag: $selectedTag)
+                        TagButton(title: "저녁", selectedTag: $selectedTag)
+                        TagButton(title: "간식", selectedTag: $selectedTag)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -164,21 +164,25 @@ struct ComposeView: View {
 struct TagButton: View {
     var title: String
     
-    @State private var isSelected = false
+    @Binding var selectedTag: String?
     
     var body: some View {
         
         Button {
-            isSelected.toggle()
+            if selectedTag == title {
+                selectedTag = nil
+            } else {
+                selectedTag = title
+            }
         } label: {
             Text(title)
                 .font(.subheadline)
-                .foregroundStyle(isSelected ? .white : .black)
+                .foregroundStyle(selectedTag == title ? .white : .black)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
                 .background(
                     Capsule()
-                        .fill(isSelected ? .black : .gray.opacity(0.3))
+                        .fill(selectedTag == title ? .black : .gray.opacity(0.3))
                 )
         }
     }
