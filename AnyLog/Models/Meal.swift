@@ -23,7 +23,7 @@ final class Meal {
     }
 }
 
-enum MealType: String {
+enum MealType: String, Codable {
     case breakfast = "아침"
     case lunch = "점심"
     case dinner = "저녁"
