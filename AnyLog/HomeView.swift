@@ -59,7 +59,7 @@ struct HomeView: View {
                         }
                     }
                     .padding(.horizontal)
-                    .padding(.vertical, 5)
+                    .padding(.vertical, 10)
                     
                     // 회고/기록
                     VStack(spacing: 20) {
@@ -82,16 +82,12 @@ struct HomeView: View {
                             .onTapGesture { activeEntry = entry }
                         }
                     }
-                    .sheet(item: $activeEntry) { entry in
-                        // TODO: ComposeView로 교체 예정
-                        EmptyView()
+                    .sheet(item: $activeEntry) { _ in
+                        ComposeView()
                             .presentationDetents([.large, .large])
                     }
                     .padding(.horizontal)
                     
-                
-
-
                 }
                 .padding()
                 
@@ -103,7 +99,8 @@ struct HomeView: View {
 }
 
 
-   
+
+
 
 #Preview {
     HomeView()
