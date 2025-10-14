@@ -13,7 +13,7 @@ struct AnyLogApp: App {
     @StateObject private var dateHolder = DateHolder()
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Meal.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
