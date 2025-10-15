@@ -6,33 +6,6 @@ struct HomeView: View {
     @State private var selectedDate = Date()
     @State private var showSheet = false
 
-    @State private var activeEntry: MealEntry? = nil
-
-    struct MealEntry: Identifiable, Hashable {
-        let id = UUID()
-        let mealType: String
-        let title: String
-        let time: String
-        let date: Date
-    }
-
-    private var entries: [MealEntry] = {
-        let calendar = Calendar.current
-        let today = Date()
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: today) ?? today
-        return [
-            MealEntry(mealType: "아침", title: "시리얼", time: "07:24 am", date: today),
-            MealEntry(mealType: "점심", title: "샐러드", time: "12:10 pm", date: today),
-            MealEntry(mealType: "간식", title: "초콜렛", time: "05:08 pm", date: today),
-            MealEntry(mealType: "저녁", title: "파스타", time: "07:03 pm", date: today)
-        ]
-    }()
-
-    private var entriesForSelectedDate: [MealEntry] {
-        let calendar = Calendar.current
-        return entries.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
-    }
-    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -42,7 +15,7 @@ struct HomeView: View {
                     Text("오늘의 식단")
                         .font(.largeTitle)
                         .bold()
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 6)
                         
                     // 큰 달력
                     DatePicker(
@@ -53,76 +26,197 @@ struct HomeView: View {
                     .datePickerStyle(.graphical)
                     .labelsHidden()
                     .tint(.main)
-                    .padding(.horizontal)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 15))
-                    
+                    .background(in: RoundedRectangle(cornerRadius: 15))
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundStyle(.tertiary)
+                   
                     // 날짜 및 기록
-                    VStack {
-                        // 선택된 날짜 표시,버튼
-                        HStack(spacing: 8) {
-                            Text(selectedDate.formatted(date: .long, time: .omitted))
-                                .font(.title3).bold()
-                            
-                            Spacer()
-                            
-                            NavigationLink {
-                                ComposeView()
-                            } label: {
-                                Image(systemName: "plus")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundStyle(.white)
-                                    .frame(width: 36, height: 36)
-                                    .background(
-                                        Circle().fill(Color.main)
-                                    )
-                            }
-                        }
-                        .padding(.bottom, 20)
-                        .padding(.top, 10)
-
-                        
-                        // 회고/기록
-                        if !entriesForSelectedDate.isEmpty {
-                            VStack(spacing: 20) {
-                                ForEach(entriesForSelectedDate) { entry in
-                                    HStack {
-                                        Text(entry.mealType)
-                                        
-                                        Spacer()
-                                        
-                                        Text(entry.title)
-                                            .bold()
-                                        
-                                        Spacer(); Spacer(); Spacer(); Spacer();
-                                        
-                                        Text(entry.time)
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    .font(.body)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture { activeEntry = entry }
+                        VStack {
+                            // 선택된 날짜 표시,버튼
+                            HStack(spacing: 8) {
+                                Text(selectedDate.formatted(date: .long, time: .omitted))
+                                    .font(.title3).bold()
+                                
+                                Spacer()
+                                
+                                NavigationLink {
+                                    ComposeView()
+                                } label: {
+                                    Image(systemName: "plus")
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundStyle(.white)
+                                        .frame(width: 36, height: 36)
+                                        .background(
+                                            Circle().fill(Color.main)
+                                        )
                                 }
                             }
-                            .sheet(item: $activeEntry) { _ in
-                                ComposeView()
-                                    .presentationDetents([.large, .large])
+                            .padding(.top, 20)
+                            .padding(.bottom, 10)
+
+                            
+                            // 회고/기록
+                            VStack(spacing: 12) {
+                                
+                                // 아침
+                                HStack(alignment: .top) {
+                                    Circle()
+                                        .frame(width: 10)
+                                        .foregroundStyle(.breakfast)
+                                        .padding(.top, 4)
+                                    Button {
+                                        showSheet = true
+                                    } label: {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                Text("아침")
+                                                    .font(.callout)
+                                                Text("시리얼")
+                                                    .font(.headline)
+                                            }
+                                            Spacer()
+                                            Text("07:24 am")
+                                                .frame(width: 80, alignment: .trailing)
+                                                .foregroundStyle(.secondary)
+                                                .font(.subheadline)
+                                        }
+                                        .font(.body)
+                                        .contentShape(Rectangle())
+                                        .foregroundStyle(.black)
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                .fill(Color(.systemGray6)) // 원하는 배경색
+                                        )
+                                    }
+                                    .sheet(isPresented: $showSheet) {
+                                        ComposeView()
+                                    }
+                                }
+                                
+                                // 점심
+                                HStack(alignment: .top) {
+                                    Circle()
+                                        .frame(width: 10)
+                                        .foregroundStyle(.lunch)
+                                        .padding(.top, 4)
+                                    Button {
+                                        showSheet = true
+                                    } label: {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                Text("점심")
+                                                    .font(.callout)
+                                                Text("샐러드, 계란")
+                                                    .font(.headline)
+                                            }
+                                            Spacer()
+                                            Text("12:44 pm")
+                                                .frame(width: 80, alignment: .trailing)
+                                                .foregroundStyle(.secondary)
+                                                .font(.subheadline)
+                                        }
+                                        .font(.body)
+                                        .contentShape(Rectangle())
+                                        .foregroundStyle(.black)
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                .fill(Color(.systemGray6)) // 원하는 배경색
+                                        )
+                                    }
+                                    .sheet(isPresented: $showSheet) {
+                                        ComposeView()
+                                    }
+                                }
+                                
+                                // 간식
+                                HStack(alignment: .top) {
+                                    Circle()
+                                        .frame(width: 10)
+                                        .foregroundStyle(.snack)
+                                        .padding(.top, 4)
+                                    Button {
+                                        showSheet = true
+                                    } label: {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                Text("간식")
+                                                    .font(.callout)
+                                                Text("초콜렛")
+                                                    .font(.headline)
+                                            }
+                                            Spacer()
+                                            Text("05:15 pm")
+                                                .frame(width: 80, alignment: .trailing)
+                                                .foregroundStyle(.secondary)
+                                                .font(.subheadline)
+                                        }
+                                        .font(.body)
+                                        .contentShape(Rectangle())
+                                        .foregroundStyle(.black)
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                .fill(Color(.systemGray6)) // 원하는 배경색
+                                        )
+                                    }
+                                    .sheet(isPresented: $showSheet) {
+                                        ComposeView()
+                                    }
+                                }
+                                
+                                // 저녁
+                                HStack(alignment: .top) {
+                                    Circle()
+                                        .frame(width: 10)
+                                        .foregroundStyle(.dinner)
+                                        .padding(.top, 4)
+                                    Button {
+                                        showSheet = true
+                                    } label: {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                Text("저녁")
+                                                    .font(.callout)
+                                                Text("파스타")
+                                                    .font(.headline)
+                                            }
+                                            Spacer()
+                                            Text("06:34 pm")
+                                                .frame(width: 80, alignment: .trailing)
+                                                .foregroundStyle(.secondary)
+                                                .font(.subheadline)
+                                        }
+                                        .font(.body)
+                                        .contentShape(Rectangle())
+                                        .foregroundStyle(.black)
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                .fill(Color(.systemGray6)) // 원하는 배경색
+                                        )
+                                    }
+                                    .sheet(isPresented: $showSheet) {
+                                        ComposeView()
+                                    }
+                                }
+                                
+                                } //VStack
+                                
                             }
-                        } else {
-                            Text("이 날짜에는 기록이 없어요")
-                                .foregroundStyle(.secondary)
-                                .font(.callout)
-                        }
-                    }
+                        } // vstack
                     .padding()
-                }
+                }// ScrollView
                 .padding(.horizontal)
                 
-            } // ScrollView
+            } // NavigationStack
             
-        } // NavigationStack
+        } // body
         
-    } // body
-}
+    } //struct
+
 
 
 
