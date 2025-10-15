@@ -3,9 +3,10 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @EnvironmentObject var dateHolder: DateHolder
     var body: some View {
         TabView {
-            MainView()
+            HomeView()
                 .tabItem {
                     Image(systemName: "house")
                     Text("홈")
@@ -31,9 +32,9 @@ struct ContentView: View {
     }
 }
 
-   
 
 #Preview {
     ContentView()
         .modelContainer(for: Meal.self, inMemory: true)
+        .environmentObject(DateHolder())
 }

@@ -6,10 +6,47 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SearchView: View {
+    @State var searchText: String = ""
+    
+    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
+    var meals: [Meal]
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            List {
+                Section("ㅇㅇ") {
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                }
+                
+                Section("ㅇㅇ") {
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                }
+                
+                Section("ㅇㅇ") {
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                    Text("test")
+                }
+            }
+        }
+        .searchable(text: $searchText, prompt: "검색")
+        
+        
+        
+            
     }
 }
 
