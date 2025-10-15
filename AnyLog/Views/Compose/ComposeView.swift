@@ -5,17 +5,23 @@ import SwiftData
 
 
 struct ComposeView: View {
-    var mealItem: Meal?
-    var todayMeals: [Meal] = []
-    
-    @State private var selectedMealType: MealType?
-    @State private var date = Date.now
-    @State private var time = Date.now
-    @State private var mealEditorText = ""
+    var mealItem: Meal? // 해당 값을 전달받으면 수정페이지
+    @State private var selectedMealType: MealType? // 선택한 식사 종류
+    @State private var date = Date.now             // 선택된 날짜 (yyyy.MM.dd)
+    @State private var time = Date.now             // 선택된 시간 (HH.mm)
+    @State private var mealEditorText = ""         // 식사 내용
     
     @FocusState var textEditorFocus: Bool
     
     @Environment(\.modelContext) var modelContext
+    
+    @Query
+    var meals: [Meal]
+    var filteredMeals: [Meal] {
+        meals.filter {
+            return dateFormat($0.date) == dateFormat(date)
+        }
+    }
     
     // popover 진입이므로 backButton 구현하지 않음
     var body: some View {
@@ -26,7 +32,7 @@ struct ComposeView: View {
                     .font(.title2)
                     .bold()
                 
-                MealTypeButtonView(selectedMealType: $selectedMealType, todayMeals: todayMeals)
+                MealTypeButtonView(selectedMealType: $selectedMealType, filteredMeals: filteredMeals)
                 
                 DatePickerView(date: $date)
                 
@@ -38,6 +44,7 @@ struct ComposeView: View {
             .safeAreaInset(edge: .bottom, content: {
                 SubmitButton(
                     mealItem: mealItem,
+                    filteredMeals: filteredMeals,
                     selectedMealType: $selectedMealType,
                     mealEditorText: $mealEditorText,
                     date: date,
@@ -69,16 +76,7 @@ struct ComposeView: View {
             content: "test",
             date: Date.now,
             time: Date.now
-        ),
-    
-        todayMeals: [
-            Meal(
-                mealType: MealType.lunch,
-                content: "test2",
-                date: Date.now,
-                time: Date.now
-            )
-        ]
+        )
     ).modelContainer(for: Meal.self, inMemory: true)
 }
 
@@ -86,7 +84,7 @@ struct ComposeView: View {
 struct MealTypeButton: View {
     let mealType: MealType
     @Binding var selectedMealType: MealType?
-    let todayMeals: [Meal]
+    let filteredMeals: [Meal]
     @State var showAlert = false
     
     var body: some View {
@@ -98,12 +96,17 @@ struct MealTypeButton: View {
             .tint(.main)
         } else {
             Button(mealType.rawValue) {
-                for todayMeal in todayMeals {
-                    guard todayMeal.mealType != mealType else {
-                        showAlert.toggle()
-                        return
+                // 간식은 여러번 등록 가능하다
+                if mealType != .snack {
+                    // 아침, 점심, 저녁은 한번만 등록 가능
+                    for meal in filteredMeals {
+                        guard meal.mealType != mealType else {
+                            showAlert.toggle()
+                            return
+                        }
                     }
                 }
+                
                 selectedMealType = mealType
             }
             .buttonStyle(.bordered)
@@ -123,7 +126,7 @@ struct MealTypeButton: View {
 
 struct MealTypeButtonView: View {
     @Binding var selectedMealType: MealType?
-    let todayMeals: [Meal]
+    let filteredMeals: [Meal]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -133,7 +136,7 @@ struct MealTypeButtonView: View {
             
             HStack(spacing: 12) {
                 ForEach(MealType.allCases) { mealType in
-                    MealTypeButton(mealType: mealType, selectedMealType: $selectedMealType, todayMeals: todayMeals)
+                    MealTypeButton(mealType: mealType, selectedMealType: $selectedMealType, filteredMeals: filteredMeals)
                 }
                 
                 Spacer()
@@ -233,6 +236,7 @@ struct MealEditorView: View {
 
 struct SubmitButton: View {
     var mealItem: Meal?
+    var filteredMeals: [Meal]
     @Binding var selectedMealType: MealType?
     @Binding var mealEditorText: String
     var date: Date
@@ -250,14 +254,24 @@ struct SubmitButton: View {
             print("Date : ", date)
             print("Time : ", time)
             
+            // 수정페이지 진입 -> 날짜 변경 -> 선택된 식사 종류가 존재하는 경우 예외처리
+            for filteredMeal in filteredMeals {
+                if dateFormat(filteredMeal.date) == dateFormat(date) {
+                    alertMessage = "이미 \(dateFormat(filteredMeal.date)) \(filteredMeal.mealType.rawValue)이 등록되어 있습니다."
+                    selectedMealType = nil
+                    showAlert.toggle()
+                    return
+                }
+            }
+            
             guard let selectedMealType else {
                 alertMessage = "식사 종류를 선택해주세요."
-                print("here")
                 showAlert.toggle()
                 return
             }
             
-            guard !mealEditorText.isEmpty else {
+            
+            if mealEditorText.isEmpty {
                 alertMessage = "식사 내용을 입력해주세요."
                 showAlert.toggle()
                 return
