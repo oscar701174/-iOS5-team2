@@ -1,17 +1,22 @@
 import SwiftUI
 
+
+
 struct StatisticsView: View {
     @EnvironmentObject var dateHolder: DateHolder
     @State private var segmentedIndex: Int = 0
-    
-    var PickerView: some View {
+    @Namespace var ID1
+    @Namespace var ID2
+    @State private var position = ScrollPosition(idType: Namespace.ID.self)
+
+    var pickerView: some View {
         Picker("Mode",selection: $segmentedIndex) {
             Text(SegmentMenu.first.rawValue).tag(0)
             Text(SegmentMenu.second.rawValue).tag(1)
         }.pickerStyle(.segmented)
     }
     
-    var DateSelector: some View {
+    var dateSelector: some View {
         HStack {
             Button { dateHolder.prevMonthMove()} label: {
                 Image(systemName: "chevron.left").font(.system(size: 15)).foregroundStyle(Color.primary)
@@ -30,21 +35,48 @@ struct StatisticsView: View {
         }
     }
     
-    var body: some View {
-        
-        VStack{
-         
-            Text("이달의 통계").font(.system(size: 20, weight: .bold))
-            PickerView.padding(.top, 10)
-            DateSelector.padding(.top,20)
-            GraphSectorMark()
-            
-            Spacer()
-            
-        }.padding(.horizontal, 20)
-        
+    var graphContainer: some View {
+        ScrollViewReader { proxy in
+            GeometryReader { geo in
+                let width = geo.size.width
+                let height = geo.size.height
+                
+                ScrollView(.horizontal) {
+                    LazyHStack{
+                        GraphSectorMark().id(ID1).frame(minWidth:width, minHeight: height)
+                        GraphBarMark().id(ID2).frame(minWidth:width ,minHeight: height)
+                    }
+                    .scrollTargetLayout()
+                }
+                .scrollTargetBehavior(.paging)
+                .scrollPosition($position)
+                .onChange(of: segmentedIndex){ prev, newValue in
+                    withAnimation{ newValue == 0 ? proxy.scrollTo(ID1) : proxy.scrollTo(ID2) }
+                }
+                .onChange(of: position) { prev, newValue in
+                    guard let scrollID = newValue.viewID(type: Namespace.ID.self) else {return}
+                    withAnimation{
+                        scrollID == ID1 ? (segmentedIndex = 0) : (segmentedIndex = 1) }
+                    }
+            }
+            .padding(.bottom,30)
+        }
+
         
     }
+    
+    var body: some View {
+        VStack{
+            VStack{
+                Text("이달의 통계").font(.system(size: 20, weight: .bold)).padding(.top,20)
+                pickerView.padding(.top, 10)
+                dateSelector.padding(.top,20)
+            }.padding(.horizontal, 20)
+                
+            graphContainer
+            Spacer()
+        }
+    } //body
 }
 
 #Preview {
@@ -56,4 +88,3 @@ enum SegmentMenu: String{
     case first = "식단비율"
     case second = "식단횟수"
 }
-

@@ -24,7 +24,7 @@ struct GraphSectorMark: View {
                             .background(Capsule().fill(.ultraThinMaterial)  .glassEffect(.clear))
                          
                     }
-            }.frame(maxHeight: 300)
+            }
             
             VStack {
                 ForEach(mealGraphData.sorted(by:{ $0.mealType.num < $1.mealType.num }), id:\.mealType) { mealType, total, ratio in
@@ -37,9 +37,10 @@ struct GraphSectorMark: View {
                         Text("\(String(format: "%.1f", ratio * 100))%").font(Font.system(size: 15)).foregroundStyle(.primary)
                     } // HStackgg
                 } // ForEach
-            }.padding()
+            }.padding(.horizontal,15)
             
         }.padding() //VStacks
+        .frame(maxWidth: 400,maxHeight:.infinity)
         
     } // body
 }
