@@ -5,48 +5,89 @@ import SwiftData
 
 
 struct ComposeView: View {
+    var mealItem: Meal?
+    var todayMeals: [Meal] = []
+    
     @State private var selectedMealType: MealType?
     @State private var date = Date.now
     @State private var time = Date.now
     @State private var mealEditorText = ""
     
-    @FocusState var textEditorFocus
+    @FocusState var textEditorFocus: Bool
     
     @Environment(\.modelContext) var modelContext
     
-    
-
+    // popover 진입이므로 backButton 구현하지 않음
     var body: some View {
-        VStack(spacing: 36) {
-            Text("등록 페이지") // TODO: 페이지 타입에 따라 대응하기
-                .font(.title2)
-                .bold()
+        ScrollView {
+            VStack(spacing: 36) {
+                // Title
+                Text(mealItem == nil ? "식단 등록" : "식단 수정")
+                    .font(.title2)
+                    .bold()
+                
+                MealTypeButtonView(selectedMealType: $selectedMealType, todayMeals: todayMeals)
+                
+                DatePickerView(date: $date)
+                
+                TimePickerView(time: $time)
+                
+                MealEditorView(mealText: $mealEditorText, textEditorFocus: $textEditorFocus)
+                    .padding(.bottom)
+            }
+            .safeAreaInset(edge: .bottom, content: {
+                SubmitButton(
+                    mealItem: mealItem,
+                    selectedMealType: $selectedMealType,
+                    mealEditorText: $mealEditorText,
+                    date: date,
+                    time: time
+                )
+            })
             
-            MealTypeButtonView(selectedMealType: $selectedMealType)
-            
-            DatePickerView(date: $date)
-            
-            TimePickerView(time: $time)
-            
-            MealEditorView(mealText: $mealEditorText, textEditorFocus: $textEditorFocus)
-            
-            SubmitButton()
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
-        
-        
+        .onTapGesture {
+            textEditorFocus = false
+        }
+        .onAppear {
+            if let mealItem {
+                selectedMealType = mealItem.mealType
+                date = mealItem.date
+                time = mealItem.time
+                mealEditorText = mealItem.content
+            }
+        }
     }
 }
 
 #Preview {
-    ComposeView()
+    ComposeView(
+        mealItem: Meal(
+            mealType: MealType.breakfast,
+            content: "test",
+            date: Date.now,
+            time: Date.now
+        ),
+    
+        todayMeals: [
+            Meal(
+                mealType: MealType.lunch,
+                content: "test2",
+                date: Date.now,
+                time: Date.now
+            )
+        ]
+    ).modelContainer(for: Meal.self, inMemory: true)
 }
 
 
 struct MealTypeButton: View {
     let mealType: MealType
     @Binding var selectedMealType: MealType?
+    let todayMeals: [Meal]
+    @State var showAlert = false
     
     var body: some View {
         if selectedMealType == mealType {
@@ -57,10 +98,24 @@ struct MealTypeButton: View {
             .tint(.main)
         } else {
             Button(mealType.rawValue) {
+                for todayMeal in todayMeals {
+                    guard todayMeal.mealType != mealType else {
+                        showAlert.toggle()
+                        return
+                    }
+                }
                 selectedMealType = mealType
             }
             .buttonStyle(.bordered)
             .tint(.main)
+            .foregroundStyle(.darkmodeBlack)
+            .alert("알림", isPresented: $showAlert) {
+                Button("확인") {
+                    
+                }
+            } message: {
+                Text("이미 \(mealType.rawValue)이 등록되어 있습니다.\n\(mealType.rawValue) 내용을 수정해주세요")
+            }
         }
     }
 
@@ -68,6 +123,7 @@ struct MealTypeButton: View {
 
 struct MealTypeButtonView: View {
     @Binding var selectedMealType: MealType?
+    let todayMeals: [Meal]
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -77,7 +133,7 @@ struct MealTypeButtonView: View {
             
             HStack(spacing: 12) {
                 ForEach(MealType.allCases) { mealType in
-                    MealTypeButton(mealType: mealType, selectedMealType: $selectedMealType)
+                    MealTypeButton(mealType: mealType, selectedMealType: $selectedMealType, todayMeals: todayMeals)
                 }
                 
                 Spacer()
@@ -149,7 +205,7 @@ struct MealEditorView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("식사 내용") // TODO: 페이지 타입에 따라 대응하기
+            Text("식사 내용")
                 .font(.subheadline)
                 .fontWeight(.medium)
             
@@ -159,37 +215,88 @@ struct MealEditorView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(Color.gray.opacity(0.3))
                         .overlay(alignment: .topLeading) {
-                            if !mealText.isEmpty || textEditorFocus == false {
+                            if mealText.isEmpty && textEditorFocus == false {
                                 Text("오늘 드신 음식을 적어주세요.")
                                     .foregroundStyle(.secondary)
                                     .padding()
                             }
                         }
                 }
+                .frame(height: 240)
                 .focused($textEditorFocus)
-            
-                
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
         }
         
     }
 }
 
 struct SubmitButton: View {
+    var mealItem: Meal?
+    @Binding var selectedMealType: MealType?
+    @Binding var mealEditorText: String
+    var date: Date
+    var time: Date
+    
+    @State var showAlert = false
+    @State var alertMessage = ""
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) var modelContext
+    
     var body: some View {
         Button {
-            dismiss()
+            print("MealType : ", selectedMealType ?? "선택값 없음")
+            print("MealEditorText : ", mealEditorText)
+            print("Date : ", date)
+            print("Time : ", time)
+            
+            guard let selectedMealType else {
+                alertMessage = "식사 종류를 선택해주세요."
+                print("here")
+                showAlert.toggle()
+                return
+            }
+            
+            guard !mealEditorText.isEmpty else {
+                alertMessage = "식사 내용을 입력해주세요."
+                showAlert.toggle()
+                return
+            }
+            
+            modelContext.insert(
+                Meal(
+                    mealType: selectedMealType,
+                    content: mealEditorText,
+                    date: date,
+                    time: time
+                )
+            )
+            
+            // TODO: 저장 실패했을 때 예외처리?
+            try? modelContext.save()
+            
+//            dismiss()
+            
         } label: {
             RoundedRectangle(cornerRadius: 16)
                 .fill(.main)
-                .frame(width: .infinity, height: 56)
+                .frame(height: 56)
                 .overlay {
-                    Text("식단 등록하기")
+                    Text("식단 \(mealItem == nil ? "등록" : "수정")하기")
                         .foregroundStyle(.white)
                         .bold()
                 }
         }
-
+        .alert("알림", isPresented: $showAlert) {
+            Button("확인") {
+                alertMessage = ""
+            }
+        } message: {
+            Text(alertMessage)
+                .frame(alignment: .center)
+            
+        }
+        .padding(.bottom)
     }
 }
 
@@ -208,7 +315,3 @@ func timeForamt(_ time: Date) -> String {
     
     return f.string(from: time)
 }
-
-
-// 1. 아침, 점심, 저녁 1회만 등록 가능하게
-// 2. 식단 등록하기 > 얼럿창 등록 > 목록이동?
