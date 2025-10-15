@@ -22,7 +22,7 @@ struct StatisticsView: View {
                 Image(systemName: "chevron.left").font(.system(size: 15)).foregroundStyle(Color.primary)
             }
             Spacer()
-            Button { dateHolder.dateSelected = Date() } label: {
+            Button { dateHolder.dateSelected = Date(); segmentedIndex = 0 } label: {
                 Text(dateHolder.dateSelected.yearMonth)
                     .font(Font.system(size: 15))
                     .bold()

@@ -20,7 +20,6 @@ struct GraphSectorMark: View {
                     .annotation(position: .overlay, alignment: .centerFirstTextBaseline) {
                         Text("\(String(format: "%.1f", ratio * 100))%")
                             .font(Font.system(size: 12)).foregroundStyle(.primary).padding(8)
-                          
                             .background(Capsule().fill(.ultraThinMaterial)  .glassEffect(.clear))
                          
                     }
