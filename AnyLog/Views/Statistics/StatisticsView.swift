@@ -8,7 +8,7 @@ struct StatisticsView: View {
     @Namespace var ID1
     @Namespace var ID2
     @State private var position = ScrollPosition(idType: Namespace.ID.self)
-
+    
     var pickerView: some View {
         Picker("Mode",selection: $segmentedIndex) {
             Text(SegmentMenu.first.rawValue).tag(0)
@@ -57,11 +57,11 @@ struct StatisticsView: View {
                     guard let scrollID = newValue.viewID(type: Namespace.ID.self) else {return}
                     withAnimation{
                         scrollID == ID1 ? (segmentedIndex = 0) : (segmentedIndex = 1) }
-                    }
+                }
             }
             .padding(.bottom,30)
         }
-
+        
         
     }
     
