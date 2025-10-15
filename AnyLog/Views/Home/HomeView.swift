@@ -92,8 +92,8 @@ struct HomeView: View {
                         
                         
                         // 회고/기록 기입 없을 때
-                       // VStack(spacing: 12) {
-                            HStack {
+                        VStack(spacing: 12) {
+                            HStack(spacing: 16) {
                                 Image(systemName: "tray")
                                     .foregroundStyle(.secondary)
                                 Text("아직 기록이 없어요. + 버튼으로 식사를 추가해보세요.")
@@ -101,20 +101,7 @@ struct HomeView: View {
                                     .font(.subheadline)
                                 Spacer()
                                 
-                                NavigationLink {
-                                    ComposeView()
-                                } label: {
-                                    Image(systemName: "plus")
-                                        .tint(.primary)
-
-                                        .font(.system(size: 16, weight: .bold))
-                                        .foregroundStyle(.white)
-                                        .frame(width: 36, height: 36)
-                                        .background(
-                                            Circle().fill(Color.main)
-                                        )
-
-                                }
+                               
                                 
                             }
                             .padding()
@@ -125,7 +112,7 @@ struct HomeView: View {
                         }
                         
                         // 회고/기록
-                      //  VStack(spacing: 12) {
+                        VStack(spacing: 12) {
                             
                             // 아침
                             HStack {
@@ -194,11 +181,11 @@ struct HomeView: View {
             
         } // body
         
-     //struct
-
+        //struct
+        
+    }
     
-    
-    
+}
     
     
 #Preview {
