@@ -9,13 +9,12 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     // 오늘의 식단
                    
                     Text("오늘의 식단")
-                        .font(.largeTitle)
+                        .font(.title)
                         .bold()
-                        .padding(.vertical, 6)
                         
                     // 큰 달력
                     DatePicker(
@@ -37,6 +36,7 @@ struct HomeView: View {
                             HStack(spacing: 8) {
                                 Text(selectedDate.formatted(date: .long, time: .omitted))
                                     .font(.title3).bold()
+                                    .foregroundStyle(Color(.label))
                                 
                                 Spacer()
                                 
@@ -44,15 +44,19 @@ struct HomeView: View {
                                     ComposeView()
                                 } label: {
                                     Image(systemName: "plus")
+                                        .tint(.primary)
+
                                         .font(.system(size: 16, weight: .bold))
-                                        .foregroundStyle(.white)
+                                       // .foregroundStyle(.white)
                                         .frame(width: 36, height: 36)
                                         .background(
                                             Circle().fill(Color.main)
                                         )
+
                                 }
+                                
                             }
-                            .padding(.top, 20)
+                            .padding(.top, 30)
                             .padding(.bottom, 10)
 
                             
@@ -131,42 +135,6 @@ struct HomeView: View {
                                     }
                                 }
                                 
-                                // 간식
-                                HStack(alignment: .top) {
-                                    Circle()
-                                        .frame(width: 10)
-                                        .foregroundStyle(.snack)
-                                        .padding(.top, 4)
-                                    Button {
-                                        showSheet = true
-                                    } label: {
-                                        HStack {
-                                            VStack(alignment: .leading, spacing: 10) {
-                                                Text("간식")
-                                                    .font(.callout)
-                                                Text("초콜렛")
-                                                    .font(.headline)
-                                            }
-                                            Spacer()
-                                            Text("05:15 pm")
-                                                .frame(width: 80, alignment: .trailing)
-                                                .foregroundStyle(.secondary)
-                                                .font(.subheadline)
-                                        }
-                                        .font(.body)
-                                        .contentShape(Rectangle())
-                                        .foregroundStyle(.black)
-                                        .padding()
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                .fill(Color(.systemGray6)) // 원하는 배경색
-                                        )
-                                    }
-                                    .sheet(isPresented: $showSheet) {
-                                        ComposeView()
-                                    }
-                                }
-                                
                                 // 저녁
                                 HStack(alignment: .top) {
                                     Circle()
@@ -185,6 +153,42 @@ struct HomeView: View {
                                             }
                                             Spacer()
                                             Text("06:34 pm")
+                                                .frame(width: 80, alignment: .trailing)
+                                                .foregroundStyle(.secondary)
+                                                .font(.subheadline)
+                                        }
+                                        .font(.body)
+                                        .contentShape(Rectangle())
+                                        .foregroundStyle(.black)
+                                        .padding()
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                .fill(Color(.systemGray6)) // 원하는 배경색
+                                        )
+                                    }
+                                    .sheet(isPresented: $showSheet) {
+                                        ComposeView()
+                                    }
+                                }
+                                
+                                // 간식
+                                HStack(alignment: .top) {
+                                    Circle()
+                                        .frame(width: 10)
+                                        .foregroundStyle(.snack)
+                                        .padding(.top, 4)
+                                    Button {
+                                        showSheet = true
+                                    } label: {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                Text("간식")
+                                                    .font(.callout)
+                                                Text("초콜렛")
+                                                    .font(.headline)
+                                            }
+                                            Spacer()
+                                            Text("07:15 pm")
                                                 .frame(width: 80, alignment: .trailing)
                                                 .foregroundStyle(.secondary)
                                                 .font(.subheadline)
