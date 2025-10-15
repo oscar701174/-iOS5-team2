@@ -34,9 +34,9 @@ struct ComposeView: View {
                 
                 MealTypeButtonView(selectedMealType: $selectedMealType, filteredMeals: filteredMeals)
                 
-                DatePickerView(date: $date)
+                DatePickerView(date: $date, time: $time)
                 
-                TimePickerView(time: $time)
+                TimePickerView(date: $date, time: $time)
                 
                 MealEditorView(mealText: $mealEditorText, textEditorFocus: $textEditorFocus)
                     .padding(.bottom)
@@ -147,6 +147,7 @@ struct MealTypeButtonView: View {
 
 struct DatePickerView: View {
     @Binding var date: Date
+    @Binding var time: Date
     
     var body: some View {
         /// 개선점
@@ -171,12 +172,25 @@ struct DatePickerView: View {
                     .labelsHidden()
                     .colorMultiply(.clear)
                     .environment(\.locale, Locale(identifier: "ko_KR"))
+                    .onChange(of: date) {
+                        let dateTime = Date(
+                            year: date.year,
+                            month: date.month,
+                            day: date.day,
+                            hour: time.hour,
+                            minute: time.minute
+                        )
+                        
+                        date = dateTime
+                        time = dateTime
+                    }
                 }
         }
     }
 }
 
 struct TimePickerView: View {
+    @Binding var date: Date
     @Binding var time: Date
     
     var body: some View {
@@ -197,6 +211,18 @@ struct TimePickerView: View {
                         .labelsHidden()
                         .colorMultiply(.clear)
                         .environment(\.locale, Locale(identifier: "ko_KR"))
+                        .onChange(of: time) {
+                            let dateTime = Date(
+                                year: date.year,
+                                month: date.month,
+                                day: date.day,
+                                hour: time.hour,
+                                minute: time.minute
+                            )
+                            
+                            date = dateTime
+                            time = dateTime
+                        }
                 }
         }
     }
@@ -328,4 +354,26 @@ func timeForamt(_ time: Date) -> String {
     f.dateFormat = "a hh:mm"
     
     return f.string(from: time)
+}
+
+extension Date {
+    var year: Int {
+        let calendar = Calendar.current
+        return calendar.component(.year, from: self)
+    }
+    
+    var month: Int {
+        let calendar = Calendar.current
+        return calendar.component(.month, from: self)
+    }
+    
+    var day: Int {
+        let calendar = Calendar.current
+        return calendar.component(.day, from: self)
+    }
+    
+    var minute: Int {
+        let calendar = Calendar.current
+        return calendar.component(.minute, from: self)
+    }
 }
