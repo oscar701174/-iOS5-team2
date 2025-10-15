@@ -72,7 +72,6 @@ struct StatisticsView: View {
                 pickerView.padding(.top, 10)
                 dateSelector.padding(.top,20)
             }.padding(.horizontal, 20)
-                
             graphContainer
             Spacer()
         }
