@@ -10,46 +10,93 @@ import SwiftData
 
 struct SearchView: View {
     @State var searchText: String = ""
+    @State var selectedMealTypeList: [MealType] = []
     
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
     var meals: [Meal]
     
     var body: some View {
-        NavigationStack {
-            List {
-                Section("ㅇㅇ") {
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                    Text("test")
+        VStack {
+            
+            RoundedRectangle(cornerRadius: 8)
+                .fill(.gray.opacity(0.2))
+                .frame(width: .infinity, height: 36)
+                .overlay {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .resizable()
+                            .frame(width: 20,height: 20)
+                            .padding(.leading)
+                            .foregroundStyle(.secondary)
+                        TextField("Search", text: $searchText) {
+                            
+                        }
+                    }
+                }
+                .padding(20)
+            
+            HStack {
+                ForEach(MealType.allCases) { mealType in
+                    // TODO: 선택된 mealType이 있다면 buttonStyle 변경
+                    Button(mealType.rawValue) {
+                        if isSelectedMealType(mealType) {
+                            selectedMealTypeList.removeAll { element in
+                                element == mealType
+                            }
+                        } else {
+                            selectedMealTypeList.append(mealType)
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .tint(.main)
                 }
                 
-                Section("ㅇㅇ") {
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                }
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            
+            
+            if searchText.isEmpty {
                 
-                Section("ㅇㅇ") {
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                    Text("test")
-                }
+                NeedSearchView()
+            } else {
+                
             }
         }
-        .searchable(text: $searchText, prompt: "검색")
         
-        
-        
-            
     }
+    
+    func isSelectedMealType(_ mealType :MealType) -> Bool {
+        return selectedMealTypeList.contains(mealType)
+    }
+    
 }
 
 #Preview {
     SearchView()
 }
+
+
+struct NeedSearchView: View {
+    var body: some View {
+        VStack {
+            
+            
+            Spacer()
+            
+            Text("검색하고 싶은 식단을 입력하세요.")
+            
+            Spacer()
+        }
+    }
+}
+
+//extension View {
+//    func `if`<Content: View>(_ conditional: Bool, apply: (Self) -> Content) -> some View {
+//        if conditional {
+//            return AnyView(apply(self))
+//        } else {
+//            return AnyView(self)
+//        }
+//    }
+//}
