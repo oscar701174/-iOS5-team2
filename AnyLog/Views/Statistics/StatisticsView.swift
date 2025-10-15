@@ -9,8 +9,8 @@ struct StatisticsView: View {
             Text(SegmentMenu.first.rawValue).tag(0)
             Text(SegmentMenu.second.rawValue).tag(1)
         }.pickerStyle(.segmented)
-        
     }
+    
     var DateSelector: some View {
         HStack {
             Button { dateHolder.prevMonthMove()} label: {
@@ -37,6 +37,9 @@ struct StatisticsView: View {
             Text("이달의 통계").font(.system(size: 20, weight: .bold))
             PickerView.padding(.top, 10)
             DateSelector.padding(.top,20)
+            GraphSectorMark()
+            
+            Spacer()
             
         }.padding(.horizontal, 20)
         
