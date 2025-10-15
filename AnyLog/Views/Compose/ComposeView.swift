@@ -5,200 +5,37 @@ import SwiftData
 
 
 struct ComposeView: View {
-    @State private var selectedTag: String? = nil
-    @State private var date = Date()
-    @State private var time = Date()
-    @State private var mealText = ""
-    @State private var showConfirmAlert = false
+    @State private var selectedMealType: MealType?
+    @State private var date = Date.now
+    @State private var time = Date.now
+    @State private var mealEditorText = ""
+    
+    @FocusState var textEditorFocus
+    
+    @Environment(\.modelContext) var modelContext
+    
+    
 
     var body: some View {
-        
-        NavigationStack {
-            ScrollView {
-                // 식사 종류
-                VStack{
-                    Text("식사 종류")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.bottom, 11)
-                    
-                    HStack(spacing: 8) {
-                        TagButton(title: "아침", selectedTag: $selectedTag)
-                        TagButton(title: "점심", selectedTag: $selectedTag)
-                        TagButton(title: "저녁", selectedTag: $selectedTag)
-                        TagButton(title: "간식", selectedTag: $selectedTag)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding(.bottom, 26)
-                
-                // 날짜
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("날짜")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.bottom, 11)
-                    
-                    DatePicker("", selection: $date, displayedComponents: .date)
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                        .environment(\.locale, Locale(identifier: "ko_KR"))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .frame(height: 48)
-                        .colorMultiply(.clear)
-                        .opacity(0.1)
-                        .contentShape(Rectangle())
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                        )
-                        .overlay(
-                            HStack {
-                                Text(dateFormatter.string(from: date))
-                                    .foregroundColor(.primary)
-                                Spacer()
-                            }
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 14)
-                                .allowsHitTesting(false)
-                        )
-                }
-                .padding(.bottom, 26)
-                
-                // 시간
-                VStack {
-                    Text("시간")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.bottom, 11)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                        .environment(\.locale, Locale(identifier: "ko_KR"))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .frame(height: 48)
-                        .colorMultiply(.clear)
-                        .opacity(0.1)
-                        .contentShape(Rectangle())
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                        )
-                        .overlay(
-                            HStack {
-                                Text(timeFormatter.string(from: time))
-                                    .foregroundColor(.primary)
-                                Spacer()
-                            }
-                                .padding(.horizontal, 20)
-                                .padding(.vertical, 14)
-                                .allowsHitTesting(false)
-                        )
-                }
-                .padding(.bottom, 26)
-                
-                // 식사 등록
-                VStack {
-                    Text("식사 등록")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .padding(.bottom, 11)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    ZStack(alignment: .topLeading) {
-                        // Placeholder
-                        if mealText.isEmpty {
-                            Text("오늘 드신 음식을 자세히 적어주세요.")
-                                .foregroundColor(.gray)
-                                .padding(.top, 12)
-                                .padding(.leading, 16)
-                        }
-                        
-                        TextEditor(text: $mealText)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                            .scrollContentBackground(.hidden)
-                            .frame(height: 200)
-                            .padding(10)
-                            .background(
-                                RoundedRectangle(cornerRadius: 18)
-                                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                            )
-                    }
-                }
-            }
-            .navigationTitle("식사 등록")
-            .navigationBarTitleDisplayMode(.inline)
+        VStack(spacing: 36) {
+            Text("등록 페이지") // TODO: 페이지 타입에 따라 대응하기
+                .font(.title2)
+                .bold()
             
-            // 하단 버튼
-            .safeAreaInset(edge: .bottom) {
-                Button {
-                    if selectedTag == nil || mealText.isEmpty {
-                        print("123123")
-                    } else {
-                        showConfirmAlert = true
-                    }
-                } label: {
-                    Text("식단 등록하기")
-                        .font(.headline).bold()
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                }
-                .foregroundColor(.white)
-                .background(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill((selectedTag == nil || mealText.isEmpty) ? .main.opacity(0.3) : .main
-                             )
-                    
-                )
-                .padding(.vertical, 10)
-                .ignoresSafeArea(.keyboard, edges: .bottom)
-                // 등록 얼럿
-                .alert("등록한 내용이 맞습니까?", isPresented: $showConfirmAlert) {
-                    Button("취소", role: .cancel) { }
-                    Button("등록") {
-                        registerMeal()
-                    }
-                }
-                message: {
-                    Text("""
-                        식사 종류: \(selectedTag ?? "(미선택)")
-                        날짜: \(dateFormatter.string(from: date))
-                        시간: \(timeFormatter.string(from: time))
-                        식사 등록: \(mealText.trimmingCharacters(in: .whitespacesAndNewlines))
-                        """)
-                }
-            }
+            MealTypeButtonView(selectedMealType: $selectedMealType)
+            
+            DatePickerView(date: $date)
+            
+            TimePickerView(time: $time)
+            
+            MealEditorView(mealText: $mealEditorText, textEditorFocus: $textEditorFocus)
+            
+            SubmitButton()
         }
         .padding(.horizontal, 20)
-    }
-    
-    // 날짜 포맷
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "YYYY년 M월 d일"
-        return formatter
-    }
-    
-    // 시간 포맷
-    private var timeFormatter: DateFormatter {
-        let f = DateFormatter()
-        f.locale = Locale(identifier: "ko_KR")
-        f.dateFormat = "a hh:mm"
-        return f
-    }
-    
-    // 임시.. 프린트 확인용
-    private func registerMeal() {
-        if let tag = selectedTag {
-            print("선택한 식사 종류: \(tag)")
-        } else {
-            print("선택되지 않았습니다.")
-        }
+        .padding(.top, 20)
+        
+        
     }
 }
 
@@ -207,32 +44,169 @@ struct ComposeView: View {
 }
 
 
-// 태그 버튼
-struct TagButton: View {
-    var title: String
-    
-    @Binding var selectedTag: String?
+struct MealTypeButton: View {
+    let mealType: MealType
+    @Binding var selectedMealType: MealType?
     
     var body: some View {
-        
-        Button {
-            if selectedTag == title {
-                selectedTag = nil
-            } else {
-                selectedTag = title
+        if selectedMealType == mealType {
+            Button(mealType.rawValue) {
+                selectedMealType = mealType
             }
-        } label: {
-            Text(title)
-                .font(.subheadline)
-                .foregroundStyle(selectedTag == title ? .white : .black)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
-                .background(
-                    Capsule()
-                        .fill(selectedTag == title ? .black : .gray.opacity(0.3))
-                )
+            .buttonStyle(.borderedProminent)
+            .tint(.main)
+        } else {
+            Button(mealType.rawValue) {
+                selectedMealType = mealType
+            }
+            .buttonStyle(.bordered)
+            .tint(.main)
         }
     }
+
+}
+
+struct MealTypeButtonView: View {
+    @Binding var selectedMealType: MealType?
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("식사 종류")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            HStack(spacing: 12) {
+                ForEach(MealType.allCases) { mealType in
+                    MealTypeButton(mealType: mealType, selectedMealType: $selectedMealType)
+                }
+                
+                Spacer()
+            }
+        }
+    }
+}
+
+struct DatePickerView: View {
+    @Binding var date: Date
+    
+    var body: some View {
+        /// 개선점
+        /// 1. 박스 전체가 DatePicker 선택영역으로 지정될 수 있게
+        /// 2. DatePicker 날짜 선택 감지 (onChange 말고 같은날짜 선택된것도 감지
+        /// 3. DatePicker 날짜 선택 감지 후 Foucs 제거
+        ///
+        VStack(alignment: .leading, spacing: 16) {
+            Text("날짜")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            Text(dateFormat(date))
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.gray.opacity(0.3))
+                }
+                .overlay(alignment: .leading) {
+                    DatePicker("", selection: $date, displayedComponents: .date)
+                    .labelsHidden()
+                    .colorMultiply(.clear)
+                    .environment(\.locale, Locale(identifier: "ko_KR"))
+                }
+        }
+    }
+}
+
+struct TimePickerView: View {
+    @Binding var time: Date
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("시간")
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            Text(timeForamt(time))
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.gray.opacity(0.3))
+                }
+                .overlay(alignment: .leading) {
+                    DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
+                        .labelsHidden()
+                        .colorMultiply(.clear)
+                        .environment(\.locale, Locale(identifier: "ko_KR"))
+                }
+        }
+    }
+}
+
+struct MealEditorView: View {
+    @Binding var mealText: String
+    @FocusState.Binding var textEditorFocus: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("식사 내용") // TODO: 페이지 타입에 따라 대응하기
+                .font(.subheadline)
+                .fontWeight(.medium)
+            
+            TextEditor(text: $mealText)
+                .padding()
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.gray.opacity(0.3))
+                        .overlay(alignment: .topLeading) {
+                            if !mealText.isEmpty || textEditorFocus == false {
+                                Text("오늘 드신 음식을 적어주세요.")
+                                    .foregroundStyle(.secondary)
+                                    .padding()
+                            }
+                        }
+                }
+                .focused($textEditorFocus)
+            
+                
+        }
+        
+    }
+}
+
+struct SubmitButton: View {
+    @Environment(\.dismiss) var dismiss
+    var body: some View {
+        Button {
+            dismiss()
+        } label: {
+            RoundedRectangle(cornerRadius: 16)
+                .fill(.main)
+                .frame(width: .infinity, height: 56)
+                .overlay {
+                    Text("식단 등록하기")
+                        .foregroundStyle(.white)
+                        .bold()
+                }
+        }
+
+    }
+}
+
+func dateFormat(_ date: Date) -> String {
+    let f = DateFormatter()
+    f.locale = Locale(identifier: "ko_KR")
+    f.dateFormat = "YYYY년 M월 d일"
+    
+    return f.string(from: date)
+}
+
+func timeForamt(_ time: Date) -> String {
+    let f = DateFormatter()
+    f.locale = Locale(identifier: "ko_KR")
+    f.dateFormat = "a hh:mm"
+    
+    return f.string(from: time)
 }
 
 
