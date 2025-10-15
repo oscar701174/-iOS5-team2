@@ -24,10 +24,12 @@ final class Meal {
     }
 }
 
-enum MealType: String, Codable {
+enum MealType: String, Codable, CaseIterable, Identifiable {
     case breakfast = "아침"
     case lunch = "점심"
     case dinner = "저녁"
     case snack = "간식"
+    
+    var id: Self { self }
 }
 
