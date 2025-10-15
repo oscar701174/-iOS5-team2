@@ -1,6 +1,8 @@
 
 
 import SwiftUI
+import SwiftData
+
 
 struct ComposeView: View {
     @State private var selectedTag: String? = nil
@@ -8,9 +10,9 @@ struct ComposeView: View {
     @State private var time = Date()
     
     @State private var mealText = ""
+    @State private var showConfirmAlert = false
 
-    
-    
+
     var body: some View {
         
         NavigationStack {
@@ -77,13 +79,25 @@ struct ComposeView: View {
                     DatePicker("", selection: $time, displayedComponents: .hourAndMinute)
                         .datePickerStyle(.compact)
                         .labelsHidden()
-                        .environment(\.locale, Locale(identifier: "ko_KR")) // 한국식 (오전/오후)
+                        .environment(\.locale, Locale(identifier: "ko_KR"))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 14)
+                        .frame(height: 48)
+                        .colorMultiply(.clear)
+                        .opacity(0.1)
+                        .contentShape(Rectangle())
                         .background(
                             RoundedRectangle(cornerRadius: 20)
                                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                        )
+                        .overlay(
+                            HStack {
+                                Text(timeFormatter.string(from: time))
+                                    .foregroundColor(.primary)
+                                Spacer()
+                            }
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 14)
+                                .allowsHitTesting(false)
                         )
                 }
                 .padding(.bottom, 26)
@@ -121,10 +135,15 @@ struct ComposeView: View {
             .navigationTitle("식사 등록")
             .navigationBarTitleDisplayMode(.inline)
             
-            
             // 하단 버튼
             .safeAreaInset(edge: .bottom) {
-                Button(action: registerMeal) {
+                Button {
+                    if selectedTag == nil || mealText.isEmpty {
+                        print("123123")
+                    } else {
+                        showConfirmAlert = true
+                    }
+                } label: {
                     Text("식단 등록하기")
                         .font(.headline).bold()
                         .frame(maxWidth: .infinity)
@@ -133,16 +152,33 @@ struct ComposeView: View {
                 .foregroundColor(.white)
                 .background(
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(Color(red: 0.12, green: 0.13, blue: 0.25)) // 진한 네이비
+                        .fill((selectedTag == nil || mealText.isEmpty) ? .main.opacity(0.3) : .main
+                             )
+                    
                 )
                 .padding(.vertical, 10)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
+                // 등록 얼럿
+                .alert("등록한 내용이 맞습니까?", isPresented: $showConfirmAlert) {
+                    Button("취소", role: .cancel) { }
+                    Button("등록") {
+                        registerMeal()
+                    }
+                }
+                message: {
+                    Text("""
+                        식사 종류: \(selectedTag ?? "(미선택)")
+                        날짜: \(dateFormatter.string(from: date))
+                        시간: \(timeFormatter.string(from: time))
+                        식사 등록: \(mealText.trimmingCharacters(in: .whitespacesAndNewlines))
+                        """)
+                }
             }
         }
         .padding(.horizontal, 20)
     }
     
-    
+    // 날짜 포맷
     private var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
@@ -150,8 +186,21 @@ struct ComposeView: View {
         return formatter
     }
     
+    // 시간 포맷
+    private var timeFormatter: DateFormatter {
+        let f = DateFormatter()
+        f.locale = Locale(identifier: "ko_KR")
+        f.dateFormat = "a hh:mm"
+        return f
+    }
+    
+    // 임시.. 프린트 확인용
     private func registerMeal() {
-        print("식단 등록 완료!")
+        if let tag = selectedTag {
+            print("선택한 식사 종류: \(tag)")
+        } else {
+            print("선택되지 않았습니다.")
+        }
     }
 }
 
@@ -187,3 +236,7 @@ struct TagButton: View {
         }
     }
 }
+
+
+// 1. 아침, 점심, 저녁 1회만 등록 가능하게
+// 2. 식단 등록하기 > 얼럿창 등록 > 목록이동?

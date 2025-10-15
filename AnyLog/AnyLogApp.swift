@@ -26,12 +26,9 @@ struct AnyLogApp: App {
 
     var body: some Scene {
         WindowGroup {
-<<<<<<< HEAD
             HomeView()
-=======
             ContentView()
                 .environmentObject(dateHolder)
->>>>>>> Oscar
         }
         .modelContainer(sharedModelContainer)
     }
