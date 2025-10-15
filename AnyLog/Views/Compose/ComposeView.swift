@@ -8,10 +8,8 @@ struct ComposeView: View {
     @State private var selectedTag: String? = nil
     @State private var date = Date()
     @State private var time = Date()
-    
     @State private var mealText = ""
     @State private var showConfirmAlert = false
-
 
     var body: some View {
         

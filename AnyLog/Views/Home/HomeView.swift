@@ -1,49 +1,53 @@
 import SwiftUI
 import SwiftData
 
-
 struct HomeView: View {
     @State private var selectedDate = Date()
     @State private var showSheet = false
-
-    @State private var activeEntry: MealEntry? = nil
-
-    struct MealEntry: Identifiable, Hashable {
-        let id = UUID()
-        let mealType: String
-        let title: String
-        let time: String
-        let date: Date
+    
+    @Environment(\.colorScheme) var colorScheme
+    
+    @Model
+    class Meal {
+        var insertDate: Date
+        var content: String
+        
+        init(insertDate: Date = Date(), content: String) {
+            self.insertDate = insertDate
+            self.content = content
+        }
     }
-
-    private var entries: [MealEntry] = {
-        let calendar = Calendar.current
-        let today = Date()
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: today) ?? today
-        return [
-            MealEntry(mealType: "아침", title: "시리얼", time: "07:24 am", date: today),
-            MealEntry(mealType: "점심", title: "샐러드", time: "12:10 pm", date: today),
-            MealEntry(mealType: "간식", title: "초콜렛", time: "05:08 pm", date: today),
-            MealEntry(mealType: "저녁", title: "파스타", time: "07:03 pm", date: today)
-        ]
-    }()
-
-    private var entriesForSelectedDate: [MealEntry] {
-        let calendar = Calendar.current
-        return entries.filter { calendar.isDate($0.date, inSameDayAs: selectedDate) }
+    
+    @Query(sort: [SortDescriptor(\Meal.insertDate, order: .reverse)])
+    var meals: [Meal]
+    
+    @State var showComoser: Bool = false
+    @State var keyword: String = ""
+    
+    var mealTyep: [Meal] {
+        if keyword.isEmpty {
+            return meals
+        } else {
+            return meals.filter {
+                return $0.content.lowercased().contains(keyword.lowercased())
+            }
+        }
     }
+    
+    
+    
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     // 오늘의 식단
-                   
+                    
                     Text("오늘의 식단")
-                        .font(.largeTitle)
+                        .font(.title)
                         .bold()
-                        .padding(.vertical, 20)
-                        
+                        .padding(.top, 10)
+                    
                     // 큰 달력
                     DatePicker(
                         "",
@@ -53,8 +57,10 @@ struct HomeView: View {
                     .datePickerStyle(.graphical)
                     .labelsHidden()
                     .tint(.main)
-                    .padding(.horizontal)
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 15))
+                    .background(in: RoundedRectangle(cornerRadius: 15))
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundStyle(.tertiary)
                     
                     // 날짜 및 기록
                     VStack {
@@ -62,6 +68,7 @@ struct HomeView: View {
                         HStack(spacing: 8) {
                             Text(selectedDate.formatted(date: .long, time: .omitted))
                                 .font(.title3).bold()
+                                .foregroundStyle(Color(.label))
                             
                             Spacer()
                             
@@ -69,66 +76,119 @@ struct HomeView: View {
                                 ComposeView()
                             } label: {
                                 Image(systemName: "plus")
+                                    .foregroundStyle(colorScheme == .dark ? .black : .white)
                                     .font(.system(size: 16, weight: .bold))
-                                    .foregroundStyle(.white)
                                     .frame(width: 36, height: 36)
                                     .background(
                                         Circle().fill(Color.main)
                                     )
+                                
                             }
+                            
                         }
-                        .padding(.bottom, 20)
-                        .padding(.top, 10)
-
+                        .padding(.top, 20)
+                        .padding(.bottom, 10)
+                        
+                        
+                        
+                        // 회고/기록 기입 없을 때
+                        VStack(spacing: 12) {
+                            HStack(spacing: 16) {
+                                Image(systemName: "tray")
+                                    .foregroundStyle(.secondary)
+                                Text("아직 기록이 없어요. + 버튼으로 식사를 추가해보세요.")
+                                    .foregroundStyle(.secondary)
+                                    .font(.subheadline)
+                                Spacer()
+                                
+                               
+                                
+                            }
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .fill(Color(.systemGray6))
+                            )
+                        }
                         
                         // 회고/기록
-                        if !entriesForSelectedDate.isEmpty {
-                            VStack(spacing: 20) {
-                                ForEach(entriesForSelectedDate) { entry in
-                                    HStack {
-                                        Text(entry.mealType)
-                                        
-                                        Spacer()
-                                        
-                                        Text(entry.title)
-                                            .bold()
-                                        
-                                        Spacer(); Spacer(); Spacer(); Spacer();
-                                        
-                                        Text(entry.time)
-                                            .foregroundStyle(.secondary)
+                        VStack(spacing: 12) {
+                            
+                            // 아침
+                            HStack {
+                                Rectangle()
+                                    .frame(width: 4)
+                                    .cornerRadius(10)
+                                    .foregroundStyle(.breakfast)
+                                
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text("아침")
+                                            .font(.subheadline)
+                                        Text("토스트와 커피")
+                                            .font(.headline)
                                     }
-                                    .font(.body)
-                                    .contentShape(Rectangle())
-                                    .onTapGesture { activeEntry = entry }
+                                    Spacer()
+                                    Text("07:24 am")
+                                        .foregroundStyle(.secondary)
+                                        .font(.subheadline)
                                 }
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(Color(.systemGray6))
+                                )
+                                
+                                
                             }
-                            .sheet(item: $activeEntry) { _ in
-                                ComposeView()
-                                    .presentationDetents([.large, .large])
+                            
+                            // 점심
+                            HStack {
+                                Rectangle()
+                                    .frame(width: 4)
+                                    .cornerRadius(10)
+                                    .foregroundStyle(.lunch)
+                                
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text("점심")
+                                            .font(.subheadline)
+                                        Text("샐러드와 계란")
+                                            .font(.headline)
+                                    }
+                                    Spacer()
+                                    Text("12:35 pm")
+                                        .foregroundStyle(.secondary)
+                                        .font(.subheadline)
+                                }
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(Color(.systemGray6))
+                                )
+                                
+                                
                             }
-                        } else {
-                            Text("이 날짜에는 기록이 없어요")
-                                .foregroundStyle(.secondary)
-                                .font(.callout)
+                            
                         }
-                    }
+                        
+                    } // vstack
                     .padding()
-                }
+                }// ScrollView
                 .padding(.horizontal)
                 
-            } // ScrollView
+            } // NavigationStack
             
-        } // NavigationStack
+        } // body
         
-    } // body
+        //struct
+        
+    }
+    
 }
-
-
-
-
-
+    
+    
 #Preview {
     HomeView()
 }
-
+    
