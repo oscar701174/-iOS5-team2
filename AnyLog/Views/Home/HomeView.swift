@@ -47,7 +47,7 @@ struct HomeView: View {
                                         .tint(.primary)
 
                                         .font(.system(size: 16, weight: .bold))
-                                       // .foregroundStyle(.white)
+                                        .foregroundStyle(.white)
                                         .frame(width: 36, height: 36)
                                         .background(
                                             Circle().fill(Color.main)
