@@ -6,7 +6,6 @@ struct GraphSectorMark: View {
     @EnvironmentObject var dateHolder: DateHolder
     var mealDataGroupedByMonth:[Meal] {sampleMeals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}}
     private var mealGraphData:[(mealType: MealType, total:Int, ratio: Double)] {
-        
         let sumByMealType: [MealType: Int] = mealDataGroupedByMonth.reduce(into: [MealType: Int]()) { $0[$1.mealType, default: 0] += 1 }
         return sumByMealType.map{(mealType: $0.key, total: $0.value, ratio: Double($0.value)/Double(mealDataGroupedByMonth.count))}
     }
@@ -54,19 +53,19 @@ extension MealType{
     
     var num: Int {
         switch self {
-        case .breakfast : return 1
-        case .lunch : return 2
-        case .dinner : return 3
-        case .snack : return 4
+            case .breakfast : return 1
+            case .lunch : return 2
+            case .dinner : return 3
+            case .snack : return 4
         }
     }
     
     var color: Color {
         switch self {
-        case .breakfast: return Color(uiColor: .systemMint)
-        case .lunch: return Color(uiColor: .systemOrange)
-        case .dinner: return Color(uiColor: .systemBrown)
-        case .snack: return Color(uiColor: .systemPink)
+        case .breakfast: return .breakfast
+        case .lunch: return .lunch
+        case .dinner: return .dinner
+        case .snack: return .snack
         }
     }
 }
