@@ -356,6 +356,7 @@ func timeForamt(_ time: Date) -> String {
     return f.string(from: time)
 }
 
+
 extension Date {
     var year: Int {
         let calendar = Calendar.current
@@ -371,10 +372,14 @@ extension Date {
         let calendar = Calendar.current
         return calendar.component(.day, from: self)
     }
+    var hour: Int {
+        let calendar = Calendar.current
+        return calendar.component(.hour, from: self)
+    }
     
     var minute: Int {
         let calendar = Calendar.current
         return calendar.component(.minute, from: self)
     }
-}
 
+}
