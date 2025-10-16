@@ -13,13 +13,13 @@ struct TextView: View {
             HStack {
                 HStack {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("아침")
+                        Text(item.mealType.rawValue.capitalized)
                             .font(.subheadline)
-                        Text("토스트와 커피")
+                        Text(item.content)
                             .font(.headline)
                     }
                     Spacer()
-                    Text("07:24 am")
+                    Text(item.time.formatted(date: .omitted, time: .shortened))
                         .foregroundStyle(.secondary)
                         .font(.subheadline)
                 }
