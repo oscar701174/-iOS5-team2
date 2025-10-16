@@ -40,3 +40,4 @@ struct SearchViewQuery: View {
     SearchViewQuery(searchText: .constant("아몬드"), selectedMealTypeList: .constant(MealType.allCases))
         .modelContainer(for: Meal.self, inMemory: true)
 }
+
