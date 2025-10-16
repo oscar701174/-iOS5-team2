@@ -3,6 +3,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+
     @EnvironmentObject var dateHolder: DateHolder
     @Environment(\.modelContext) var modelContext
     
@@ -40,12 +41,12 @@ struct ContentView: View {
     func addTestData() {
         let sampleMeals2: [Meal] = [
             Meal(mealType: .breakfast,
-                 content: "토스트와 커피",
+                 content: "Toast와 커피",
                  date: Date(year: 2025, month: 10, day: 15),
-                 time: Date(year: 2025, month: 10, day: 15, hour: 7, minute: 15)),
+                 time: Date(year:   2025, month: 10, day: 15, hour: 7, minute: 15)),
             
             Meal(mealType: .lunch,
-                 content: "닭가슴살 샐러드와 고구마",
+                 content: "닭가슴살 샐러드와 coffee",
                  date: Date(year: 2025, month: 10, day: 15),
                  time: Date(year: 2025, month: 10, day: 15, hour: 12, minute: 25)),
             
@@ -89,18 +90,34 @@ struct ContentView: View {
                  date: Date(year: 2025, month: 10, day: 13),
                  time: Date(year: 2025, month: 10, day: 13, hour: 19, minute: 20))
         ]
-        
+
         for meal in sampleMeals2 {
             modelContext.insert(meal)
         }
         
         try? modelContext.save()
     }
+    
 }
 
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Meal.self, inMemory: true)
-        .environmentObject(DateHolder())
+    
+    let container = try! ModelContainer(
+        for: Meal.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    let context = container.mainContext
+    
+    for meal in sampleMeals {
+        context.insert(meal)
+    }
+    
+    
+    return ContentView()
+            .modelContainer(container)
+            .environmentObject(DateHolder())
+
 }
+
+

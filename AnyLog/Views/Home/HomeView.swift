@@ -70,7 +70,7 @@ struct HomeView: View {
                                 popoverModal = true
                             } label: {
                                 Image(systemName: "plus")
-                                    .foregroundStyle(colorScheme == .dark ? .black : .white)
+                                    .foregroundStyle(.white)
                                     .font(.system(size: 16, weight: .bold))
                                     .frame(width: 36, height: 36)
                                     .background(
