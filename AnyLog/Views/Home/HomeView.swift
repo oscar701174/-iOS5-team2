@@ -7,18 +7,7 @@ struct HomeView: View {
     
     @Environment(\.colorScheme) var colorScheme
     
-    @Model
-    class Meal {
-        var insertDate: Date
-        var content: String
-        
-        init(insertDate: Date = Date(), content: String) {
-            self.insertDate = insertDate
-            self.content = content
-        }
-    }
-    
-    @Query(sort: [SortDescriptor(\Meal.insertDate, order: .reverse)])
+    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
     var meals: [Meal]
     
     @State var showComoser: Bool = false
@@ -101,7 +90,7 @@ struct HomeView: View {
                                     .font(.subheadline)
                                 Spacer()
                                 
-                               
+                                
                                 
                             }
                             .padding()
@@ -114,64 +103,49 @@ struct HomeView: View {
                             }
                         }
                         
+                        List {
+                            ForEach(mealTyep) { item in
+                                NavigationLink {
+                                    ComposeView()
+                                } label: {
+                                     TextView(item: item)
+                                }
+                                .sheet(isPresented: $showSheet) {
+                                    ComposeView()
+                                }
+                            }
+                        }
+                        
                         // 회고/기록
                         VStack(spacing: 12) {
                             
                             // 아침
-                            HStack {
-                                Rectangle()
-                                    .frame(width: 4)
-                                    .cornerRadius(10)
-                                    .foregroundStyle(.breakfast)
-                                
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        Text("아침")
-                                            .font(.subheadline)
-                                        Text("토스트와 커피")
-                                            .font(.headline)
-                                    }
-                                    Spacer()
-                                    Text("07:24 am")
-                                        .foregroundStyle(.secondary)
-                                        .font(.subheadline)
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .fill(Color(.systemGray6))
-                                )
-                                
-                                
-                            }
-                            
-                            // 점심
-                            HStack {
-                                Rectangle()
-                                    .frame(width: 4)
-                                    .cornerRadius(10)
-                                    .foregroundStyle(.lunch)
-                                
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        Text("점심")
-                                            .font(.subheadline)
-                                        Text("샐러드와 계란")
-                                            .font(.headline)
-                                    }
-                                    Spacer()
-                                    Text("12:35 pm")
-                                        .foregroundStyle(.secondary)
-                                        .font(.subheadline)
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .fill(Color(.systemGray6))
-                                )
-                                
-                                
-                            }
+                            //                            HStack {
+                            //                                Rectangle()
+                            //                                    .frame(width: 4)
+                            //                                    .cornerRadius(10)
+                            //                                    .foregroundStyle(.breakfast)
+                            //
+                            //                                HStack {
+                            //                                    VStack(alignment: .leading, spacing: 6) {
+                            //                                        Text("아침")
+                            //                                            .font(.subheadline)
+                            //                                        Text("토스트와 커피")
+                            //                                            .font(.headline)
+                            //                                    }
+                            //                                    Spacer()
+                            //                                    Text("07:24 am")
+                            //                                        .foregroundStyle(.secondary)
+                            //                                        .font(.subheadline)
+                            //                                }
+                            //                                .padding()
+                            //                                .background(
+                            //                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            //                                        .fill(Color(.systemGray6))
+                            //                                )
+                            //
+                            //
+                            //                            }
                             
                         }
                         
@@ -187,11 +161,28 @@ struct HomeView: View {
         //struct
         
     }
-    
 }
+
     
     
 #Preview {
-    HomeView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Meal.self, configurations: config)
+    
+    var meal = Meal(mealType: MealType.breakfast, content: "아침~", date: Date.now, time: Date.now)
+    container.mainContext.insert(meal)
+    
+    meal = Meal(mealType: MealType.lunch, content: "점심", date: Date.now, time: Date.now)
+    container.mainContext.insert(meal)
+    
+    meal = Meal(mealType: MealType.dinner, content: "저녁", date: Date.now, time: Date.now)
+    container.mainContext.insert(meal)
+    
+    meal = Meal(mealType: MealType.snack, content: "간식", date: Date.now, time: Date.now)
+    container.mainContext.insert(meal)
+    
+    return HomeView()
+        .modelContainer(container)
+    
 }
     

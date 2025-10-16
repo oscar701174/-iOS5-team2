@@ -282,7 +282,7 @@ struct SubmitButton: View {
             
             // 수정페이지 진입 -> 날짜 변경 -> 선택된 식사 종류가 존재하는 경우 예외처리
             for filteredMeal in filteredMeals {
-                if dateFormat(filteredMeal.date) == dateFormat(date) {
+                if filteredMeal.mealType == selectedMealType {
                     alertMessage = "이미 \(dateFormat(filteredMeal.date)) \(filteredMeal.mealType.rawValue)이 등록되어 있습니다."
                     selectedMealType = nil
                     showAlert.toggle()
@@ -315,7 +315,7 @@ struct SubmitButton: View {
             // TODO: 저장 실패했을 때 예외처리?
             try? modelContext.save()
             
-//            dismiss()
+            dismiss()
             
         } label: {
             RoundedRectangle(cornerRadius: 16)
@@ -377,3 +377,4 @@ extension Date {
         return calendar.component(.minute, from: self)
     }
 }
+
