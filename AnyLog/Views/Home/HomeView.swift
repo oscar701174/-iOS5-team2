@@ -6,6 +6,7 @@ struct HomeView: View {
     @State private var popoverModal = false
     @State private var isComposePresented: Bool = false
     @State private var selectedMeal: Meal? = nil
+ 
     
     @Environment(\.colorScheme) var colorScheme
     

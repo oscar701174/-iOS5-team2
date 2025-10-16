@@ -89,5 +89,5 @@ struct StatisticsView: View {
 
 enum SegmentMenu: String{
     case first = "식단비율"
-    case second = "식단횟수"
+    case second = "시간대별 횟수"
 }
