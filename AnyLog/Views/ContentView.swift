@@ -7,6 +7,8 @@ struct ContentView: View {
     @EnvironmentObject var dateHolder: DateHolder
     @Environment(\.modelContext) var modelContext
     
+    @AppStorage("firstInit") private var firstInit: Bool = true
+    
     var body: some View {
         TabView {
             HomeView()
@@ -28,16 +30,24 @@ struct ContentView: View {
                 }
         }
         .onAppear {
+            print("ContentView onAppear!!!")
             // 하위 OS버전 TabView 색상 대응
             UITabBar.appearance().scrollEdgeAppearance = .init()
-            // 테스트 데이터 SwiftData에 넣기
-            addTestData()
+            // 첫 진입시에만 테스트 데이터 SwiftData에 넣기
+            print("FirstInit = ", firstInit)
+            if firstInit {
+                firstInit = false
+                addTestData()
+            }
+            
         }
         
         
     }
     
     func addTestData() {
+        
+        
         let sampleMeals2: [Meal] = [
             Meal(mealType: .breakfast,
                  content: "Toast 와 커피",
@@ -106,11 +116,11 @@ struct ContentView: View {
         for: Meal.self,
         configurations: ModelConfiguration(isStoredInMemoryOnly: true)
     )
-    let context = container.mainContext
-    
-    for meal in sampleMeals {
-        context.insert(meal)
-    }
+//    let context = container.mainContext
+//
+//    for meal in sampleMeals {
+//        context.insert(meal)
+//    }
     
     
     return ContentView()
