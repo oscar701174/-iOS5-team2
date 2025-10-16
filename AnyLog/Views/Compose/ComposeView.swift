@@ -315,7 +315,7 @@ struct SubmitButton: View {
             // TODO: 저장 실패했을 때 예외처리?
             try? modelContext.save()
             
-//            dismiss()
+            dismiss()
             
         } label: {
             RoundedRectangle(cornerRadius: 16)
