@@ -7,8 +7,6 @@ struct SearchView: View {
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
     @State var searchText: String = ""
     @State var selectedMealTypeList: [MealType] = []
-    
-
 
     
     var body: some View {

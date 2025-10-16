@@ -4,7 +4,8 @@ import Charts
 
 struct GraphSectorMark: View {
     @EnvironmentObject var dateHolder: DateHolder
-    var mealDataGroupedByMonth:[Meal] {sampleMeals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}}
+    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
+    var mealDataGroupedByMonth:[Meal] {meals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}}
     private var mealGraphData:[(mealType: MealType, total:Int, ratio: Double)] {
         let sumByMealType: [MealType: Int] = mealDataGroupedByMonth.reduce(into: [MealType: Int]()) { $0[$1.mealType, default: 0] += 1 }
         return sumByMealType.map{(mealType: $0.key, total: $0.value, ratio: Double($0.value)/Double(mealDataGroupedByMonth.count))}

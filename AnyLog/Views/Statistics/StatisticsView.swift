@@ -1,7 +1,5 @@
 import SwiftUI
 
-
-
 struct StatisticsView: View {
     @Namespace var ID1
     @Namespace var ID2

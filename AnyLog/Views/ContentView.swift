@@ -32,8 +32,8 @@ struct ContentView: View {
             // 하위 OS버전 TabView 색상 대응
             UITabBar.appearance().scrollEdgeAppearance = .init()
 
-            // 테스트 데이터 SwiftData에 넣기
-//            addTestData()
+//             테스트 데이터 SwiftData에 넣기
+            addTestData()
 
         }
         
@@ -93,12 +93,12 @@ struct ContentView: View {
                  time: Date(year: 2025, month: 10, day: 13, hour: 19, minute: 20))
         ]
 
+        for meal in sampleMeals2 {
+            modelContext.insert(meal)
+        }
         
         try? modelContext.save()
     }
-    
-  
-    
     
 }
 
@@ -117,7 +117,8 @@ struct ContentView: View {
     
     
     return ContentView()
-            .modelContainer(for: Meal.self, inMemory: true)
+            .modelContainer(container)
+            .environmentObject(DateHolder())
 
 }
 

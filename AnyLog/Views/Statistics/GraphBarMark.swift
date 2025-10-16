@@ -2,10 +2,12 @@
 
 import SwiftUI
 import Charts
+import SwiftData
 
 struct GraphBarMark: View {
     @EnvironmentObject var dateHolder: DateHolder
-    var mealDataGroupedByMonth:[Meal] {sampleMeals2.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}.sorted(by: { $0.time.hour < $1.time.hour })}
+    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
+    var mealDataGroupedByMonth:[Meal] {meals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}.sorted(by: { $0.time.hour < $1.time.hour })}
     private var mealGraphData:[MealDataByHour] {
         let sumByMealHour: [Int:Int] = mealDataGroupedByMonth.reduce(into: [Int: Int]()) { $0[$1.time.hour, default: 0] += 1 }
         return sumByMealHour.keys.sorted().map{MealDataByHour(hour: String($0), total: sumByMealHour[$0] ?? 0, monthTotal: mealDataGroupedByMonth.count) }
