@@ -3,7 +3,6 @@ import SwiftData
 
 struct HomeView: View {
     @State private var selectedDate = Date()
-    @State private var popoverModal = false
     @State private var isComposePresented: Bool = false
     @State private var selectedMeal: Meal? = nil
     
@@ -67,7 +66,8 @@ struct HomeView: View {
                             Spacer()
                             
                             Button {
-                                popoverModal = true
+                                selectedMeal = nil
+                                isComposePresented = true
                             } label: {
                                 Image(systemName: "plus")
                                     .foregroundStyle(.white)
@@ -77,10 +77,6 @@ struct HomeView: View {
                                         Circle().fill(Color.main)
                                     )
                             }
-                            .popover(isPresented: $popoverModal) {
-                                ComposeView()
-                            }
-                            
                         }
                         .padding(.top, 20)
                         .padding(.bottom, 10)
@@ -109,13 +105,14 @@ struct HomeView: View {
                                 TextView(item: meal)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
+                                        print("onTapGesture!!!")
+                                        print("before selectedMeal = ", selectedMeal)
                                         selectedMeal = meal
+                                        print("after selectedMeal = ", selectedMeal)
+                                        
                                         isComposePresented = true
                                     }
                             }
-                        }
-                        .sheet(isPresented: $isComposePresented) {
-                            ComposeView()
                         }
                         
                         // 회고/기록
@@ -155,6 +152,12 @@ struct HomeView: View {
                     .padding()
                 }// ScrollView
                 .padding(.horizontal)
+                .popover(isPresented: $isComposePresented) {
+                    print("popover Active")
+                    print("selectedMeal = ", selectedMeal)
+                    print("selectedDate = ", selectedDate)
+                    return ComposeView(mealItem: selectedMeal, date: selectedDate)
+                }
                 
             } // NavigationStack
             
