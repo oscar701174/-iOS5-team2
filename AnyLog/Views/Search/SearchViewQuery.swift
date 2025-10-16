@@ -2,10 +2,10 @@ import SwiftUI
 import SwiftData
 
 struct SearchViewQuery: View {
-    // Make the query dynamic by referencing the state it depends on.
     @Query private var meals: [Meal]
     @Binding var searchText: String
     @Binding var selectedMealTypeList: [MealType]
+    @State private var stack = NavigationPath()
     
     var filteredMeals: [Int: [Meal]] {
         let filteredByInputText: [Meal] = meals.filter{$0.content.lowercased().contains(searchText.lowercased())}
@@ -29,22 +29,25 @@ struct SearchViewQuery: View {
     }
     
     var body: some View {
-        VStack {
         
+        VStack {
             List {
                 ForEach(filteredMeals.keys.sorted(), id:\.self) { month in
                     Section {
                         
-                        ForEach(filteredMeals[month] ?? [], id: \.self){
-                            Databoard(day: String($0.date.day), mealType: $0.mealType, meal: $0.content, time: timeForamt($0.time))
+                        ForEach(filteredMeals[month] ?? [], id: \.id){
+                            Databoard(day: String($0.date.day),
+                                      mealType: $0.mealType,
+                                      meal: $0.content,
+                                      time: timeForamt($0.time))
                         }
     
                     }
                     header: {
-                      Text("\(month)월")
-                            .font(.system(size: 25))
-                            .foregroundStyle(Color(.label))
-                    } footer: { Text("") }
+                            Text("\(month)월")
+                                .font(.system(size: 25))
+                                .foregroundStyle(Color(.label))
+                    }
                     
                 } // ForEach
             } //List
@@ -60,7 +63,8 @@ struct SearchViewQuery: View {
 }
 
 #Preview {
-    SearchViewQuery(searchText: .constant("아몬드"), selectedMealTypeList: .constant(MealType.allCases))
+    SearchViewQuery( searchText: .constant("아몬드"),
+                     selectedMealTypeList: .constant(MealType.allCases))
         .modelContainer(for: Meal.self, inMemory: true)
 }
 

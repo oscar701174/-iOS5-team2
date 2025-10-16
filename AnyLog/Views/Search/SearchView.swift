@@ -5,6 +5,7 @@ import SwiftData
 
 struct SearchView: View {
     @FocusState private var isSearchTextFocused: Bool
+
     @State private var searchText: String = ""
     @State private var selectedMealTypeList: [MealType] = []
     
@@ -67,6 +68,7 @@ struct SearchView: View {
             }.padding(.horizontal, 20)
             
             SearchViewQuery(searchText: $searchText, selectedMealTypeList: $selectedMealTypeList)
+                .padding(.top,15)
     
   
         }
@@ -84,21 +86,6 @@ struct SearchView: View {
 }
 
 
-struct NeedSearchView: View {
-    var body: some View {
-        VStack {
-            
-            
-            Spacer()
-            
-            Text("검색하고 싶은 식단을 입력하세요.")
-            
-            Spacer()
-        }
-    }
-}
-
-// Helper view modifier to conditionally apply glassEffect(.clear)
 private struct ConditionalGlassEffect: ViewModifier {
     let apply: Bool
     func body(content: Content) -> some View {
@@ -109,16 +96,6 @@ private struct ConditionalGlassEffect: ViewModifier {
         }
     }
 }
-
-//extension View {
-//    func `if`<Content: View>(_ conditional: Bool, apply: (Self) -> Content) -> some View {
-//        if conditional {
-//            return AnyView(apply(self))
-//        } else {
-//            return AnyView(self)
-//        }
-//    }
-//}
 
 
 
