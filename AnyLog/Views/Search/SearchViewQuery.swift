@@ -79,8 +79,8 @@ struct Databoard: View {
     var body: some View {
         HStack(alignment:.top){
             Circle()
-                .frame(maxWidth: 35)
-                .foregroundStyle(.darkmodeBlack.opacity(0.3))
+                .frame(maxWidth: 37)
+                .foregroundStyle(mealType.color)
                 .overlay{
                     Text("\(day)일")
                         .font(.system(size: 15))
@@ -90,7 +90,7 @@ struct Databoard: View {
             VStack(alignment: .leading){
                 Text(mealType.rawValue)
                     .font(.system(size: 14))
-                    .foregroundStyle(mealType.color)
+                    .foregroundStyle(.darkmodeBlack)
                 Text(meal)
                     .font(.system(size: 16)).bold()
             }.padding(.horizontal, 10)

@@ -4,7 +4,7 @@ import SwiftData
 
 
 @Model
-final class Meal : Identifiable , Hashable{
+final class Meal : Identifiable, Hashable{
     var id:UUID
     var mealType: MealType
     var content: String             // 작성 내용

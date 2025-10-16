@@ -62,7 +62,9 @@ struct SearchView: View {
     
     var body: some View {
         VStack{
+            Text("검색 페이지").font(.system(size: 20, weight: .bold)).padding(.top,20)
             VStack(alignment:.leading,spacing: 20) {
+ 
                 queryInput.padding(.top, 20)
                 queryButton
             }.padding(.horizontal, 20)
