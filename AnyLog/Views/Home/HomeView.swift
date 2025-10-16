@@ -3,7 +3,6 @@ import SwiftData
 
 struct HomeView: View {
     @State private var selectedDate = Date()
-    @State private var popoverModal = false
     @State private var isComposePresented: Bool = false
     @State private var selectedMeal: Meal? = nil
     
@@ -21,7 +20,7 @@ struct HomeView: View {
         }
         try? context.save()
     }
-
+    
     
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
     var meals: [Meal]
@@ -58,7 +57,7 @@ struct HomeView: View {
                                 .font(.title)
                                 .bold()
                                 .padding(.top, 10)
-
+                            
                             DatePicker(
                                 "",
                                 selection: $selectedDate,
@@ -70,21 +69,22 @@ struct HomeView: View {
                             .background(in: RoundedRectangle(cornerRadius: 15))
                             .scaleEffect(1.2, anchor: .center)
                             .padding(.bottom, 40)
-
+                            
                             Rectangle()
                                 .frame(height: 1)
                                 .foregroundStyle(.tertiary)
                                 .padding(.top, 6)
-
+                            
                             HStack(spacing: 8) {
                                 Text(selectedDate.formatted(date: .long, time: .omitted))
                                     .font(.title3).bold()
                                     .foregroundStyle(Color(.label))
-
+                                
                                 Spacer()
-
+                                
                                 Button {
-                                    popoverModal = true
+                                    selectedMeal = nil
+                                    isComposePresented = true
                                 } label: {
                                     Image(systemName: "plus")
                                         .foregroundStyle(.white)
@@ -94,13 +94,10 @@ struct HomeView: View {
                                             Circle().fill(Color.main)
                                         )
                                 }
-                                .popover(isPresented: $popoverModal) {
-                                    ComposeView()
-                                }
                             }
                             .padding(.top, 20)
                             .padding(.bottom, 10)
-
+                            
                             if mealsForSelectedDate.isEmpty {
                                 VStack(spacing: 12) {
                                     HStack(spacing: 16) {
@@ -121,14 +118,18 @@ struct HomeView: View {
                             }
                         }
                         .frame(maxWidth: contentWidth)
-
+                        
                         // Meals list with the same width as the calendar above
                         List {
                             ForEach(mealsForSelectedDate) { meal in
                                 TextView(item: meal)
                                     .contentShape(Rectangle())
                                     .onTapGesture {
+                                        print("onTapGesture!!!")
+                                        print("before selectedMeal = ", selectedMeal)
                                         selectedMeal = meal
+                                        print("after selectedMeal = ", selectedMeal)
+                                        
                                         isComposePresented = true
                                     }
                                     .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
@@ -177,7 +178,8 @@ struct HomeView: View {
                                 Spacer()
                                 
                                 Button {
-                                    popoverModal = true
+                                    selectedMeal = nil
+                                    isComposePresented = true
                                 } label: {
                                     Image(systemName: "plus")
                                         .foregroundStyle(.white)
@@ -186,9 +188,6 @@ struct HomeView: View {
                                         .background(
                                             Circle().fill(Color.main)
                                         )
-                                }
-                                .popover(isPresented: $popoverModal) {
-                                    ComposeView()
                                 }
                             }
                             .padding(.top, 20)
@@ -227,23 +226,19 @@ struct HomeView: View {
                         }
                         .onDelete(perform: delete)
                         .listRowSeparator(.hidden)
-
+                        
                     }
                     .padding(.horizontal, 10)
                     .listStyle(.plain) // list
                 }
             }
-            .sheet(isPresented: $isComposePresented) {
-                ComposeView()
-            }
         } // NavigationStack
+        .popover(isPresented: $isComposePresented) {
+            return ComposeView(mealItem: selectedMeal, date: selectedDate)
+        }
+    }
         
 } // body
-
-  
-}
-
-    
     
 #Preview {
     return HomeView().modelContainer(for: Meal.self, inMemory: true)

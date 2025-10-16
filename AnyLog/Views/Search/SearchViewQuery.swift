@@ -39,7 +39,7 @@ struct SearchViewQuery: View {
                             Databoard(day: String($0.date.day),
                                       mealType: $0.mealType,
                                       meal: $0.content,
-                                      time: timeForamt($0.time))
+                                      time: timeFormat($0.time))
                         }
     
                     }
