@@ -14,7 +14,6 @@ struct ContentView: View {
                     Image(systemName: "house")
                     Text("홈")
                 }
-                
             
             StatisticsView()
                 .tabItem {

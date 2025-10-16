@@ -30,8 +30,7 @@ struct SearchViewQuery: View {
                     
                     Text(meal.content)
                 }
-            
-        
+
         }
         // No reassignment of _meals here.
     }
