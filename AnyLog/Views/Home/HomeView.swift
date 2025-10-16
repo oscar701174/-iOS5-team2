@@ -4,25 +4,22 @@ import SwiftData
 struct HomeView: View {
     @State private var selectedDate = Date()
     @State private var popoverModal = false
+    @State private var isComposePresented: Bool = false
+    @State private var selectedMeal: Meal? = nil
     
     @Environment(\.colorScheme) var colorScheme
     
-    @Model
-    class Meal {
-        var insertDate: Date
-        var content: String
-        
-        init(insertDate: Date = Date(), content: String) {
-            self.insertDate = insertDate
-            self.content = content
-        }
-    }
-    
-    @Query(sort: [SortDescriptor(\Meal.insertDate, order: .reverse)])
+    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
     var meals: [Meal]
     
     @State var showComoser: Bool = false
     @State var keyword: String = ""
+    
+    // 선택된 날짜의 식단만 필터링해서 시간순 정렬
+    var mealsForSelectedDate: [Meal] {
+        meals.filter { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }
+            .sorted { $0.time < $1.time }
+    }
     
     var mealTyep: [Meal] {
         if keyword.isEmpty {
@@ -33,9 +30,6 @@ struct HomeView: View {
             }
         }
     }
-    
-    
-    
     
     var body: some View {
         NavigationStack {
@@ -76,13 +70,15 @@ struct HomeView: View {
                                 popoverModal = true
                             } label: {
                                 Image(systemName: "plus")
-                                    .foregroundStyle(colorScheme == .dark ? .black : .white)
+                                    .foregroundStyle(.white)
                                     .font(.system(size: 16, weight: .bold))
                                     .frame(width: 36, height: 36)
                                     .background(
                                         Circle().fill(Color.main)
                                     )
-                                
+                            }
+                            .popover(isPresented: $popoverModal) {
+                                ComposeView()
                             }
                             
                         }
@@ -90,90 +86,70 @@ struct HomeView: View {
                         .padding(.bottom, 10)
                         
                         
+                        if mealsForSelectedDate.isEmpty {
+                            VStack(spacing: 12) {
+                                HStack(spacing: 16) {
+                                    Image(systemName: "tray")
+                                        .foregroundStyle(.secondary)
+                                    Text("아직 기록이 없어요. + 버튼으로 식사를 추가해보세요.")
+                                        .foregroundStyle(.secondary)
+                                        .font(.subheadline)
+                                    Spacer()
+                                }
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(Color(.systemGray6))
+                                )
+                            }
+                        }
                         
-                        // 회고/기록 기입 없을 때
                         VStack(spacing: 12) {
-                            HStack(spacing: 16) {
-                                Image(systemName: "tray")
-                                    .foregroundStyle(.secondary)
-                                Text("아직 기록이 없어요. + 버튼으로 식사를 추가해보세요.")
-                                    .foregroundStyle(.secondary)
-                                    .font(.subheadline)
-                                Spacer()
-                                
-                               
-                                
+                            ForEach(mealsForSelectedDate) { meal in
+                                TextView(item: meal)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        selectedMeal = meal
+                                        isComposePresented = true
+                                    }
                             }
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(Color(.systemGray6))
-                            )
-                            .popover(isPresented: $popoverModal) {
-                                ComposeView()
-                            }
+                        }
+                        .sheet(isPresented: $isComposePresented) {
+                            ComposeView()
                         }
                         
                         // 회고/기록
-                        VStack(spacing: 12) {
+                    //    VStack(spacing: 12) {
                             
                             // 아침
-                            HStack {
-                                Rectangle()
-                                    .frame(width: 4)
-                                    .cornerRadius(10)
-                                    .foregroundStyle(.breakfast)
-                                
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        Text("아침")
-                                            .font(.subheadline)
-                                        Text("토스트와 커피")
-                                            .font(.headline)
-                                    }
-                                    Spacer()
-                                    Text("07:24 am")
-                                        .foregroundStyle(.secondary)
-                                        .font(.subheadline)
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .fill(Color(.systemGray6))
-                                )
-                                
-                                
-                            }
+                            //                            HStack {
+                            //                                Rectangle()
+                            //                                    .frame(width: 4)
+                            //                                    .cornerRadius(10)
+                            //                                    .foregroundStyle(.breakfast)
+                            //
+                            //                                HStack {
+                            //                                    VStack(alignment: .leading, spacing: 6) {
+                            //                                        Text("아침")
+                            //                                            .font(.subheadline)
+                            //                                        Text("토스트와 커피")
+                            //                                            .font(.headline)
+                            //                                    }
+                            //                                    Spacer()
+                            //                                    Text("07:24 am")
+                            //                                        .foregroundStyle(.secondary)
+                            //                                        .font(.subheadline)
+                            //                                }
+                            //                                .padding()
+                            //                                .background(
+                            //                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            //                                        .fill(Color(.systemGray6))
+                            //                                )
+                            //
+                            //
+                            //                            }
                             
-                            // 점심
-                            HStack {
-                                Rectangle()
-                                    .frame(width: 4)
-                                    .cornerRadius(10)
-                                    .foregroundStyle(.lunch)
-                                
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        Text("점심")
-                                            .font(.subheadline)
-                                        Text("샐러드와 계란")
-                                            .font(.headline)
-                                    }
-                                    Spacer()
-                                    Text("12:35 pm")
-                                        .foregroundStyle(.secondary)
-                                        .font(.subheadline)
-                                }
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .fill(Color(.systemGray6))
-                                )
-                                
-                                
-                            }
-                            
-                        }
+                     //   }
                         
                     } // vstack
                     .padding()
@@ -187,11 +163,11 @@ struct HomeView: View {
         //struct
         
     }
-    
 }
+
     
     
 #Preview {
-    HomeView()
+    return HomeView().modelContainer(for: Meal.self, inMemory: true)
 }
     

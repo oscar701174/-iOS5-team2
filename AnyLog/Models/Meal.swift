@@ -1,9 +1,3 @@
-//
-//  Meal.swift
-//  AnyLog
-//
-//  Created by 조영준 on 10/14/25.
-//
 
 import Foundation
 import SwiftData
@@ -29,7 +23,7 @@ enum MealType: String, Codable, CaseIterable, Identifiable {
     case lunch = "점심"
     case dinner = "저녁"
     case snack = "간식"
-    
     var id: Self { self }
+    
 }
 
