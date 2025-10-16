@@ -8,7 +8,7 @@ struct SearchViewQuery: View {
     @Binding var selectedMealTypeList: [MealType]
     
     var filteredMeals: [Meal]? {
-        let filteredByInputText: [Meal] = meals.filter{$0.content.contains(searchText.lowercased())}
+        let filteredByInputText: [Meal] = meals.filter{$0.content.lowercased().contains(searchText.lowercased())}
         let filteredByMealType: [Meal] = meals.filter{ selectedMealTypeList.contains($0.mealType)}
         
         if(filteredByInputText.isEmpty || filteredByMealType.isEmpty) {

@@ -43,7 +43,7 @@ struct ContentView: View {
     func addTestData() {
         let sampleMeals2: [Meal] = [
             Meal(mealType: .breakfast,
-                 content: "Toast와 커피",
+                 content: "Toast 와 커피",
                  date: Date(year: 2025, month: 10, day: 15),
                  time: Date(year:   2025, month: 10, day: 15, hour: 7, minute: 15)),
             

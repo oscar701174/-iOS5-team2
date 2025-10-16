@@ -4,7 +4,7 @@ import SwiftData
 struct HomeView: View {
     @State private var selectedDate = Date()
     @State private var popoverModal = false
-    
+    @State private var showSheet = false
     @Environment(\.colorScheme) var colorScheme
     
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
