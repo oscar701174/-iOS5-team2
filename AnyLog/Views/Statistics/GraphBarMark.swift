@@ -5,42 +5,29 @@ import Charts
 
 struct GraphBarMark: View {
     @EnvironmentObject var dateHolder: DateHolder
-    var mealDataGroupedByMonth:[Meal] {sampleMeals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}.sorted(by: { $0.time.hour < $1.time.hour })}
-    private var mealGraphData:[MealGraphDataV2] {
-        var mealDataGroupedByHour:[MealGraphDataV2] = [ ]
-        let sumByMealType: [MealType:Int] = mealDataGroupedByMonth.reduce(into: [MealType: Int]()) { $0[$1.mealType, default: 0] += 1 }
-        mealDataGroupedByMonth.forEach { meal in
-           let mealData: MealGraphDataV2 = MealGraphDataV2(hour: meal.time.hour, mealType: meal.mealType, total: sumByMealType[meal.mealType] ?? 0 )
-            mealDataGroupedByHour.append(mealData)
-        }
-        return mealDataGroupedByHour
+    var mealDataGroupedByMonth:[Meal] {sampleMeals2.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}.sorted(by: { $0.time.hour < $1.time.hour })}
+    private var mealGraphData:[MealDataByHour] {
+        let sumByMealHour: [Int:Int] = mealDataGroupedByMonth.reduce(into: [Int: Int]()) { $0[$1.time.hour, default: 0] += 1 }
+        return sumByMealHour.keys.sorted().map{MealDataByHour(hour: String($0), total: sumByMealHour[$0] ?? 0, monthTotal: mealDataGroupedByMonth.count) }
     }
-    
-    
+
     var body: some View {
         VStack{
-            Text(mealDataGroupedByMonth.count.description)
-            ForEach(mealGraphData) {data in
-                Text(data.hour.description)
-                Text(data.mealType.rawValue)
-                Text(data.total.description)
-            }
-            
-            
-            Chart {
-                AreaPlot(
-                    mealDataGroupedByMonth,
-                    x: .value("time", \.date.hour),
-                    y: .value("food", \.mealType.rawValue),
-                    series: .value("value", \.mealType.num),
-                    stacking: .center
-                    
-                )
-                
-            }
-            
-        }
-    }
+            Chart(mealGraphData) { data in
+                BarMark( x: .value("Hour", data.hour), y: .value("Total", data.total) )
+                    .cornerRadius(10)
+                    .annotation(position: .overlay, alignment: .top){
+                        Text(String(data.total)).font(Font.system(size: 12)).foregroundStyle(.primary).padding(8)
+                            .background(Circle().fill(.ultraThinMaterial))
+                    }
+            } //Chart
+            .chartXAxis{ AxisMarks { AxisTick(); AxisValueLabel().font(.system(size: 13)).foregroundStyle(Color(uiColor: .systemGray)) }}
+            .chartYAxis(.hidden)
+            .frame(maxWidth:400,maxHeight: 300)
+        } // VStack
+        .padding()
+  
+    } // body
 }
 
 #Preview {
@@ -49,11 +36,11 @@ struct GraphBarMark: View {
 }
 
 
-struct MealGraphDataV2: Identifiable,Hashable {
+struct MealDataByHour: Identifiable,Hashable {
     let id: UUID = UUID()
-    let hour: Int
-    let mealType: MealType
+    let hour: String
     let total: Int
+    let monthTotal: Int
 }
 
 
@@ -61,12 +48,12 @@ let sampleMeals2: [Meal] = [
     Meal(mealType: .breakfast,
          content: "토스트와 커피",
          date: Date(year: 2025, month: 10, day: 15),
-         time: Date(year: 2025, month: 10, day: 15, hour: 8, minute: 15)),
+         time: Date(year: 2025, month: 10, day: 15, hour: 7, minute: 15)),
     
     Meal(mealType: .breakfast,
          content: "닭가슴살 샐러드와 고구마",
          date: Date(year: 2025, month: 10, day: 15),
-         time: Date(year: 2025, month: 10, day: 15, hour: 12, minute: 45)),
+         time: Date(year: 2025, month: 10, day: 15, hour: 7, minute: 45)),
     
     Meal(mealType: .dinner,
          content: "된장찌개, 밥, 김치",
@@ -81,7 +68,7 @@ let sampleMeals2: [Meal] = [
     Meal(mealType: .dinner,
          content: "오트밀과 바나나",
          date: Date(year: 2025, month: 10, day: 11),
-         time: Date(year: 2025, month: 10, day: 11, hour: 7, minute: 50)),
+         time: Date(year: 2025, month: 10, day: 11, hour: 19, minute: 50)),
     
     Meal(mealType: .lunch,
          content: "비빔밥과 미역국",
@@ -108,3 +95,4 @@ let sampleMeals2: [Meal] = [
          date: Date(year: 2025, month: 10, day: 12),
          time: Date(year: 2025, month: 10, day: 12, hour: 19, minute: 20))
 ]
+

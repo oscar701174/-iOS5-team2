@@ -6,13 +6,19 @@ class DateHolder: ObservableObject {
     
     @Published var dateSelected: Date = Date()
     
-    var nextMonth: Date { Calendar.current.date(byAdding: .month, value: 1, to: dateSelected) ?? Date() }
-    var prevMonth: Date { Calendar.current.date(byAdding: .month, value: -1, to: dateSelected) ?? Date() }
+    var nextMonth: Date {
+        Calendar.current.date(byAdding: .month, value: 1, to: dateSelected)!
+    }
+    var prevMonth: Date {
+        Calendar.current.date(byAdding: .month, value: -1, to: dateSelected)!
+    }
+    
     
     func nextMonthMove() { dateSelected = nextMonth }
-    func prevMonthMove() { dateSelected = prevMonth }
     
+    func prevMonthMove() { dateSelected = prevMonth }
 }
+
 
 
 extension Date {
@@ -27,6 +33,7 @@ extension Date {
         self = Calendar.current.date(from: comps)!
     }
     
+    
     var yearMonth: String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ko_KR")
@@ -34,28 +41,11 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    var yearMonthV02: (year: Int, month: Int) {
-        let calendar = Calendar.current
-        return (
-            year: calendar.component(.year, from: self),
-            month: calendar.component(.month, from: self)
-        )
-    }
-    
-    var yearMonthDay: String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ko_KR")
-        formatter.dateFormat = "yyyy년 M월 d일"
-        return formatter.string(from: self)
-    }
     
     var hour: Int {
         let calendar = Calendar.current
         return calendar.component(.hour, from: self)
     }
-    
-
-    
-    
 }
+
 
