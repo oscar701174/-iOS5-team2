@@ -123,8 +123,8 @@ struct ContentView: View {
 let sampleMeals: [Meal] = [
     Meal(mealType: .breakfast,
          content: "Toast 와 커피",
-         date: Date(year: 2025, month: 10, day: 15),
-         time: Date(year:   2025, month: 10, day: 15, hour: 7, minute: 15)),
+         date: Date(year: 2025, month: 11, day: 15),
+         time: Date(year:   2025, month: 11, day: 15, hour: 7, minute: 15)),
     
     Meal(mealType: .lunch,
          content: "닭가슴살 샐러드와 coffee",

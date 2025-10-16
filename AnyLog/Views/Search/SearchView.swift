@@ -26,7 +26,7 @@ struct SearchView: View {
                             isSearchTextFocused = true
                         }
                         .onSubmit {
-                            
+                            isSearchTextFocused = false
                         }
                 }
             }
@@ -47,11 +47,11 @@ struct SearchView: View {
                 } label: {
                     Text(mealType.rawValue)
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(isSelected(mealType) ? .darkmodeWhite : .darkmodeBlack.opacity(0.5))
+                        .foregroundStyle(isSelected(mealType) ? .darkmodeBlack.opacity(0.7) : .darkmodeBlack.opacity(0.3))
                         
                 }
                 .frame(maxWidth: 50 , maxHeight: 30)
-                .background(isSelected(mealType) ? .darkmodeBlack.opacity(0.5) : .darkmodeBlack.opacity(0.1))
+                .background(isSelected(mealType) ? mealType.color.opacity(0.5) : .darkmodeBlack.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 30))
                 .modifier(ConditionalGlassEffect(apply: isSelected(mealType)))
             
@@ -64,12 +64,12 @@ struct SearchView: View {
             VStack(alignment:.leading,spacing: 20) {
                 queryInput.padding(.top, 20)
                 queryButton
-            }
+            }.padding(.horizontal, 20)
             
             SearchViewQuery(searchText: $searchText, selectedMealTypeList: $selectedMealTypeList)
-            Spacer()
+    
   
-        }.padding(.horizontal, 20)
+        }
         
     }
     

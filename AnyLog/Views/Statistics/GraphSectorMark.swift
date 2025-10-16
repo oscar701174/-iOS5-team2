@@ -14,7 +14,7 @@ struct GraphSectorMark: View {
     var body: some View {
         VStack {
             
-            Chart(mealGraphData, id: \.mealType) { mealType, total, ratio in
+            Chart(mealGraphData.sorted(by:{ $0.mealType.num < $1.mealType.num }), id: \.mealType) { mealType, total, ratio in
                 SectorMark ( angle: .value("Meal Count" , total), innerRadius: .ratio(0.55), outerRadius: .inset(10), angularInset: 3.0 )
                     .cornerRadius(10)
                     .foregroundStyle(mealType.color)

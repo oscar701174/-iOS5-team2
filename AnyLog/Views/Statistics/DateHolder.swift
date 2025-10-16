@@ -41,11 +41,7 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    
-    var hour: Int {
-        let calendar = Calendar.current
-        return calendar.component(.hour, from: self)
-    }
+
 }
 
 

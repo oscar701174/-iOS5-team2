@@ -4,7 +4,7 @@ import SwiftData
 
 
 @Model
-final class Meal {
+final class Meal : Identifiable, Hashable {
     var mealType: MealType
     var content: String             // 작성 내용
     var date: Date                  // 식사 날짜
