@@ -6,9 +6,7 @@ struct TextView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-           
-                
-            
+
             // 아침
             HStack {
                 HStack {

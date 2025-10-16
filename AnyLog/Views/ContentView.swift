@@ -43,12 +43,12 @@ struct ContentView: View {
     func addTestData() {
         let sampleMeals2: [Meal] = [
             Meal(mealType: .breakfast,
-                 content: "토스트와 커피",
+                 content: "Toast와 커피",
                  date: Date(year: 2025, month: 10, day: 15),
-                 time: Date(year: 2025, month: 10, day: 15, hour: 7, minute: 15)),
+                 time: Date(year:   2025, month: 10, day: 15, hour: 7, minute: 15)),
             
             Meal(mealType: .lunch,
-                 content: "닭가슴살 샐러드와 고구마",
+                 content: "닭가슴살 샐러드와 coffee",
                  date: Date(year: 2025, month: 10, day: 15),
                  time: Date(year: 2025, month: 10, day: 15, hour: 12, minute: 25)),
             

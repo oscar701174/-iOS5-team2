@@ -4,69 +4,76 @@ import SwiftUI
 import SwiftData
 
 struct SearchView: View {
-    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
-    @State var searchText: String = ""
-    @State var selectedMealTypeList: [MealType] = []
-
+    @FocusState private var isSearchTextFocused: Bool
+    @State private var searchText: String = ""
+    @State private var selectedMealTypeList: [MealType] = []
     
-    var body: some View {
-        VStack {
-            
-            
-            
-            RoundedRectangle(cornerRadius: 8)
-                .fill(.gray.opacity(0.2))
-                .frame(width: .infinity, height: 36)
-                .overlay {
-                    HStack {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .frame(width: 20,height: 20)
-                            .padding(.leading)
-                            .foregroundStyle(.secondary)
-                        TextField("Search", text: $searchText) {
+    var queryInput: some View {
+        RoundedRectangle(cornerRadius: 8)
+            .fill(.gray.opacity(0.2))
+            .frame(width: .infinity, height: 36)
+            .overlay {
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .resizable()
+                        .frame(maxWidth: 20,maxHeight: 20)
+                        .padding(.horizontal,10)
+                        .foregroundStyle(.secondary)
+                    TextField("Search", text: $searchText)
+                        .font(.system(size: 14))
+                        .focused($isSearchTextFocused)
+                        .onAppear {
+                            isSearchTextFocused = true
+                        }
+                        .onSubmit {
                             
                         }
-                    }
                 }
-                .padding(20)
-            
-            HStack {
-                ForEach(MealType.allCases) { mealType in
-                    // TODO: 선택된 mealType이 있다면 buttonStyle 변경
-                    Button(mealType.rawValue) {
-                        if isSelectedMealType(mealType) {
-                            selectedMealTypeList.removeAll { element in
-                                element == mealType
-                            }
-                        } else {
-                            selectedMealTypeList.append(mealType)
+            }
+    }
+    
+    var queryButton: some View {
+        HStack{
+            ForEach(MealType.allCases) { mealType in
+                // TODO: 선택된 mealType이 있다면 buttonStyle 변경
+                Button{
+                    if isSelected(mealType) {
+                        selectedMealTypeList.removeAll { element in
+                            element == mealType
                         }
+                    } else {
+                        selectedMealTypeList.append(mealType)
                     }
-                    .buttonStyle(.bordered)
-                    .tint(.main)
+                } label: {
+                    Text(mealType.rawValue)
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundStyle(isSelected(mealType) ? .darkmodeWhite : .darkmodeBlack.opacity(0.5))
+                        
                 }
-                
-                Spacer()
-            }
-            .padding(.horizontal, 20)
+                .frame(maxWidth: 50 , maxHeight: 30)
+                .background(isSelected(mealType) ? .darkmodeBlack.opacity(0.5) : .darkmodeBlack.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 30))
+                .modifier(ConditionalGlassEffect(apply: isSelected(mealType)))
             
-            ForEach(meals) {
-                Text($0.mealType.rawValue)
-            }
-            
-            
-            if searchText.isEmpty {
-                
-                NeedSearchView()
-            } else {
-                
             }
         }
+    }
+    
+    var body: some View {
+        VStack{
+            VStack(alignment:.leading,spacing: 20) {
+                queryInput.padding(.top, 20)
+                queryButton
+            }
+            
+            SearchViewQuery(searchText: $searchText, selectedMealTypeList: $selectedMealTypeList)
+            Spacer()
+  
+        }.padding(.horizontal, 20)
         
     }
     
-    func isSelectedMealType(_ mealType :MealType) -> Bool {
+    func isSelected(_ mealType :MealType) -> Bool {
         return selectedMealTypeList.contains(mealType)
     }
     
@@ -91,6 +98,18 @@ struct NeedSearchView: View {
     }
 }
 
+// Helper view modifier to conditionally apply glassEffect(.clear)
+private struct ConditionalGlassEffect: ViewModifier {
+    let apply: Bool
+    func body(content: Content) -> some View {
+        if apply {
+            content.glassEffect(.clear)
+        } else {
+            content
+        }
+    }
+}
+
 //extension View {
 //    func `if`<Content: View>(_ conditional: Bool, apply: (Self) -> Content) -> some View {
 //        if conditional {
@@ -100,3 +119,7 @@ struct NeedSearchView: View {
 //        }
 //    }
 //}
+
+
+
+
