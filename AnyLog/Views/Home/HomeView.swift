@@ -3,7 +3,7 @@ import SwiftData
 
 struct HomeView: View {
     @State private var selectedDate = Date()
-    @State private var showSheet = false
+    @State private var popoverModal = false
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -72,8 +72,8 @@ struct HomeView: View {
                             
                             Spacer()
                             
-                            NavigationLink {
-                                ComposeView()
+                            Button {
+                                popoverModal = true
                             } label: {
                                 Image(systemName: "plus")
                                     .foregroundStyle(colorScheme == .dark ? .black : .white)
@@ -109,6 +109,9 @@ struct HomeView: View {
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .fill(Color(.systemGray6))
                             )
+                            .popover(isPresented: $popoverModal) {
+                                ComposeView()
+                            }
                         }
                         
                         // 회고/기록
