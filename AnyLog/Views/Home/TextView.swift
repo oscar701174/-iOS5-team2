@@ -23,8 +23,9 @@ struct TextView: View {
             // 아침
             HStack {
                 Rectangle()
-                    .frame(width: 4, height: 70)
+                    .frame(width: 5, height: 70)
                     .foregroundStyle(mealStyle)
+                    .cornerRadius(10)
                 
                 HStack {
                     VStack(alignment: .leading, spacing: 6) {
@@ -43,12 +44,7 @@ struct TextView: View {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color(.systemGray6))
                 )
-//                .overlay(alignment: .leading) {
-//                    Rectangle()
-//                        .frame(width: 4)
-//                        .cornerRadius(10)
-//                        .foregroundStyle(.breakfast)
-//                }
+
             }
         }
     }
