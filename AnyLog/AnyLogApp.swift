@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct AnyLogApp: App {
     @StateObject private var dateHolder = DateHolder()
+    
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Meal.self,

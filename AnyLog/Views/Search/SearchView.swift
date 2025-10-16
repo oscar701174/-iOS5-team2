@@ -1,22 +1,20 @@
-//
-//  SearchView.swift
-//  AnyLog
-//
-//  Created by 조영준 on 10/14/25.
-//
+
 
 import SwiftUI
 import SwiftData
 
 struct SearchView: View {
+    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
     @State var searchText: String = ""
     @State var selectedMealTypeList: [MealType] = []
     
-    @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
-    var meals: [Meal]
+
+
     
     var body: some View {
         VStack {
+            
+            
             
             RoundedRectangle(cornerRadius: 8)
                 .fill(.gray.opacity(0.2))
@@ -54,6 +52,10 @@ struct SearchView: View {
                 Spacer()
             }
             .padding(.horizontal, 20)
+            
+            ForEach(meals) {
+                Text($0.mealType.rawValue)
+            }
             
             
             if searchText.isEmpty {
