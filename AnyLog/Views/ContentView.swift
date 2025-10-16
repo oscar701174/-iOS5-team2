@@ -31,10 +31,8 @@ struct ContentView: View {
         .onAppear {
             // 하위 OS버전 TabView 색상 대응
             UITabBar.appearance().scrollEdgeAppearance = .init()
-
-//             테스트 데이터 SwiftData에 넣기
+            // 테스트 데이터 SwiftData에 넣기
             addTestData()
-
         }
         
         

@@ -4,7 +4,9 @@ import SwiftData
 struct HomeView: View {
     @State private var selectedDate = Date()
     @State private var popoverModal = false
-    @State private var showSheet = false
+    @State private var isComposePresented: Bool = false
+    @State private var selectedMeal: Meal? = nil
+    
     @Environment(\.colorScheme) var colorScheme
     
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
@@ -12,6 +14,12 @@ struct HomeView: View {
     
     @State var showComoser: Bool = false
     @State var keyword: String = ""
+    
+    // 선택된 날짜의 식단만 필터링해서 시간순 정렬
+    var mealsForSelectedDate: [Meal] {
+        meals.filter { Calendar.current.isDate($0.date, inSameDayAs: selectedDate) }
+            .sorted { $0.time < $1.time }
+    }
     
     var mealTyep: [Meal] {
         if keyword.isEmpty {
@@ -22,9 +30,6 @@ struct HomeView: View {
             }
         }
     }
-    
-    
-    
     
     var body: some View {
         NavigationStack {
@@ -71,7 +76,9 @@ struct HomeView: View {
                                     .background(
                                         Circle().fill(Color.main)
                                     )
-                                
+                            }
+                            .popover(isPresented: $popoverModal) {
+                                ComposeView()
                             }
                             
                         }
@@ -79,45 +86,40 @@ struct HomeView: View {
                         .padding(.bottom, 10)
                         
                         
-                        
-                        // 회고/기록 기입 없을 때
-                        VStack(spacing: 12) {
-                            HStack(spacing: 16) {
-                                Image(systemName: "tray")
-                                    .foregroundStyle(.secondary)
-                                Text("아직 기록이 없어요. + 버튼으로 식사를 추가해보세요.")
-                                    .foregroundStyle(.secondary)
-                                    .font(.subheadline)
-                                Spacer()
-                                
-                                
-                                
-                            }
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(Color(.systemGray6))
-                            )
-                            .popover(isPresented: $popoverModal) {
-                                ComposeView()
+                        if mealsForSelectedDate.isEmpty {
+                            VStack(spacing: 12) {
+                                HStack(spacing: 16) {
+                                    Image(systemName: "tray")
+                                        .foregroundStyle(.secondary)
+                                    Text("아직 기록이 없어요. + 버튼으로 식사를 추가해보세요.")
+                                        .foregroundStyle(.secondary)
+                                        .font(.subheadline)
+                                    Spacer()
+                                }
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(Color(.systemGray6))
+                                )
                             }
                         }
                         
-                        List {
-                            ForEach(mealTyep) { item in
-                                NavigationLink {
-                                    ComposeView()
-                                } label: {
-                                     TextView(item: item)
-                                }
-                                .sheet(isPresented: $showSheet) {
-                                    ComposeView()
-                                }
+                        VStack(spacing: 12) {
+                            ForEach(mealsForSelectedDate) { meal in
+                                TextView(item: meal)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        selectedMeal = meal
+                                        isComposePresented = true
+                                    }
                             }
+                        }
+                        .sheet(isPresented: $isComposePresented) {
+                            ComposeView()
                         }
                         
                         // 회고/기록
-                        VStack(spacing: 12) {
+                    //    VStack(spacing: 12) {
                             
                             // 아침
                             //                            HStack {
@@ -147,7 +149,7 @@ struct HomeView: View {
                             //
                             //                            }
                             
-                        }
+                     //   }
                         
                     } // vstack
                     .padding()
@@ -166,23 +168,6 @@ struct HomeView: View {
     
     
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Meal.self, configurations: config)
-    
-    var meal = Meal(mealType: MealType.breakfast, content: "아침~", date: Date.now, time: Date.now)
-    container.mainContext.insert(meal)
-    
-    meal = Meal(mealType: MealType.lunch, content: "점심", date: Date.now, time: Date.now)
-    container.mainContext.insert(meal)
-    
-    meal = Meal(mealType: MealType.dinner, content: "저녁", date: Date.now, time: Date.now)
-    container.mainContext.insert(meal)
-    
-    meal = Meal(mealType: MealType.snack, content: "간식", date: Date.now, time: Date.now)
-    container.mainContext.insert(meal)
-    
-    return HomeView()
-        .modelContainer(container)
-    
+    return HomeView().modelContainer(for: Meal.self, inMemory: true)
 }
     
