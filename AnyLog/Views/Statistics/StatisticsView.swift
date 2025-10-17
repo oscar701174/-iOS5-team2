@@ -6,7 +6,8 @@ struct StatisticsView: View {
     @State private var position = ScrollPosition(idType: Namespace.ID.self)
     @EnvironmentObject var dateHolder: DateHolder
     @State private var segmentedIndex: Int = 0
-
+    @State private var orientation: UIInterfaceOrientation = .portrait
+    
     
     var pickerView: some View {
         Picker("Mode",selection: $segmentedIndex) {
@@ -40,19 +41,22 @@ struct StatisticsView: View {
     
     var graphContainer: some View {
         ScrollViewReader { proxy in
+            
             GeometryReader { geo in
                 let width = geo.size.width
                 let height = geo.size.height
                 let isLandscapeH = width > height
                 ScrollView(.horizontal) {
-                    LazyHStack{
-                        if isLandscapeH { GraphSectorMarkH().id(ID1).frame(minWidth:height, maxHeight:height) } else {
-                            GraphSectorMark().id(ID1).frame(minWidth:width )
+                    HStack{
+                        Group{
+                            if isLandscapeH { GraphSectorMarkH().id(ID1).frame(minWidth:width, maxHeight:height) } else {
+                                GraphSectorMark().id(ID1).frame(minWidth:width )
+                            }
+                            
+                            GraphBarMark().id(ID2).frame(minWidth:width )
                         }
-                        
-                        GraphBarMark().id(ID2).frame(minWidth:width )
+                        .scrollTargetLayout()
                     }
-                    .scrollTargetLayout()
                 }
                 .scrollIndicators(.hidden)
                 .scrollTargetBehavior(.paging)
