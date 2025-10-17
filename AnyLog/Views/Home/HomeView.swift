@@ -3,7 +3,6 @@ import SwiftData
 
 struct HomeView: View {
     @State private var selectedDate = Date()
-    @State private var isComposePresented: Bool = false
     @State private var selectedMeal: Meal? = nil
  
     
@@ -87,7 +86,6 @@ struct HomeView: View {
                                                 
                                                 Button {
                                                     selectedMeal = nil
-                                                    isComposePresented = true
                                                 } label: {
                                                     Image(systemName: "plus")
                                                         .foregroundStyle(.white)
@@ -125,7 +123,6 @@ struct HomeView: View {
                                                         .contentShape(Rectangle())
                                                         .onTapGesture {
                                                             selectedMeal = meal
-                                                            isComposePresented = true
                                                         }
                                                         .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
                                                 }
@@ -179,7 +176,6 @@ struct HomeView: View {
 
                                         Button {
                                             selectedMeal = nil
-                                            isComposePresented = true
                                         } label: {
                                             Image(systemName: "plus")
                                                 .foregroundStyle(.white)
@@ -220,7 +216,6 @@ struct HomeView: View {
                                             .contentShape(Rectangle())
                                             .onTapGesture {
                                                 selectedMeal = meal
-                                                isComposePresented = true
                                             }
                                             .listRowInsets(EdgeInsets(top: 6, leading: 0, bottom: 6, trailing: 0))
                                     }
@@ -271,7 +266,6 @@ struct HomeView: View {
                                 
                                 Button {
                                     selectedMeal = nil
-                                    isComposePresented = true
                                 } label: {
                                     Image(systemName: "plus")
                                         .foregroundStyle(.white)
@@ -311,7 +305,7 @@ struct HomeView: View {
                                 .contentShape(Rectangle())
                                 .onTapGesture {
                                     selectedMeal = meal
-                                    isComposePresented = true
+//                                    isComposePresented = true
                                 }
                                 .listRowInsets(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0))
                                 .padding(.horizontal)
@@ -325,10 +319,10 @@ struct HomeView: View {
                 }
             }
         } // NavigationStack
-        .sheet(isPresented: $isComposePresented) {
+        .sheet(item: $selectedMeal) { meal in
             ZStack {
                 Color.white.ignoresSafeArea()
-                ComposeView(mealItem: selectedMeal, date: selectedDate)
+                ComposeView(mealItem: meal, date: selectedDate)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
             .presentationDetents([.large])
