@@ -42,7 +42,7 @@ struct ContentView: View {
             // 첫 진입시에만 테스트 데이터 SwiftData에 넣기
 //            if firstInit {
 //                firstInit = false
-//                addTestData()
+                addTestData()
 //            }
             
         }

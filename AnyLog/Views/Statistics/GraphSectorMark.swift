@@ -47,7 +47,7 @@ struct GraphSectorMark: View {
                         } // HStackgg
                     } // ForEach
                 }.padding(.horizontal,15)
-                    .padding(.top,20)
+             
                     
          
             

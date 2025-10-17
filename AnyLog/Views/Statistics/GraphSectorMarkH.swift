@@ -47,7 +47,7 @@ struct GraphSectorMarkH: View {
                         }.frame(maxWidth: 200) // HStackgg
                     } // ForEach
                 }.padding(.horizontal,15)
-                    .padding(.top,20)
+
                     
          
             
