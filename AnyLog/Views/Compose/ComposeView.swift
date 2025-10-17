@@ -65,19 +65,8 @@ struct ComposeView: View {
             textEditorFocus = false
         }
         .onAppear {
-            print("mealType = ", mealItem?.mealType ?? "")
-            print("date = ", mealItem?.date ?? "")
-            print("time = ", mealItem?.time ?? "")
-            print("content = ", mealItem?.content ?? "")
-            
             // 수정 페이지 진입시 데이터 세팅
             if let mealItem {
-                print("mealItem is not nil")
-                print("mealType = ", mealItem.mealType)
-                print("date = ", mealItem.date)
-                print("time = ", mealItem.time)
-                print("content = ", mealItem.content)
-                
                 selectedMealType = mealItem.mealType
                 date = mealItem.date
                 time = mealItem.time
@@ -98,6 +87,7 @@ struct ComposeView: View {
                 hour: time.hour,
                 minute: time.minute)
         }
+        .background(.darkmodeWhite)
     }
 }
 
@@ -307,6 +297,7 @@ private struct MealEditorView: View {
                 .focused($textEditorFocus)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
+                .textEditorStyle(.plain)
         }
         
     }
@@ -327,11 +318,6 @@ private struct SubmitButton: View {
     
     var body: some View {
         Button {
-            print("MealType : ", selectedMealType ?? "선택값 없음")
-            print("MealEditorText : ", mealEditorText)
-            print("Date : ", date)
-            print("Time : ", time)
-            
             // 수정페이지 진입 -> 날짜 변경 -> 선택된 식사 종류가 존재하는 경우 예외처리
             for selectedDayMeal in selectedDayMeals {
                 // 간식은 여러개 등록 가능

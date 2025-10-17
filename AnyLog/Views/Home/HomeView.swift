@@ -333,26 +333,14 @@ struct HomeView: View {
                 selectedMeal = nil
             }
         })) {
-            ZStack {
-                Color.white.ignoresSafeArea()
-                ComposeView(
-                    mealItem: selectedMeal,
-                    date: selectedDate
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
+            ComposeView(
+                mealItem: selectedMeal,
+                date: selectedDate
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
         }
-//        .sheet(item: $selectedMeal) { meal in
-//            ZStack {
-//                Color.white.ignoresSafeArea()
-//                ComposeView(mealItem: meal, date: selectedDate)
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//            }
-//            .presentationDetents([.large])
-//            .presentationDragIndicator(.visible)
-//        }
     }
         
 } // body
