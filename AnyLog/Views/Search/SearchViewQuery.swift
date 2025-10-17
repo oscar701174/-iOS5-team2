@@ -7,9 +7,10 @@ struct SearchViewQuery: View {
     @Query private var meals: [Meal]
     @Binding var searchText: String
     @Binding var selectedMealTypeList: [MealType]
+    private var searchTextTrimed: String { searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
     
     var filteredMeals: [Int: [Meal]] {
-        let filteredByInputText: [Meal] = meals.filter{$0.content.lowercased().contains(searchText.lowercased())}
+        let filteredByInputText: [Meal] = meals.filter{$0.content.lowercased().contains(searchTextTrimed)}
         let filteredByMealType: [Meal] = meals.filter{ selectedMealTypeList.contains($0.mealType)}
         
         if(filteredByInputText.isEmpty || filteredByMealType.isEmpty) {

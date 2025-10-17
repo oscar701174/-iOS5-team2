@@ -12,25 +12,23 @@ struct GraphSectorMarkH: View {
     }
     
     var body: some View {
-        HStack {
-      
+        LazyHStack {
                 Chart(mealGraphData.sorted(by:{ $0.mealType.num < $1.mealType.num }), id: \.mealType) { mealType, total, ratio in
-                    SectorMark ( angle: .value("Meal Count" , total), innerRadius: .ratio(0.55), outerRadius: .inset(10), angularInset: 3.0 )
+                    SectorMark ( angle: .value("Meal Count" , total), innerRadius: .ratio(0.3), outerRadius: .inset(0), angularInset: 3.0 )
                         .cornerRadius(10)
                         .foregroundStyle(mealType.color)
                         .annotation(position: .overlay, alignment: .centerFirstTextBaseline) {
                             Text("\(String(format: "%.1f", ratio * 100))%")
-                                .font(Font.system(size: 12))
+                                .font(Font.system(size: 10))
                                 .foregroundStyle(.primary)
-                                .padding(8)
+                                .padding(5)
                                 .background(Capsule()
                                     .fill(.ultraThinMaterial)
                                     .glassEffect(.clear))
                             
                         }
-                }
-             
-                
+                }.frame(minWidth: 200)
+   
                 VStack {
                     ForEach(mealGraphData.sorted(by:{ $0.mealType.num < $1.mealType.num }), id:\.mealType) { mealType, total, ratio in
                         HStack {
@@ -46,15 +44,11 @@ struct GraphSectorMarkH: View {
                                 .foregroundStyle(.darkmodeBlack)
                         }.frame(maxWidth: 200) // HStackgg
                     } // ForEach
-                }.padding(.horizontal,15)
+                }.padding(.horizontal,15) // VStack
 
-                    
-         
-            
-        }.padding(.horizontal,10) //VStacks
-            .frame(maxWidth: 400)
-   
-        
+        }.padding(.horizontal,10) //HStacks
+
+
     } // body
 }
 

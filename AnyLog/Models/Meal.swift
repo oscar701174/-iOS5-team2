@@ -5,14 +5,13 @@ import SwiftData
 
 @Model
 final class Meal: Identifiable, Hashable{
-    var id: UUID
     var mealType: MealType
     var content: String             // 작성 내용
     var date: Date                  // 식사 날짜
     var time: Date                  // 식사 시간
     
     init(mealType: MealType, content: String, date: Date, time: Date) {
-        self.id = UUID()
+
         self.mealType = mealType
         self.content = content
         self.date = date

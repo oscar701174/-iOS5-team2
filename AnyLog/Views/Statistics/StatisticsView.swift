@@ -6,8 +6,6 @@ struct StatisticsView: View {
     @State private var position = ScrollPosition(idType: Namespace.ID.self)
     @EnvironmentObject var dateHolder: DateHolder
     @State private var segmentedIndex: Int = 0
-    @State private var orientation: UIInterfaceOrientation = .portrait
-    
     
     var pickerView: some View {
         Picker("Mode",selection: $segmentedIndex) {
@@ -48,14 +46,15 @@ struct StatisticsView: View {
                 let isLandscapeH = width > height
                 ScrollView(.horizontal) {
                     HStack{
-                
-                            if isLandscapeH { GraphSectorMarkH().id(ID1).frame(minWidth:width, maxHeight:height) } else {
-                                GraphSectorMark().id(ID1).frame(minWidth:width )
-                            }
-                            
-                            GraphBarMark().id(ID2).frame(minWidth:width )
-                    
-                       
+                        
+                        if isLandscapeH {
+                            GraphSectorMarkH().id(ID1).frame(minWidth:width)
+                        } else {
+                            GraphSectorMark().id(ID1).frame(minWidth:width)
+                        }
+                        
+                        GraphBarMark().id(ID2).frame(minWidth:width)
+                        
                     }
                     .scrollTargetLayout()
                 }
@@ -79,15 +78,14 @@ struct StatisticsView: View {
     
     var body: some View {
         VStack{
+            
             VStack{
                 Text("이달의 통계").font(.system(size: 20, weight: .bold)).padding(.top,20)
                 pickerView.frame(maxWidth: 400).padding(.top, 10)
                 dateSelector.frame(maxWidth: 400).padding(.top,20)
             }.padding(.horizontal, 20)
-   
-   
-            graphContainer
-
+            graphContainer.padding(5)
+            
         }
         
     } //body

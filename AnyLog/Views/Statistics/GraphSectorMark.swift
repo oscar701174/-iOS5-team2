@@ -10,7 +10,8 @@ struct GraphSectorMark: View {
         let sumByMealType: [MealType: Int] = mealDataGroupedByMonth.reduce(into: [MealType: Int]()) { $0[$1.mealType, default: 0] += 1 }
         return sumByMealType.map{(mealType: $0.key, total: $0.value, ratio: Double($0.value)/Double(mealDataGroupedByMonth.count))}
     }
-    
+
+
     var body: some View {
         VStack {
       
@@ -28,7 +29,7 @@ struct GraphSectorMark: View {
                                     .glassEffect(.clear))
                             
                         }
-                }.frame(minWidth: 270,maxWidth:400, minHeight: 270,maxHeight: 400)
+                }.frame(minWidth: 270,maxWidth: 400, minHeight: 270,maxHeight: 400)
                     .padding(.top,20)
                 
                 VStack {
@@ -45,13 +46,16 @@ struct GraphSectorMark: View {
                                 .font(Font.system(size: 15))
                                 .foregroundStyle(.darkmodeBlack)
                         } // HStackgg
+                        .frame(maxWidth: 400)
                     } // ForEach
                 }.padding(.horizontal,15)
              
                     
          
             
-        }.padding(.horizontal,10) //VStacks
+        }
+        .frame(maxWidth: 300)
+        .padding(.horizontal,10) //VStacks
    
         
     } // body
