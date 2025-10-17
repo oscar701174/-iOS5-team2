@@ -3,9 +3,9 @@ import SwiftData
 
 struct HomeView: View {
     @State private var selectedDate = Date()
-    @State private var popoverModal = false
     @State private var isComposePresented: Bool = false
     @State private var selectedMeal: Meal? = nil
+ 
     
     @Environment(\.colorScheme) var colorScheme
     
@@ -21,7 +21,7 @@ struct HomeView: View {
         }
         try? context.save()
     }
-
+    
     
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)])
     var meals: [Meal]
@@ -53,14 +53,14 @@ struct HomeView: View {
                         let isLandscape = proxy.size.width > proxy.size.height
                         if isLandscape {
                             // Landscape: two grouped columns centered
-                            let leftWidth: CGFloat = 400
-                            let rightMaxWidth: CGFloat = 560
+                            let _: CGFloat = 400
+                            let _: CGFloat = 560
                             
                                 VStack(alignment: .leading) {
                                     Text("오늘의 식단")
                                         .font(.title)
                                         .bold()
-                                        .padding(.horizontal, 20)
+                                        .padding(.horizontal, 10)
                                     
                                     HStack(alignment: .top, spacing: 70) {
                                         
@@ -86,7 +86,8 @@ struct HomeView: View {
                                                 Spacer()
                                                 
                                                 Button {
-                                                    popoverModal = true
+                                                    selectedMeal = nil
+                                                    isComposePresented = true
                                                 } label: {
                                                     Image(systemName: "plus")
                                                         .foregroundStyle(.white)
@@ -95,9 +96,6 @@ struct HomeView: View {
                                                         .background(
                                                             Circle().fill(Color.main)
                                                         )
-                                                }
-                                                .popover(isPresented: $popoverModal) {
-                                                    ComposeView()
                                                 }
                                             }
                                             .padding(.top, 4)
@@ -180,7 +178,8 @@ struct HomeView: View {
                                         Spacer()
 
                                         Button {
-                                            popoverModal = true
+                                            selectedMeal = nil
+                                            isComposePresented = true
                                         } label: {
                                             Image(systemName: "plus")
                                                 .foregroundStyle(.white)
@@ -189,9 +188,6 @@ struct HomeView: View {
                                                 .background(
                                                     Circle().fill(Color.main)
                                                 )
-                                        }
-                                        .popover(isPresented: $popoverModal) {
-                                            ComposeView()
                                         }
                                     }
                                     .padding(.top, 20)
@@ -274,7 +270,8 @@ struct HomeView: View {
                                 Spacer()
                                 
                                 Button {
-                                    popoverModal = true
+                                    selectedMeal = nil
+                                    isComposePresented = true
                                 } label: {
                                     Image(systemName: "plus")
                                         .foregroundStyle(.white)
@@ -283,9 +280,6 @@ struct HomeView: View {
                                         .background(
                                             Circle().fill(Color.main)
                                         )
-                                }
-                                .popover(isPresented: $popoverModal) {
-                                    ComposeView()
                                 }
                             }
                             .padding(.top, 20)
@@ -324,23 +318,25 @@ struct HomeView: View {
                         }
                         .onDelete(perform: delete)
                         .listRowSeparator(.hidden)
-
+                        
                     }
                     .padding(.horizontal, 10)
                     .listStyle(.plain) // list
                 }
             }
-            .sheet(isPresented: $isComposePresented) {
-                ComposeView()
-            }
         } // NavigationStack
+        .sheet(isPresented: $isComposePresented) {
+            ZStack {
+                Color.white.ignoresSafeArea()
+                ComposeView(mealItem: selectedMeal, date: selectedDate)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
+        }
+    }
         
 } // body
-
-  
-}
-
-    
     
 #Preview {
     return HomeView().modelContainer(for: Meal.self, inMemory: true)
