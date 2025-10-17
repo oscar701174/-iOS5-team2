@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct AnyLogApp: App {
     @StateObject private var dateHolder = DateHolder()
+    @StateObject var tabState = TabState()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
@@ -29,6 +30,7 @@ struct AnyLogApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(dateHolder)
+                .environmentObject(tabState)
         }
         .modelContainer(sharedModelContainer)
     }

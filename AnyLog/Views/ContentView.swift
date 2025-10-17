@@ -5,42 +5,48 @@ import SwiftData
 struct ContentView: View {
 
     @EnvironmentObject var dateHolder: DateHolder
+    @EnvironmentObject var tabState: TabState
     @Environment(\.modelContext) var modelContext
     
     @AppStorage("firstInit") private var firstInit: Bool = true
     
     var body: some View {
-        TabView {
+        TabView(selection:$tabState.selected){
             HomeView()
                 .tabItem {
                     Image(systemName: "house")
                     Text("홈")
                 }
+                .tag(0)
             
             StatisticsView()
                 .tabItem {
                     Image(systemName: "chart.bar.xaxis")
                     Text("통계")
                 }
+                .tag(1)
+                
             
             SearchView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("검색")
                 }
+                .tag(2)
+                
         }
         .onAppear {
             print("ContentView onAppear!!!")
             // 하위 OS버전 TabView 색상 대응
             UITabBar.appearance().scrollEdgeAppearance = .init()
             // 첫 진입시에만 테스트 데이터 SwiftData에 넣기
-            print("FirstInit = ", firstInit)
-            if firstInit {
-                firstInit = false
-                addTestData()
-            }
+//            if firstInit {
+//                firstInit = false
+//                addTestData()
+//            }
             
         }
+
         
         
     }
@@ -126,6 +132,8 @@ struct ContentView: View {
     return ContentView()
             .modelContainer(container)
             .environmentObject(DateHolder())
+            .environmentObject(TabState())
+            
 
 }
 

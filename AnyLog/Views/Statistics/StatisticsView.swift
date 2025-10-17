@@ -6,7 +6,8 @@ struct StatisticsView: View {
     @State private var position = ScrollPosition(idType: Namespace.ID.self)
     @EnvironmentObject var dateHolder: DateHolder
     @State private var segmentedIndex: Int = 0
-
+    @State private var orientation: UIInterfaceOrientation = .portrait
+    
     
     var pickerView: some View {
         Picker("Mode",selection: $segmentedIndex) {
@@ -40,16 +41,22 @@ struct StatisticsView: View {
     
     var graphContainer: some View {
         ScrollViewReader { proxy in
+            
             GeometryReader { geo in
                 let width = geo.size.width
                 let height = geo.size.height
-                
+                let isLandscapeH = width > height
                 ScrollView(.horizontal) {
-                    LazyHStack{
-                        GraphSectorMark().id(ID1).frame(minWidth:width, minHeight: height)
-                        GraphBarMark().id(ID2).frame(minWidth:width ,minHeight: height)
+                    HStack{
+                        Group{
+                            if isLandscapeH { GraphSectorMarkH().id(ID1).frame(minWidth:width, maxHeight:height) } else {
+                                GraphSectorMark().id(ID1).frame(minWidth:width )
+                            }
+                            
+                            GraphBarMark().id(ID2).frame(minWidth:width )
+                        }
+                        .scrollTargetLayout()
                     }
-                    .scrollTargetLayout()
                 }
                 .scrollIndicators(.hidden)
                 .scrollTargetBehavior(.paging)
@@ -63,7 +70,7 @@ struct StatisticsView: View {
                         scrollID == ID1 ? (segmentedIndex = 0) : (segmentedIndex = 1) }
                 }
             }
-            .padding(.bottom,30)
+            
         }
         
         
@@ -76,9 +83,12 @@ struct StatisticsView: View {
                 pickerView.frame(maxWidth: 400).padding(.top, 10)
                 dateSelector.frame(maxWidth: 400).padding(.top,20)
             }.padding(.horizontal, 20)
+   
+   
             graphContainer
-            Spacer()
+
         }
+        
     } //body
 }
 
@@ -89,5 +99,5 @@ struct StatisticsView: View {
 
 enum SegmentMenu: String{
     case first = "식단비율"
-    case second = "식단횟수"
+    case second = "시간대별 횟수"
 }
