@@ -334,7 +334,7 @@ private struct SubmitButton: View {
             
             // 수정페이지 진입 -> 날짜 변경 -> 선택된 식사 종류가 존재하는 경우 예외처리
             for selectedDayMeal in selectedDayMeals {
-                if selectedDayMeal.mealType == selectedMealType {
+                if selectedMealType != .snack && selectedDayMeal.mealType == selectedMealType {
                     alertMessage = "선택한 날짜에 \(selectedDayMeal.mealType.rawValue)이 등록되어 있습니다."
                     selectedMealType = nil
                     showAlert.toggle()
