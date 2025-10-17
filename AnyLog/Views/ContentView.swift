@@ -40,11 +40,10 @@ struct ContentView: View {
             // 하위 OS버전 TabView 색상 대응
             UITabBar.appearance().scrollEdgeAppearance = .init()
             // 첫 진입시에만 테스트 데이터 SwiftData에 넣기
-            print("FirstInit = ", firstInit)
-            if firstInit {
-                firstInit = false
-                addTestData()
-            }
+//            if firstInit {
+//                firstInit = false
+//                addTestData()
+//            }
             
         }
 
