@@ -5,29 +5,35 @@ import SwiftData
 struct ContentView: View {
 
     @EnvironmentObject var dateHolder: DateHolder
+    @EnvironmentObject var tabState: TabState
     @Environment(\.modelContext) var modelContext
     
     @AppStorage("firstInit") private var firstInit: Bool = true
     
     var body: some View {
-        TabView {
+        TabView(selection:$tabState.selected){
             HomeView()
                 .tabItem {
                     Image(systemName: "house")
                     Text("홈")
                 }
+                .tag(0)
             
             StatisticsView()
                 .tabItem {
                     Image(systemName: "chart.bar.xaxis")
                     Text("통계")
                 }
+                .tag(1)
+                
             
             SearchView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
                     Text("검색")
                 }
+                .tag(2)
+                
         }
         .onAppear {
             print("ContentView onAppear!!!")
@@ -41,6 +47,7 @@ struct ContentView: View {
             }
             
         }
+
         
         
     }
@@ -126,6 +133,8 @@ struct ContentView: View {
     return ContentView()
             .modelContainer(container)
             .environmentObject(DateHolder())
+            .environmentObject(TabState())
+            
 
 }
 

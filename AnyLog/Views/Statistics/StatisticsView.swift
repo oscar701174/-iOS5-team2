@@ -43,11 +43,14 @@ struct StatisticsView: View {
             GeometryReader { geo in
                 let width = geo.size.width
                 let height = geo.size.height
-                
+                let isLandscapeH = width > height
                 ScrollView(.horizontal) {
                     LazyHStack{
-                        GraphSectorMark().id(ID1).frame(minWidth:width, minHeight: height)
-                        GraphBarMark().id(ID2).frame(minWidth:width ,minHeight: height)
+                        if isLandscapeH { GraphSectorMarkH().id(ID1).frame(minWidth:height, maxHeight:height) } else {
+                            GraphSectorMark().id(ID1).frame(minWidth:width )
+                        }
+                        
+                        GraphBarMark().id(ID2).frame(minWidth:width )
                     }
                     .scrollTargetLayout()
                 }
@@ -63,7 +66,7 @@ struct StatisticsView: View {
                         scrollID == ID1 ? (segmentedIndex = 0) : (segmentedIndex = 1) }
                 }
             }
-            .padding(.bottom,30)
+            
         }
         
         
@@ -76,9 +79,12 @@ struct StatisticsView: View {
                 pickerView.frame(maxWidth: 400).padding(.top, 10)
                 dateSelector.frame(maxWidth: 400).padding(.top,20)
             }.padding(.horizontal, 20)
+   
+   
             graphContainer
-            Spacer()
+
         }
+        
     } //body
 }
 
@@ -89,5 +95,5 @@ struct StatisticsView: View {
 
 enum SegmentMenu: String{
     case first = "식단비율"
-    case second = "식단횟수"
+    case second = "시간대별 횟수"
 }

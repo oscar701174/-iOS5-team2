@@ -11,15 +11,17 @@ struct SearchView: View {
     
     var queryInput: some View {
         RoundedRectangle(cornerRadius: 8)
-            .fill(.gray.opacity(0.2))
-            .frame(width: .infinity, height: 36)
+            .fill(.darkmodeBlack.opacity(0.1))
+            .frame(maxWidth: .infinity, maxHeight: 36)
             .overlay {
                 HStack {
+                    // Use a fixed size to avoid invalid frame dimensions
                     Image(systemName: "magnifyingglass")
-                        .resizable()
-                        .frame(maxWidth: 20,maxHeight: 20)
-                        .padding(.horizontal,10)
                         .foregroundStyle(.secondary)
+                        .font(.system(size: 16, weight: .regular)) // sizes the SF Symbol safely
+                        .frame(maxWidth: 20, maxHeight: 20, alignment: .center)
+                        .padding(.horizontal,10)
+                    
                     TextField("Search", text: $searchText)
                         .font(.system(size: 14))
                         .focused($isSearchTextFocused)
@@ -65,15 +67,15 @@ struct SearchView: View {
             Text("검색 페이지").font(.system(size: 20, weight: .bold)).padding(.top,20)
             VStack(alignment:.leading,spacing: 20) {
  
-                queryInput.padding(.top, 20)
+                queryInput.padding(.top, 10)
+                
                 queryButton
             }.padding(.horizontal, 20)
             
             SearchViewQuery(searchText: $searchText, selectedMealTypeList: $selectedMealTypeList)
                 .padding(.top,15)
-    
-  
         }
+        .ignoresSafeArea(edges: .bottom)
         
     }
     
@@ -98,6 +100,7 @@ private struct ConditionalGlassEffect: ViewModifier {
         }
     }
 }
+
 
 
 

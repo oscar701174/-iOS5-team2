@@ -5,6 +5,7 @@ struct HomeView: View {
     @State private var selectedDate = Date()
     @State private var isComposePresented: Bool = false
     @State private var selectedMeal: Meal? = nil
+ 
     
     @Environment(\.colorScheme) var colorScheme
     
