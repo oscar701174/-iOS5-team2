@@ -65,10 +65,10 @@ struct ComposeView: View {
             textEditorFocus = false
         }
         .onAppear {
-            print("mealType = ", mealItem?.mealType)
-            print("date = ", mealItem?.date)
-            print("time = ", mealItem?.time)
-            print("content = ", mealItem?.content)
+            print("mealType = ", mealItem?.mealType ?? "")
+            print("date = ", mealItem?.date ?? "")
+            print("time = ", mealItem?.time ?? "")
+            print("content = ", mealItem?.content ?? "")
             
             // 수정 페이지 진입시 데이터 세팅
             if let mealItem {
