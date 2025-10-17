@@ -20,7 +20,8 @@ struct GraphBarMark: View {
                     BarMark( x: .value("Hour", "\(data.hour)시"), y: .value("Total", data.total) )
                         .cornerRadius(10)
                         .annotation(position: .overlay, alignment: .top){
-                            Text(String(data.total)).font(Font.system(size: 12))
+                            Text(String(data.total))
+                                .font(.footnote)
                                 .foregroundStyle(.primary)
                                 .padding(8)
                                 .background(Circle()
@@ -31,7 +32,7 @@ struct GraphBarMark: View {
                     AxisMarks {
                         AxisTick()
                         AxisValueLabel()
-                            .font(.system(size: 13))
+                            .font(.footnote)
                             .foregroundStyle(Color(uiColor: .systemGray))
                     }
                 }

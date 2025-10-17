@@ -18,12 +18,12 @@ struct SearchView: View {
                     // Use a fixed size to avoid invalid frame dimensions
                     Image(systemName: "magnifyingglass")
                         .foregroundStyle(.secondary)
-                        .font(.system(size: 16, weight: .regular)) // sizes the SF Symbol safely
+                        .font(.body) // sizes the SF Symbol safely
                         .frame(maxWidth: 20, maxHeight: 20, alignment: .center)
                         .padding(.horizontal,10)
                     
                     TextField("Search", text: $searchText)
-                        .font(.system(size: 14))
+                        .font(.callout)
                         .focused($isSearchTextFocused)
                         .onAppear {
                             isSearchTextFocused = true
@@ -49,7 +49,7 @@ struct SearchView: View {
                     }
                 } label: {
                     Text(mealType.rawValue)
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.callout).fontWeight(.semibold)
                         .foregroundStyle(isSelected(mealType) ? .darkmodeBlack.opacity(0.7) : .darkmodeBlack.opacity(0.3))
                         
                 }
@@ -64,7 +64,11 @@ struct SearchView: View {
     
     var body: some View {
         VStack{
-            Text("검색 페이지").font(.system(size: 20, weight: .bold)).padding(.top,20)
+            Text("검색 페이지")
+                .font(.title3)
+                .bold()
+                .padding(.top,20)
+            
             VStack(alignment:.leading,spacing: 20) {
  
                 queryInput.padding(.top, 10)

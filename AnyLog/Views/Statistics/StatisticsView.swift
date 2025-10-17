@@ -20,20 +20,20 @@ struct StatisticsView: View {
         HStack {
             Button { dateHolder.prevMonthMove()} label: {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 15))
+                    .font(.subheadline)
                     .foregroundStyle(Color.primary)
             }
             Spacer()
             Button { dateHolder.dateSelected = Date(); segmentedIndex = 0 } label: {
                 Text(dateHolder.dateSelected.yearMonth)
-                    .font(Font.system(size: 15))
+                    .font(.subheadline)
                     .bold()
                     .foregroundStyle(Color.primary)
             }
             Spacer()
             Button { dateHolder.nextMonthMove()} label: {
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 15))
+                    .font(.subheadline)
                     .foregroundStyle( Color.primary)
             }
         }
@@ -79,7 +79,10 @@ struct StatisticsView: View {
     var body: some View {
         VStack{
             VStack{
-                Text("이달의 통계").font(.system(size: 20, weight: .bold)).padding(.top,20)
+                Text("이달의 통계")
+                    .font(.title3)
+                    .bold()
+                    .padding(.top,20)
                 pickerView.frame(maxWidth: 400).padding(.top, 10)
                 dateSelector.frame(maxWidth: 400).padding(.top,20)
             }.padding(.horizontal, 20)
