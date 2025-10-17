@@ -75,6 +75,7 @@ struct SearchView: View {
             SearchViewQuery(searchText: $searchText, selectedMealTypeList: $selectedMealTypeList)
                 .padding(.top,15)
         }
+        .ignoresSafeArea(edges: .bottom)
         
     }
     

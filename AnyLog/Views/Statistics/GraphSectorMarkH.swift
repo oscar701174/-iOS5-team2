@@ -2,17 +2,17 @@ import SwiftUI
 import SwiftData
 import Charts
 
-struct GraphSectorMark: View {
+struct GraphSectorMarkH: View {
     @EnvironmentObject var dateHolder: DateHolder
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
-    var mealDataGroupedByMonth:[Meal] {meals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}}
+    private var mealDataGroupedByMonth:[Meal] {meals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}}
     private var mealGraphData:[(mealType: MealType, total:Int, ratio: Double)] {
         let sumByMealType: [MealType: Int] = mealDataGroupedByMonth.reduce(into: [MealType: Int]()) { $0[$1.mealType, default: 0] += 1 }
         return sumByMealType.map{(mealType: $0.key, total: $0.value, ratio: Double($0.value)/Double(mealDataGroupedByMonth.count))}
     }
     
     var body: some View {
-        VStack {
+        HStack {
       
                 Chart(mealGraphData.sorted(by:{ $0.mealType.num < $1.mealType.num }), id: \.mealType) { mealType, total, ratio in
                     SectorMark ( angle: .value("Meal Count" , total), innerRadius: .ratio(0.55), outerRadius: .inset(10), angularInset: 3.0 )
@@ -28,8 +28,8 @@ struct GraphSectorMark: View {
                                     .glassEffect(.clear))
                             
                         }
-                }.frame(minWidth: 270,maxWidth:400, minHeight: 270,maxHeight: 400)
-                    .padding(.top,20)
+                }
+             
                 
                 VStack {
                     ForEach(mealGraphData.sorted(by:{ $0.mealType.num < $1.mealType.num }), id:\.mealType) { mealType, total, ratio in
@@ -44,7 +44,7 @@ struct GraphSectorMark: View {
                             Text("\(String(format: "%.1f", ratio * 100))%")
                                 .font(Font.system(size: 15))
                                 .foregroundStyle(.darkmodeBlack)
-                        } // HStackgg
+                        }.frame(maxWidth: 200) // HStackgg
                     } // ForEach
                 }.padding(.horizontal,15)
                     .padding(.top,20)
@@ -52,42 +52,14 @@ struct GraphSectorMark: View {
          
             
         }.padding(.horizontal,10) //VStacks
+            .frame(maxWidth: 400)
    
         
     } // body
 }
 
 #Preview {
-    GraphSectorMark()
+    GraphSectorMarkH()
         .environmentObject(DateHolder())
 }
-
-// Keep this as a plain extension; no stored properties.
-extension MealType{
-    
-    var num: Int {
-        switch self {
-            case .breakfast : return 1
-            case .lunch : return 2
-            case .dinner : return 3
-            case .snack : return 4
-        }
-    }
-    
-    var color: Color {
-        switch self {
-        case .breakfast: return .breakfast
-        case .lunch: return .lunch
-        case .dinner: return .dinner
-        case .snack: return .snack
-        }
-    }
-}
-
-/*
- // If you ever need Identifiable, use a computed id (no stored properties in extensions).
- extension MealType: Identifiable {
- var id: String { self.rawValue }
- }
- */
 
