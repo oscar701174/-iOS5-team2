@@ -52,14 +52,14 @@ struct HomeView: View {
                         let isLandscape = proxy.size.width > proxy.size.height
                         if isLandscape {
                             // Landscape: two grouped columns centered
-                            let leftWidth: CGFloat = 400
-                            let rightMaxWidth: CGFloat = 560
+                            let _: CGFloat = 400
+                            let _: CGFloat = 560
                             
                                 VStack(alignment: .leading) {
                                     Text("오늘의 식단")
                                         .font(.title)
                                         .bold()
-                                        .padding(.horizontal, 20)
+                                        .padding(.horizontal, 10)
                                     
                                     HStack(alignment: .top, spacing: 70) {
                                         
@@ -85,7 +85,8 @@ struct HomeView: View {
                                                 Spacer()
                                                 
                                                 Button {
-                                                    popoverModal = true
+                                                    selectedMeal = nil
+                                                    isComposePresented = true
                                                 } label: {
                                                     Image(systemName: "plus")
                                                         .foregroundStyle(.white)
@@ -94,9 +95,6 @@ struct HomeView: View {
                                                         .background(
                                                             Circle().fill(Color.main)
                                                         )
-                                                }
-                                                .popover(isPresented: $popoverModal) {
-                                                    ComposeView()
                                                 }
                                             }
                                             .padding(.top, 4)
@@ -179,7 +177,8 @@ struct HomeView: View {
                                         Spacer()
 
                                         Button {
-                                            popoverModal = true
+                                            selectedMeal = nil
+                                            isComposePresented = true
                                         } label: {
                                             Image(systemName: "plus")
                                                 .foregroundStyle(.white)
@@ -188,9 +187,6 @@ struct HomeView: View {
                                                 .background(
                                                     Circle().fill(Color.main)
                                                 )
-                                        }
-                                        .popover(isPresented: $popoverModal) {
-                                            ComposeView()
                                         }
                                     }
                                     .padding(.top, 20)
@@ -328,8 +324,14 @@ struct HomeView: View {
                 }
             }
         } // NavigationStack
-        .popover(isPresented: $isComposePresented) {
-            return ComposeView(mealItem: selectedMeal, date: selectedDate)
+        .sheet(isPresented: $isComposePresented) {
+            ZStack {
+                Color.white.ignoresSafeArea()
+                ComposeView(mealItem: selectedMeal, date: selectedDate)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
         }
     }
         
