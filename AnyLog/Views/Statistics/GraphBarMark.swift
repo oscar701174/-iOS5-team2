@@ -41,9 +41,6 @@ struct GraphBarMark: View {
           
         } // VStack
         .padding(.horizontal,10)
-        .onAppear{
-            print(mealGraphData)
-        }
 
   
     } // body

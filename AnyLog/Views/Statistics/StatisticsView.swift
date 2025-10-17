@@ -46,7 +46,6 @@ struct StatisticsView: View {
                 let isLandscapeH = width > height
                 ScrollView(.horizontal) {
                     HStack{
-                        
                         if isLandscapeH {
                             GraphSectorMarkH().id(ID1).frame(minWidth:width)
                         } else {
