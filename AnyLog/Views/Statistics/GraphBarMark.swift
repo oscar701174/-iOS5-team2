@@ -16,7 +16,7 @@ struct GraphBarMark: View {
 
     var body: some View {
         VStack{
-                Chart(mealGraphData) { data in
+            Chart(mealGraphData, id:\.self) { data in
                     BarMark( x: .value("Hour", "\(data.hour)시"), y: .value("Total", data.total) )
                         .cornerRadius(10)
                         .annotation(position: .overlay, alignment: .top){

@@ -48,15 +48,16 @@ struct StatisticsView: View {
                 let isLandscapeH = width > height
                 ScrollView(.horizontal) {
                     HStack{
-                        Group{
+                
                             if isLandscapeH { GraphSectorMarkH().id(ID1).frame(minWidth:width, maxHeight:height) } else {
                                 GraphSectorMark().id(ID1).frame(minWidth:width )
                             }
                             
                             GraphBarMark().id(ID2).frame(minWidth:width )
-                        }
-                        .scrollTargetLayout()
+                    
+                       
                     }
+                    .scrollTargetLayout()
                 }
                 .scrollIndicators(.hidden)
                 .scrollTargetBehavior(.paging)

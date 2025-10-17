@@ -35,7 +35,7 @@ struct SearchViewQuery: View {
             List {
                 ForEach(filteredMeals.keys.sorted(), id:\.self) { month in
                     Section {
-                        ForEach(filteredMeals[month]?.sorted(by:{ $0.time < $1.time } ) ?? [], id: \.id){
+                        ForEach(filteredMeals[month]?.sorted(by:{ $0.time < $1.time } ) ?? [], id: \.persistentModelID){
                             Databoard(day: String($0.date.day),
                                       mealType: $0.mealType,
                                       meal: $0.content,

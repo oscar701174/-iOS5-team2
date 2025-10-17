@@ -127,9 +127,9 @@ struct HomeView: View {
                                     .contentShape(Rectangle())
                                     .onTapGesture {
                                         print("onTapGesture!!!")
-                                        print("before selectedMeal = ", selectedMeal)
+                                        print("before selectedMeal = ", selectedMeal ?? "")
                                         selectedMeal = meal
-                                        print("after selectedMeal = ", selectedMeal)
+                                        print("after selectedMeal = ", selectedMeal ?? "")
                                         
                                         isComposePresented = true
                                     }
