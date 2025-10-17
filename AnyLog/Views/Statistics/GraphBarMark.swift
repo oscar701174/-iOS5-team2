@@ -5,7 +5,7 @@ import Charts
 import SwiftData
 
 struct GraphBarMark: View {
-    let width:CGFloat = 400
+
     @EnvironmentObject var dateHolder: DateHolder
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
     var mealDataGroupedByMonth:[Meal] {meals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}.sorted(by: { $0.time.hour < $1.time.hour })}
@@ -16,11 +16,12 @@ struct GraphBarMark: View {
 
     var body: some View {
         VStack{
-                Chart(mealGraphData) { data in
+            Chart(mealGraphData, id:\.id) { data in
                     BarMark( x: .value("Hour", "\(data.hour)시"), y: .value("Total", data.total) )
                         .cornerRadius(10)
                         .annotation(position: .overlay, alignment: .top){
-                            Text(String(data.total)).font(Font.system(size: 12))
+                            Text(String(data.total))
+                                .font(.footnote)
                                 .foregroundStyle(.primary)
                                 .padding(8)
                                 .background(Circle()
@@ -31,13 +32,13 @@ struct GraphBarMark: View {
                     AxisMarks {
                         AxisTick()
                         AxisValueLabel()
-                            .font(.system(size: 13))
+                            .font(.footnote)
                             .foregroundStyle(Color(uiColor: .systemGray))
                     }
                 }
                 .chartYAxis(.hidden)
                 .frame(maxWidth:400,maxHeight: 300)
-                .padding(.top,20)
+
           
         } // VStack
         .padding(.horizontal,10)

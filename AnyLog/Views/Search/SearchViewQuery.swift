@@ -7,9 +7,10 @@ struct SearchViewQuery: View {
     @Query private var meals: [Meal]
     @Binding var searchText: String
     @Binding var selectedMealTypeList: [MealType]
+    private var searchTextTrimed: String { searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
     
     var filteredMeals: [Int: [Meal]] {
-        let filteredByInputText: [Meal] = meals.filter{$0.content.lowercased().contains(searchText.lowercased())}
+        let filteredByInputText: [Meal] = meals.filter{$0.content.lowercased().contains(searchTextTrimed)}
         let filteredByMealType: [Meal] = meals.filter{ selectedMealTypeList.contains($0.mealType)}
         
         if(filteredByInputText.isEmpty || filteredByMealType.isEmpty) {
@@ -35,7 +36,7 @@ struct SearchViewQuery: View {
             List {
                 ForEach(filteredMeals.keys.sorted(), id:\.self) { month in
                     Section {
-                        ForEach(filteredMeals[month]?.sorted(by:{ $0.time < $1.time } ) ?? [], id: \.id){
+                        ForEach(filteredMeals[month]?.sorted(by:{ $0.time < $1.time } ) ?? [], id: \.persistentModelID){
                             Databoard(day: String($0.date.day),
                                       mealType: $0.mealType,
                                       meal: $0.content,
@@ -46,7 +47,7 @@ struct SearchViewQuery: View {
                     header: {
                         HStack(spacing:10){
                             Text("\(month)월")
-                                .font(.system(size: 25))
+                                .font(.title2)
                                 .foregroundStyle(Color(.label))
                                 .onTapGesture {
                                     dateHolder.dateSelected = filteredMeals[month]?.first?.date ?? Date()
@@ -101,26 +102,46 @@ struct Databoard: View {
     var body: some View {
         HStack(alignment:.top){
             Circle()
-                .frame(maxWidth: 37)
+                .frame(maxWidth: 46)
                 .foregroundStyle(mealType.color)
                 .overlay{
                     Text("\(day)일")
-                        .font(.system(size: 15))
+                        .font(.body)
                         .foregroundStyle(Color(.label))
                 }
             
             VStack(alignment: .leading){
                 Text(mealType.rawValue)
-                    .font(.system(size: 14))
+                    .font(.subheadline)
                     .foregroundStyle(.darkmodeBlack)
                 Text(meal)
-                    .font(.system(size: 16)).bold()
+                    .font(.headline).bold()
             }.padding(.horizontal, 10)
             Spacer()
-            Text(time).font(.system(size: 14))
+            Text(time).font(.subheadline).foregroundStyle(.secondary)
         }
     }
 }
 
 
 
+#Preview {
+    
+    let container = try! ModelContainer(
+        for: Meal.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    //    let context = container.mainContext
+    //
+    //    for meal in sampleMeals {
+    //        context.insert(meal)
+    //    }
+    
+    
+    return ContentView()
+        .modelContainer(container)
+        .environmentObject(DateHolder())
+        .environmentObject(TabState())
+    
+    
+}

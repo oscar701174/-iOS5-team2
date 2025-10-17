@@ -1,7 +1,5 @@
-
 import Foundation
 import SwiftData
-
 
 @Model
 final class Meal : Identifiable, Hashable{
@@ -34,6 +32,8 @@ final class Meal : Identifiable, Hashable{
     }
 
 }
+
+
 
 enum MealType: String, Codable, CaseIterable, Identifiable {
     case breakfast = "아침"
