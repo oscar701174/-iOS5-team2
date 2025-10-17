@@ -16,7 +16,7 @@ struct GraphBarMark: View {
 
     var body: some View {
         VStack{
-            Chart(mealGraphData, id:\.self) { data in
+            Chart(mealGraphData, id:\.id) { data in
                     BarMark( x: .value("Hour", "\(data.hour)시"), y: .value("Total", data.total) )
                         .cornerRadius(10)
                         .annotation(position: .overlay, alignment: .top){
@@ -32,7 +32,7 @@ struct GraphBarMark: View {
                         AxisTick()
                         AxisValueLabel()
                             .font(.system(size: 12))
-                            .foregroundStyle(.darkmodeWhite.opacity(0.7))
+                            .foregroundStyle(.darkmodeBlack.opacity(0.7))
                     }
                 }
                 .chartYAxis(.hidden)
@@ -41,6 +41,9 @@ struct GraphBarMark: View {
           
         } // VStack
         .padding(.horizontal,10)
+        .onAppear{
+            print(mealGraphData)
+        }
 
   
     } // body
