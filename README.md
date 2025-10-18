@@ -158,13 +158,16 @@ AnyLog/
       (역할)
     </td>
 
- <td align="center" style="padding: 20px;">
-      <img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e"
+ 
+   <td align="center" style="padding: 20px;">
+      <img src="https://github.com/user-attachments/assets/64a2e247-3c8e-40ce-812e-f9b7b2b7c50e"
            width="150" height="200"
            style="border-radius: 12px;" 
            alt="김태윤 프로필"/><br>
       <b>김태윤</b>  팀원<br>
-      (역할)
+      검색페이지 제작<br>
+      통계 페이지 제작
+     <br>
     </td>
 
  <td align="center" style="padding: 20px;">
@@ -175,8 +178,7 @@ AnyLog/
       <b>박채윤</b>  팀원<br>
       깃코드 마크다운 작성<br>
       Home View 제작<br>
-      영상 촬영<br>
-      PPT 작성<br>
+      영상, PPT 제작<br>
     </td>
   </tr>
 </table>
