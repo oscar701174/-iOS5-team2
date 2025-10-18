@@ -20,7 +20,7 @@ struct ComposeView: View {
     
     var selectedDayMeals: [Meal] {
         meals.filter {
-            return dateFormat($0.date) == dateFormat(date)
+            return compareYmd($0.date, date)
         }
     }
     
@@ -65,19 +65,8 @@ struct ComposeView: View {
             textEditorFocus = false
         }
         .onAppear {
-            print("mealType = ", mealItem?.mealType ?? "")
-            print("date = ", mealItem?.date ?? "")
-            print("time = ", mealItem?.time ?? "")
-            print("content = ", mealItem?.content ?? "")
-            
             // 수정 페이지 진입시 데이터 세팅
             if let mealItem {
-                print("mealItem is not nil")
-                print("mealType = ", mealItem.mealType)
-                print("date = ", mealItem.date)
-                print("time = ", mealItem.time)
-                print("content = ", mealItem.content)
-                
                 selectedMealType = mealItem.mealType
                 date = mealItem.date
                 time = mealItem.time
@@ -98,6 +87,7 @@ struct ComposeView: View {
                 hour: time.hour,
                 minute: time.minute)
         }
+        .background(.darkmodeWhite)
     }
 }
 
@@ -133,7 +123,7 @@ private struct MealTypeButton: View {
                     
                     // 수정 페이지로 진입한 경우 필터링
                     if let mealItem {
-                        if dateFormat(mealItem.date) == dateFormat(date) && mealType == mealItem.mealType {
+                        if compareYmd(mealItem.date, date) && mealType == mealItem.mealType {
                             selectedMealType = mealType
                             return
                         }
@@ -307,6 +297,7 @@ private struct MealEditorView: View {
                 .focused($textEditorFocus)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
+                .textEditorStyle(.plain)
         }
         
     }
@@ -327,16 +318,24 @@ private struct SubmitButton: View {
     
     var body: some View {
         Button {
-            print("MealType : ", selectedMealType ?? "선택값 없음")
-            print("MealEditorText : ", mealEditorText)
-            print("Date : ", date)
-            print("Time : ", time)
-            
             // 수정페이지 진입 -> 날짜 변경 -> 선택된 식사 종류가 존재하는 경우 예외처리
             for selectedDayMeal in selectedDayMeals {
-                if selectedMealType != .snack && selectedDayMeal.mealType == selectedMealType {
+                // 간식은 여러개 등록 가능
+                if selectedMealType == .snack {
+                    break
+                }
+                
+                // 수정 페이지 진입시에만 적용
+                if let mealItem {
+                    // 같은 날짜 같은 mealType이면 for문 안해도 됨
+                    if compareYmd(date, mealItem.date) && selectedMealType == mealItem.mealType {
+                        break
+                    }
+                }
+                
+                // 내가 선택한 mealType이 선택된 날짜에 mealType이 존재하면 alert
+                if  selectedMealType == selectedDayMeal.mealType {
                     alertMessage = "선택한 날짜에 \(selectedDayMeal.mealType.rawValue)이 등록되어 있습니다."
-                    selectedMealType = nil
                     showAlert.toggle()
                     return
                 }
@@ -412,6 +411,10 @@ func timeFormat(_ time: Date) -> String {
     f.dateFormat = "a hh:mm"
     
     return f.string(from: time)
+}
+
+private func compareYmd(_ date1: Date, _ date2: Date) -> Bool{
+    return dateFormat(date1) == dateFormat(date2)
 }
 
 
