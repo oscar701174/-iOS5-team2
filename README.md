@@ -86,6 +86,28 @@
 
 <br><br>
 
+## 💡 아이패드 가로·세로 구현, 다크모드 지원
+
+<p align="center">
+  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXpuc3F1Z3g0MWpueGQzOWtxNWxsdzN5NHlxMTBtandrbXlxYzFidyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dLupXPzxaehlerMdo2/giphy.gif" 
+       width="400" 
+       alt="아이패드 가로세로 및 다크모드 구현" />
+</p>
+
+<br><br>
+
+## ⚙️ 기술 스택 (Tech Stack)
+
+| 구분 | 사용 기술 |
+|------|-----------|
+| **Frontend** | SwiftUI, SwiftData |
+| **Design** | SF Symbols, Dynamic Color Scheme |
+| **Data Handling** | @Query, Predicate, SwiftData Model |
+| **Version Control** | Git & GitHub |
+| **Development Tool** | Xcode 26.x, macOS Tahoe |
+
+<br><br>
+
 ## 🗂 프로젝트 구조
 
 <pre align="left">
@@ -120,6 +142,36 @@ AnyLog/
 │ └── Assets.xcassets # 색상, 아이콘, 이미지 리소스
 │
 └── 📄 README.md</pre>
+
+<br><br>
+
+## 👥 팀원 소개 (Team Members)
+
+<p align="center">
+
+  <!-- 조영준 -->
+  <span style="display:inline-block; text-align:center; margin: 20px;">
+    <img src="https://github.com/user-attachments/assets/your_image1.png" width="120" style="border-radius:50%;" alt="조영준 프로필"/>
+    <br><b>조영준</b><br>
+    (역할)
+  </span>
+
+  <!-- 김태윤 -->
+  <span style="display:inline-block; text-align:center; margin: 20px;">
+    <img src="https://github.com/user-attachments/assets/your_image2.png" width="120" style="border-radius:50%;" alt="김태윤 프로필"/>
+    <br><b>김태윤</b><br>
+    (역할)
+  </span>
+
+  <!-- 박채윤 -->
+  <span style="display:inline-block; text-align:center; margin: 20px;">
+    <img src="https://github.com/user-attachments/assets/your_image3.png" width="120" style="border-radius:50%;" alt="박채윤 프로필"/>
+    <br><b>박채윤</b><br>
+    (역할)
+  </span>
+
+</p>
+
 
 
 </div>
