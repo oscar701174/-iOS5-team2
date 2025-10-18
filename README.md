@@ -147,33 +147,39 @@ AnyLog/
 
 ## 👥 팀원 소개 (Team Members)
 
-<p align="center">
+<table align="center">
+  <tr>
+    <td align="center" style="padding: 20px;">
+      <img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e"
+           width="150" height="200"
+           style="border-radius: 12px;" 
+           alt="조영준 프로필"/><br>
+      <b>조영준</b><br>
+      (역할)
+    </td>
 
-  <!-- 조영준 -->
-  <span style="display:inline-block; text-align:center; margin: 20;">
-    <img src="https://github.com/user-attachments/assets/your_image1.png" width="120" style="border-radius:50%;" alt="조영준 프로필"/>
-    <br><b>조영준</b>팀장<br>
-    (역할)
-  </span>
+ <td align="center" style="padding: 20px;">
+      <img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e"
+           width="150" height="200"
+           style="border-radius: 12px;" 
+           alt="김태윤 프로필"/><br>
+      <b>김태윤</b><br>
+      (역할)
+    </td>
 
-  <!-- 김태윤 -->
-  <span style="display:inline-block; text-align:center; margin: 20;">
-    <img src="https://github.com/user-attachments/assets/your_image2.png" width="120" style="border-radius:50%;" alt="김태윤 프로필"/>
-    <br><b>김태윤</b>팀원<br>
-    (역할)
-  </span>
+ <td align="center" style="padding: 20px;">
+      <img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e"
+           width="150" height="200"
+           style="border-radius: 12px;" 
+           alt="박채윤 프로필"/><br>
+      <b>박채윤</b><br>
+      (역할)
+    </td>
+  </tr>
+</table>
 
-   <!-- 박채윤 -->
-  <span style="display:inline-block; text-align:center; margin: 20;">
-    <img src="https://github.com/user-attachments/assets/👉여기에_이미지_URL_붙이기👈" 
-         width="120" 
-         style="border-radius:50%;" 
-         alt="박채윤 프로필"/>
-    <br><b>박채윤</b><br>
-    (역할)
-  </span>
 
-</p>
+
 
 
 
