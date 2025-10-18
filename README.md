@@ -150,22 +150,25 @@ AnyLog/
 <p align="center">
 
   <!-- 조영준 -->
-  <span style="display:inline-block; text-align:center; margin: 20px;">
+  <span style="display:inline-block; text-align:center; margin: 20;">
     <img src="https://github.com/user-attachments/assets/your_image1.png" width="120" style="border-radius:50%;" alt="조영준 프로필"/>
-    <br><b>조영준</b><br>
+    <br><b>조영준</b>팀장<br>
     (역할)
   </span>
 
   <!-- 김태윤 -->
-  <span style="display:inline-block; text-align:center; margin: 20px;">
+  <span style="display:inline-block; text-align:center; margin: 20;">
     <img src="https://github.com/user-attachments/assets/your_image2.png" width="120" style="border-radius:50%;" alt="김태윤 프로필"/>
-    <br><b>김태윤</b><br>
+    <br><b>김태윤</b>팀원<br>
     (역할)
   </span>
 
-  <!-- 박채윤 -->
-  <span style="display:inline-block; text-align:center; margin: 20px;">
-    <img src="https://github.com/user-attachments/assets/your_image3.png" width="120" style="border-radius:50%;" alt="박채윤 프로필"/>
+   <!-- 박채윤 -->
+  <span style="display:inline-block; text-align:center; margin: 20;">
+    <img src="https://github.com/user-attachments/assets/👉여기에_이미지_URL_붙이기👈" 
+         width="120" 
+         style="border-radius:50%;" 
+         alt="박채윤 프로필"/>
     <br><b>박채윤</b><br>
     (역할)
   </span>
