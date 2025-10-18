@@ -25,7 +25,7 @@ struct ComposeView: View {
     }
     
     
-    // popover 진입이므로 backButton 구현하지 않음
+    // sheet 진입이므로 backButton 구현하지 않음
     var body: some View {
         ScrollView {
             VStack(spacing: 36) {
@@ -61,7 +61,9 @@ struct ComposeView: View {
             .padding(.horizontal, 20)
             .padding(.top, 20)
         }
+        .background(.darkmodeWhite)
         .onTapGesture {
+            // 아무데나 누르면 textEditor의 focus 제거를 위함
             textEditorFocus = false
         }
         .onAppear {
@@ -87,7 +89,7 @@ struct ComposeView: View {
                 hour: time.hour,
                 minute: time.minute)
         }
-        .background(.darkmodeWhite)
+        
     }
 }
 
@@ -106,6 +108,8 @@ private struct MealTypeButton: View {
     @State var showAlert = false
     
     var body: some View {
+        // 버튼 선택시 buttonStyle 변경을 위해 분기처리
+        // 선택된 버튼 View
         if selectedMealType == mealType {
             Button(mealType.rawValue) {
                 selectedMealType = mealType
@@ -113,6 +117,7 @@ private struct MealTypeButton: View {
             .buttonStyle(.borderedProminent)
             .tint(.main)
         } else {
+            // 선택되지 않은 버튼 View
             Button(mealType.rawValue) {
                 
                 // 간식은 여러번 등록 가능하다
@@ -193,8 +198,8 @@ private struct DatePickerView: View {
     
     var body: some View {
         /// 개선점
-        /// 1. 박스 전체가 DatePicker 선택영역으로 지정될 수 있게
-        /// 2. DatePicker 날짜 선택 감지 (onChange 말고 같은날짜 선택된것도 감지
+        /// 1. 박스 전체가 DatePicker 선택 영역으로 지정될 수 있게
+        /// 2. DatePicker 날짜 선택 감지 (onChange 말고 같은 날짜 선택된 것도 감지)
         /// 3. DatePicker 날짜 선택 감지 후 Foucs 제거
         ///
         VStack(alignment: .leading, spacing: 16) {
@@ -318,6 +323,18 @@ private struct SubmitButton: View {
     
     var body: some View {
         Button {
+            guard let selectedMealType else {
+                alertMessage = "식사 종류를 선택해주세요."
+                showAlert.toggle()
+                return
+            }
+            
+            if mealEditorText.isEmpty {
+                alertMessage = "식사 내용을 입력해주세요."
+                showAlert.toggle()
+                return
+            }
+            
             // 수정페이지 진입 -> 날짜 변경 -> 선택된 식사 종류가 존재하는 경우 예외처리
             for selectedDayMeal in selectedDayMeals {
                 // 간식은 여러개 등록 가능
@@ -341,19 +358,7 @@ private struct SubmitButton: View {
                 }
             }
             
-            guard let selectedMealType else {
-                alertMessage = "식사 종류를 선택해주세요."
-                showAlert.toggle()
-                return
-            }
-            
-            
-            if mealEditorText.isEmpty {
-                alertMessage = "식사 내용을 입력해주세요."
-                showAlert.toggle()
-                return
-            }
-            
+            // 데이터 저장
             if let mealItem {
                 mealItem.mealType = selectedMealType
                 mealItem.content = mealEditorText
@@ -369,7 +374,7 @@ private struct SubmitButton: View {
                     )
                 )
             }
-            // TODO: 저장 실패했을 때 예외처리?
+
             try? modelContext.save()
             
             dismiss()
