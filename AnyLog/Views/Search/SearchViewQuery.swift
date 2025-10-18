@@ -7,79 +7,116 @@ struct SearchViewQuery: View {
     @Query private var meals: [Meal]
     @Binding var searchText: String
     @Binding var selectedMealTypeList: [MealType]
+
+    
     private var searchTextTrimed: String { searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
     
-    var filteredMeals: [Int: [Meal]] {
-        let filteredByInputText: [Meal] = meals.filter{$0.content.lowercased().contains(searchTextTrimed)}
-        let filteredByMealType: [Meal] = meals.filter{ selectedMealTypeList.contains($0.mealType)}
-        
-        if(filteredByInputText.isEmpty || filteredByMealType.isEmpty) {
-            let unionList: [Meal] = Array(Set(filteredByMealType).union(Set(filteredByInputText))).sorted(by: { $0.date < $1.date })
-            return Dictionary(grouping:unionList){$0.date.month}
-        }else if(!filteredByInputText.isEmpty && !filteredByMealType.isEmpty){
-            let intersectedList: [Meal] = Array(Set(filteredByMealType).intersection(Set(filteredByInputText))).sorted(by: { $0.date < $1.date })
-            return Dictionary(grouping:intersectedList){$0.date.month}
-        } else {
-            return [:]
+    var emptyView: some View {
+        VStack{
+            Spacer()
+                Text("식단을 검색해 보세요!")
+                    .font(.body)
+                    .foregroundStyle(.darkmodeBlack.opacity(0.5))
+            Spacer()
         }
     }
     
-    var mealData = sampleMeals
-    var filteredMeals2: [Int: [Meal]] {
-        Dictionary(grouping: mealData ){$0.date.month }
+    var noResultView: some View {
+        VStack{
+                Text("다른 식단을 검색해 보세요")
+                    .font(.body)
+                    .foregroundStyle(.darkmodeBlack.opacity(0.5))
+                    .padding()
+                Spacer()
+        }.frame(maxHeight: 40)
+    }
+    
+    var filteredByQuery: [Int: [Meal]]? {
+    
+        let filteredDataByInputText: [Meal] = searchTextTrimed.isEmpty
+        ? []
+        : meals.filter { $0.content.lowercased().contains(searchTextTrimed) }
+        let filteredDataByMealType: [Meal] = meals.filter{ selectedMealTypeList.contains($0.mealType)}
+    
+        guard !filteredDataByInputText.isEmpty || !filteredDataByMealType.isEmpty else { return nil }
+        
+       if searchText.isEmpty && !selectedMealTypeList.isEmpty {
+            
+           let unionList: [Meal] = Array(Set(filteredDataByMealType).union(Set(filteredDataByInputText))).sorted(by: {$0.date < $1.date})
+               
+           if !unionList.isEmpty { return Dictionary(grouping:unionList){$0.date.month} } else { return nil }
+           
+        } else if !searchText.isEmpty && selectedMealTypeList.isEmpty {
+            
+            let unionList: [Meal] = Array(Set(filteredDataByMealType).union(Set(filteredDataByInputText))).sorted(by: {$0.date < $1.date})
+
+            if !unionList.isEmpty { return Dictionary(grouping:unionList){$0.date.month} } else { return nil }
+            
+       } else if !searchText.isEmpty && !selectedMealTypeList.isEmpty {
+           
+           let intersectedList: [Meal] = Array(Set(filteredDataByMealType).intersection(Set(filteredDataByInputText))).sorted(by: {$0.date < $1.date})
+
+           if !intersectedList.isEmpty { return Dictionary(grouping:intersectedList){$0.date.month}} else { return nil }
+           
+       } else {
+           return nil
+       }
     }
     
     var body: some View {
         
-        VStack {
+        if (searchText.isEmpty && selectedMealTypeList.isEmpty) {
+            emptyView
+        } else {
             
-            List {
-                ForEach(filteredMeals.keys.sorted(), id:\.self) { month in
-                    Section {
-                        ForEach(filteredMeals[month]?.sorted(by:{ $0.time < $1.time } ) ?? [], id: \.persistentModelID){
-                            Databoard(day: String($0.date.day),
-                                      mealType: $0.mealType,
-                                      meal: $0.content,
-                                      time: timeFormat($0.time))
-                        }
-                        
-                    }
-                    header: {
-                        HStack(spacing:10){
-                            Text("\(month)월")
-                                .font(.title2)
-                                .foregroundStyle(Color(.label))
-                                .onTapGesture {
-                                    dateHolder.dateSelected = filteredMeals[month]?.first?.date ?? Date()
-                                    tabState.selected = 1
+            VStack {
+                
+                List {
+                    if let filteredByQuery = filteredByQuery {
+                        ForEach(filteredByQuery.keys.sorted(by: {$0 > $1}), id:\.self) { month in
+                            Section {
+                                ForEach(filteredByQuery[month]?.sorted(by:{ $0.time < $1.time } ) ?? [], id: \.persistentModelID){
+                                    Databoard(day: String($0.date.day),
+                                              mealType: $0.mealType,
+                                              meal: $0.content,
+                                              time: timeFormat($0.time))
                                 }
-                            
-                            Button{
-                                withAnimation {
-                                    dateHolder.dateSelected = filteredMeals[month]?.first?.date ?? Date()
-                                    tabState.selected = 1
-                                }
-                            } label:{
-                                Image(systemName: "chart.pie.fill")
-                                    .resizable()
-                                    .frame(maxWidth:20, maxHeight:20)
-                                    .foregroundStyle(.darkmodeBlack.opacity(0.7))
                             }
-                        } //HStack
-                    } //:header
-                    
-                } // ForEach
-            } //List
-            .scrollContentBackground(.hidden)
-            .scrollIndicators(.hidden)
-            
-            
-            
-            
-        } //VStack
-        .frame(maxWidth: .infinity)
-        .clipShape(RoundedRectangle(cornerRadius: 5))
-        
+                            header: {
+                                HStack(spacing:10){
+                                    Text("\(month)월")
+                                        .font(.title2)
+                                        .foregroundStyle(Color(.label))
+                                        .onTapGesture {
+                                            dateHolder.dateSelected = filteredByQuery[month]?.first?.date ?? Date()
+                                            tabState.selected = 1
+                                        }
+                                    
+                                    Button{
+                                        withAnimation {
+                                            dateHolder.dateSelected = filteredByQuery[month]?.first?.date ?? Date()
+                                            tabState.selected = 1
+                                        }
+                                    } label:{
+                                        Image(systemName: "chart.pie.fill")
+                                            .resizable()
+                                            .frame(maxWidth:20, maxHeight:20)
+                                            .foregroundStyle(.darkmodeBlack.opacity(0.7))
+                                    }
+                                } //HStack
+                            } //:header
+                            
+                        } // ForEach
+                    } else {
+                        noResultView
+                    }
+                } //List
+                .scrollContentBackground(.hidden)
+                .scrollIndicators(.hidden)
+            } //VStack
+            .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+        }
     }
 }
 
@@ -123,25 +160,3 @@ struct Databoard: View {
     }
 }
 
-
-
-#Preview {
-    
-    let container = try! ModelContainer(
-        for: Meal.self,
-        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
-    )
-    //    let context = container.mainContext
-    //
-    //    for meal in sampleMeals {
-    //        context.insert(meal)
-    //    }
-    
-    
-    return ContentView()
-        .modelContainer(container)
-        .environmentObject(DateHolder())
-        .environmentObject(TabState())
-    
-    
-}

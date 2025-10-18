@@ -3,8 +3,8 @@ import SwiftUI
 struct StatisticsView: View {
     @Namespace var ID1
     @Namespace var ID2
-    @State private var position = ScrollPosition(idType: Namespace.ID.self)
     @EnvironmentObject var dateHolder: DateHolder
+    @State private var position = ScrollPosition(idType: Namespace.ID.self)
     @State private var segmentedIndex: Int = 0
     
     var pickerView: some View {

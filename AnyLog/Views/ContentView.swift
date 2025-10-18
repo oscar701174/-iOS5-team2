@@ -56,7 +56,7 @@ struct ContentView: View {
         
         let sampleMeals2: [Meal] = [
             Meal(mealType: .breakfast,
-                 content: "Toast 와 커피",
+                 content: "빵과 커피",
                  date: Date(year: 2025, month: 10, day: 15),
                  time: Date(year:   2025, month: 10, day: 15, hour: 7, minute: 15)),
             
@@ -66,7 +66,7 @@ struct ContentView: View {
                  time: Date(year: 2025, month: 10, day: 15, hour: 12, minute: 25)),
             
             Meal(mealType: .dinner,
-                 content: "된장찌개, 밥, 김치",
+                 content: "된장찌개, 밥, 김치, 생선",
                  date: Date(year: 2025, month: 10, day: 15),
                  time: Date(year: 2025, month: 10, day: 15, hour: 19, minute: 30)),
             
@@ -106,27 +106,27 @@ struct ContentView: View {
                  time: Date(year: 2025, month: 10, day: 13, hour: 19, minute: 20)),
             Meal(mealType: .breakfast,
                  content: "스크램블에그와 오렌지 주스",
-                 date: Date(year: 2025, month: 11, day: 13),
-                 time: Date(year: 2025, month: 11, day: 13, hour: 8, minute: 5)),
+                 date: Date(year: 2025, month: 9, day: 13),
+                 time: Date(year: 2025, month: 9, day: 13, hour: 8, minute: 5)),
             
             Meal(mealType: .lunch,
-                 content: "coffee와 샐러드",
-                 date: Date(year: 2025, month: 11, day: 13),
-                 time: Date(year: 2025, month: 11, day: 13, hour: 12, minute: 20)),
+                 content: "커피와 샐러드",
+                 date: Date(year: 2025, month: 9, day: 13),
+                 time: Date(year: 2025, month: 9, day: 13, hour: 12, minute: 20)),
             
             Meal(mealType: .dinner,
                  content: "파스타와 샐러드",
-                 date: Date(year: 2025, month: 11, day: 13),
+                 date: Date(year: 2025, month: 9, day: 13),
                  time: Date(year: 2025, month: 11, day: 13, hour: 19, minute: 20)),
             Meal(mealType: .breakfast,
                  content: "스크램블에그와 오렌지 주스",
-                 date: Date(year: 2025, month: 11, day: 13),
-                 time: Date(year: 2025, month: 11, day: 13, hour: 8, minute: 5)),
+                 date: Date(year: 2025, month: 9, day: 13),
+                 time: Date(year: 2025, month: 9, day: 13, hour: 8, minute: 5)),
             
             Meal(mealType: .dinner,
                  content: "주스와 오트밀",
-                 date: Date(year: 2025, month: 11, day: 13),
-                 time: Date(year: 2025, month: 11, day: 13, hour: 19, minute: 20))
+                 date: Date(year: 2025, month: 9, day: 13),
+                 time: Date(year: 2025, month: 9, day: 13, hour: 19, minute: 20))
         ]
 
         for meal in sampleMeals2 {

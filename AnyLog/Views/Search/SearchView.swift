@@ -5,9 +5,10 @@ import SwiftData
 
 struct SearchView: View {
     @FocusState private var isSearchTextFocused: Bool
-
     @State private var searchText: String = ""
     @State private var selectedMealTypeList: [MealType] = []
+
+
     
     var queryInput: some View {
         RoundedRectangle(cornerRadius: 8)
@@ -38,7 +39,6 @@ struct SearchView: View {
     var queryButton: some View {
         HStack{
             ForEach(MealType.allCases) { mealType in
-                // TODO: 선택된 mealType이 있다면 buttonStyle 변경
                 Button{
                     if isSelected(mealType) {
                         selectedMealTypeList.removeAll { element in
@@ -62,6 +62,7 @@ struct SearchView: View {
         }
     }
     
+
     var body: some View {
         VStack{
             Text("검색 페이지")
@@ -72,14 +73,15 @@ struct SearchView: View {
             VStack(alignment:.leading,spacing: 20) {
  
                 queryInput.padding(.top, 10)
-                
                 queryButton
+                
             }.padding(.horizontal, 20)
-            
-            SearchViewQuery(searchText: $searchText, selectedMealTypeList: $selectedMealTypeList)
-                .padding(.top,15)
+      
+                SearchViewQuery(searchText: $searchText, selectedMealTypeList: $selectedMealTypeList)
+                    .padding(.top,15)
+   
         }
-        .ignoresSafeArea(edges: .bottom)
+        
         
     }
     
@@ -104,6 +106,7 @@ private struct ConditionalGlassEffect: ViewModifier {
         }
     }
 }
+
 
 
 

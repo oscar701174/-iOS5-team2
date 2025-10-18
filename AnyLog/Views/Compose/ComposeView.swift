@@ -166,7 +166,7 @@ private struct MealTypeButton: View {
             }
         }
     }
-
+    
 }
 
 private struct MealTypeButtonView: View {
@@ -221,21 +221,21 @@ private struct DatePickerView: View {
                 }
                 .overlay(alignment: .leading) {
                     DatePicker("", selection: $date, displayedComponents: .date)
-                    .labelsHidden()
-                    .colorMultiply(.clear)
-                    .environment(\.locale, Locale(identifier: "ko_KR"))
-                    .onChange(of: date) {
-                        let dateTime = Date(
-                            year: date.year,
-                            month: date.month,
-                            day: date.day,
-                            hour: time.hour,
-                            minute: time.minute
-                        )
-                        
-                        date = dateTime
-                        time = dateTime
-                    }
+                        .labelsHidden()
+                        .colorMultiply(.clear)
+                        .environment(\.locale, Locale(identifier: "ko_KR"))
+                        .onChange(of: date) {
+                            let dateTime = Date(
+                                year: date.year,
+                                month: date.month,
+                                day: date.day,
+                                hour: time.hour,
+                                minute: time.minute
+                            )
+                            
+                            date = dateTime
+                            time = dateTime
+                        }
                 }
         }
     }
@@ -439,5 +439,5 @@ extension Date {
         let calendar = Calendar.current
         return calendar.component(.minute, from: self)
     }
-
+    
 }
