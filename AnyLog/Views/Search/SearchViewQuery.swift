@@ -8,7 +8,6 @@ struct SearchViewQuery: View {
     @Binding var searchText: String
     @Binding var selectedMealTypeList: [MealType]
 
-    
     private var searchTextTrimed: String { searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() }
     
     var emptyView: some View {
@@ -64,6 +63,7 @@ struct SearchViewQuery: View {
            return nil
        }
     }
+    
     
     var body: some View {
         

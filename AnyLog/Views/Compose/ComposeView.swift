@@ -17,7 +17,7 @@ struct ComposeView: View {
     
     @Query
     var meals: [Meal]
-    
+      
     var selectedDayMeals: [Meal] {
         meals.filter {
             return dateFormat($0.date) == dateFormat(date)
