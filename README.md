@@ -154,7 +154,7 @@ AnyLog/
            width="150" height="200"
            style="border-radius: 12px;" 
            alt="조영준 프로필"/><br>
-      <b>조영준</b>팀장<br>
+      <b>조영준</b>  팀장<br>
       (역할)
     </td>
 
@@ -163,7 +163,7 @@ AnyLog/
            width="150" height="200"
            style="border-radius: 12px;" 
            alt="김태윤 프로필"/><br>
-      <b>김태윤</b>팀원<br>
+      <b>김태윤</b>  팀원<br>
       (역할)
     </td>
 
@@ -172,7 +172,7 @@ AnyLog/
            width="150" height="200"
            style="border-radius: 12px;" 
            alt="박채윤 프로필"/><br>
-      <b>박채윤</b>팀원<br>
+      <b>박채윤</b>  팀원<br>
       깃코드 마크다운 작성<br>
       Home View 제작<br>
       영상 촬영<br>
