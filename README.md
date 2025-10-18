@@ -128,7 +128,7 @@ AnyLog/
 │ │ │
 │ │ ├── 📁 Search/
 │ │ │ ├── SearchView.swift # 검색 탭 메인 화면
-│ │ │ └── SearchViewQuery.swift # SwiftData Predicate 기반 검색 로직
+│ │ │ └── SearchViewQuery.swift # SwiftData 기반 검색 로직
 │ │ │
 │ │ ├── 📁 Statistics/
 │ │ │ ├── DateHolder.swift # 날짜 상태 관리 ObservableObject
