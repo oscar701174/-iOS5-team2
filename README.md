@@ -149,48 +149,31 @@ AnyLog/
 
 <table align="center">
   <tr>
+    <td align="center" style="padding: 20px;"><img src="https://avatars.githubusercontent.com/u/60869181?s=400&v=4" width="150" height="200" style="border-radius: 12px;" alt="조영준 프로필"/>
+    <td align="center" style="padding: 20px;"><img src="https://github.com/user-attachments/assets/64a2e247-3c8e-40ce-812e-f9b7b2b7c50e" width="150" height="200" style="border-radius: 12px;" alt="김태윤 프로필"/><br>
+    <td align="center" style="padding: 20px;"><img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e" width="150" height="200" style="border-radius: 12px;" alt="박채윤 프로필"/><br>
+  </tr>
+
+  <tr>
     <td align="center" style="padding: 20px;">
-      <img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e"
-           width="150" height="200"
-           style="border-radius: 12px;" 
-           alt="조영준 프로필"/><br>
       <b>조영준</b>  팀장<br>
-      (역할)
+      프로젝트 기획<br>
+      ComposeView 제작<br>
+      PPT제작
     </td>
-
- 
-   <td align="center" style="padding: 20px;">
-      <img src="https://github.com/user-attachments/assets/64a2e247-3c8e-40ce-812e-f9b7b2b7c50e"
-           width="150" height="200"
-           style="border-radius: 12px;" 
-           alt="김태윤 프로필"/><br>
+    <td align="center" style="padding: 20px;">
       <b>김태윤</b>  팀원<br>
-      검색페이지 제작<br>
-      통계 페이지 제작<br>
-     PPT 제작
-     <br>
+      SearchView 제작<br>
+      StatisticsView 제작<br>
+      PPT 제작
     </td>
-
- <td align="center" style="padding: 20px;">
-      <img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e"
-           width="150" height="200"
-           style="border-radius: 12px;" 
-           alt="박채윤 프로필"/><br>
+    <td align="center" style="padding: 20px;">
       <b>박채윤</b>  팀원<br>
       깃코드 마크다운 작성<br>
       Home View 제작<br>
-      영상, PPT 제작<br>
+      영상, PPT 제작
     </td>
   </tr>
 </table>
 
-
-
-
-
-
 </div>
-
-
-
-
