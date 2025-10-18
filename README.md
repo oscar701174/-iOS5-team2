@@ -26,7 +26,7 @@
 <table align="center">
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/c621615a-c458-41c9-a250-d4da1866eace" width="250" alt="Home View" />
+      <img src="https://github.com/user-attachments/assets/c621615a-c458-41c9-a250-d4da1866eace" width="200" alt="Home View" />
     </td>
     <td style="vertical-align: top; padding-left: 25px;">
       <h3>🏠 Home View</h3>
@@ -42,7 +42,7 @@
 <table align="center">
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/497f3325-382b-4839-8cc2-80b61eac584f" width="250" alt="Compose View" />
+      <img src="https://github.com/user-attachments/assets/497f3325-382b-4839-8cc2-80b61eac584f" width="200" alt="Compose View" />
     </td>
     <td style="vertical-align: top; padding-left: 25px;">
       <h3>✍️ Compose View</h3>
@@ -58,7 +58,7 @@
 <table align="center">
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/74d335c6-9edc-4525-ae20-dccd8fa45278" width="250" alt="Statistics View" />
+      <img src="https://github.com/user-attachments/assets/74d335c6-9edc-4525-ae20-dccd8fa45278" width="200" alt="Statistics View" />
     </td>
     <td style="vertical-align: top; padding-left: 25px;">
       <h3>📊 Statistics View</h3>
@@ -74,7 +74,7 @@
 <table align="center">
   <tr>
     <td>
-      <img src="https://github.com/user-attachments/assets/d3159b48-98c3-463d-89f1-00e88bb8e25b" width="250" alt="Search View" />
+      <img src="https://github.com/user-attachments/assets/d3159b48-98c3-463d-89f1-00e88bb8e25b" width="200" alt="Search View" />
     </td>
     <td style="vertical-align: top; padding-left: 25px;">
       <h3>🔍 Search View</h3>
@@ -83,6 +83,11 @@
     </td>
   </tr>
 </table>
+
+
+
+
+
 
 
  
