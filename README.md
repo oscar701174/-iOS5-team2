@@ -173,10 +173,10 @@ AnyLog/
            style="border-radius: 12px;" 
            alt="박채윤 프로필"/><br>
       <b>박채윤</b>팀원<br>
-      깃코드 마크다운 작성
-      Home View 제작
-      영상 촬영
-      PPT 작성
+      깃코드 마크다운 작성<br>
+      Home View 제작<br>
+      영상 촬영<br>
+      PPT 작성<br>
     </td>
   </tr>
 </table>
