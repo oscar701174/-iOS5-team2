@@ -1,1 +1,95 @@
-테스트
+<div align="center">
+  
+  <p>
+  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWNod2ZteTlobnRxdTJvaHZibmhwZmtlYmY1YmRvNTZqeWZlbDA4YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/avv5lny1chu5MHiKiF/giphy.gif"
+       width="400"
+       alt="식사일기 시연 GIF" />
+</p>
+
+<h1>식사일기</h1>
+ <h3>하루 식단을 기록하고 회고하는 앱 🍱</h3>
+  <p>-2조 J1Y2-</p>
+
+<br><br>
+
+<h3 style="font-size: 1.5em; font-weight: bold; margin-bottom: 0;">
+  무엇을 위한 어플인가요?
+</h3>
+<p>
+  식사일기는 하루의 식사를 기록하고 되돌아보는 나만의 식단 회고 앱이에요. <br>
+  캘린더로 쉽게 기록하고, 통계로 나의 식습관을 한눈에 확인할 수 있어요.
+</p>
+
+<br><br>
+
+<!-- Home View -->
+<table align="center">
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/c621615a-c458-41c9-a250-d4da1866eace" width="250" alt="Home View" />
+    </td>
+    <td style="vertical-align: top; padding-left: 25px;">
+      <h3>🏠 Home View</h3>
+      <p>오늘의 식단을 <b>달력</b>을 통해 한눈에 확인할 수 있는 화면입니다.<br>
+      날짜별로 아침, 점심, 저녁, 간식을 기록하고 빠르게 수정할 수 있어요.</p>
+    </td>
+  </tr>
+</table>
+
+---
+
+<!-- Compose View -->
+<table align="center">
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/497f3325-382b-4839-8cc2-80b61eac584f" width="250" alt="Compose View" />
+    </td>
+    <td style="vertical-align: top; padding-left: 25px;">
+      <h3>✍️ Compose View</h3>
+      <p>하루 식사를 <b>기록하고 등록</b>하는 화면입니다.<br>
+      식사 종류(아침/점심/저녁/간식), 날짜, 시간, 내용을 입력할 수 있습니다.</p>
+    </td>
+  </tr>
+</table>
+
+---
+
+<!-- Statistics View -->
+<table align="center">
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/74d335c6-9edc-4525-ae20-dccd8fa45278" width="250" alt="Statistics View" />
+    </td>
+    <td style="vertical-align: top; padding-left: 25px;">
+      <h3>📊 Statistics View</h3>
+      <p>한 달 또는 주간 단위로 <b>식사 비율과 횟수</b>를 시각적으로 보여줍니다.<br>
+      나의 식습관 패턴을 한눈에 확인할 수 있어요.</p>
+    </td>
+  </tr>
+</table>
+
+---
+
+<!-- Search View -->
+<table align="center">
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/d3159b48-98c3-463d-89f1-00e88bb8e25b" width="250" alt="Search View" />
+    </td>
+    <td style="vertical-align: top; padding-left: 25px;">
+      <h3>🔍 Search View</h3>
+      <p><b>날짜별 / 키워드별</b>로 기록된 식단을 검색할 수 있는 화면입니다.<br>
+      빠르게 이전 식사 내용을 찾아볼 수 있습니다.</p>
+    </td>
+  </tr>
+</table>
+
+
+ 
+
+
+
+</div>
+
+
+
