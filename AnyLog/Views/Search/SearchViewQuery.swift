@@ -22,20 +22,22 @@ struct SearchViewQuery: View {
     }
     
     var noResultView: some View {
-        VStack{
-                Text("다른 식단을 검색해 보세요")
-                    .font(.body)
-                    .foregroundStyle(.darkmodeBlack.opacity(0.5))
-                    .padding()
-                Spacer()
-        }.frame(maxHeight: 40)
+        HStack(alignment: .center) {
+            Spacer()
+            VStack(alignment:.leading){
+                Text("검색 결과가 없습니다.")
+                Text("다른 식단을 검색해 보세요!")
+            }
+            .font(.body)
+            .foregroundStyle(.darkmodeBlack.opacity(0.5))
+            .padding()
+            Spacer()
+        }
     }
     
     var filteredByQuery: [Int: [Meal]]? {
     
-        let filteredDataByInputText: [Meal] = searchTextTrimed.isEmpty
-        ? []
-        : meals.filter { $0.content.lowercased().contains(searchTextTrimed) }
+        let filteredDataByInputText: [Meal] = meals.filter { $0.content.lowercased().contains(searchTextTrimed) }
         let filteredDataByMealType: [Meal] = meals.filter{ selectedMealTypeList.contains($0.mealType)}
     
         guard !filteredDataByInputText.isEmpty || !filteredDataByMealType.isEmpty else { return nil }
