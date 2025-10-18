@@ -84,17 +84,46 @@
   </tr>
 </table>
 
+<br><br>
 
+## 🗂 프로젝트 구조
 
-
-
-
-
- 
-
+<pre align="left">
+AnyLog/
+├── 📁 AnyLog/
+│ ├── 📁 Models/
+│ │ └── Meal.swift # SwiftData @Model 구조 정의 (식사 데이터)
+│ │
+│ ├── 📁 Views/
+│ │ ├── ContentView.swift # 앱 전체 View 관리 (TabView 기반 루트 뷰)
+│ │ │
+│ │ ├── 📁 Compose/
+│ │ │ └── ComposeView.swift # 새로운 식단 작성 화면
+│ │ │
+│ │ ├── 📁 Home/
+│ │ │ ├── HomeView.swift # 홈 탭 (최근 식단 목록)
+│ │ │ └── TextView.swift # 텍스트 기반 식단 항목 표시 뷰
+│ │ │
+│ │ ├── 📁 Search/
+│ │ │ ├── SearchView.swift # 검색 탭 메인 화면
+│ │ │ └── SearchViewQuery.swift # SwiftData Predicate 기반 검색 로직
+│ │ │
+│ │ ├── 📁 Statistics/
+│ │ │ ├── DateHolder.swift # 날짜 상태 관리 ObservableObject
+│ │ │ ├── GraphBarMark.swift # 식사 분포 바 차트
+│ │ │ ├── GraphSectorMark.swift # 원형 그래프 (세로 레이아웃)
+│ │ │ ├── GraphSectorMarkH.swift # 원형 그래프 (가로 레이아웃)
+│ │ │ ├── StatisticsView.swift # 통계 탭 메인 화면
+│ │ │ └── TabState.swift # 탭 전환 상태 관리
+│ │
+│ ├── AnyLogApp.swift # 앱 진입점 (@main)
+│ └── Assets.xcassets # 색상, 아이콘, 이미지 리소스
+│
+└── 📄 README.md</pre>
 
 
 </div>
+
 
 
 
