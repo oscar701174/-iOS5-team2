@@ -41,13 +41,7 @@ struct SearchViewQuery: View {
     
         guard !filteredDataByInputText.isEmpty || !filteredDataByMealType.isEmpty else { return nil }
         
-       if searchText.isEmpty && !selectedMealTypeList.isEmpty {
-            
-           let unionList: [Meal] = Array(Set(filteredDataByMealType).union(Set(filteredDataByInputText))).sorted(by: {$0.date < $1.date})
-               
-           if !unionList.isEmpty { return Dictionary(grouping:unionList){$0.date.month} } else { return nil }
-           
-        } else if !searchText.isEmpty && selectedMealTypeList.isEmpty {
+        if searchText.isEmpty || selectedMealTypeList.isEmpty {
             
             let unionList: [Meal] = Array(Set(filteredDataByMealType).union(Set(filteredDataByInputText))).sorted(by: {$0.date < $1.date})
 
