@@ -4,13 +4,17 @@ import SwiftUI
 import Charts
 import SwiftData
 
+
 struct GraphBarMark: View {
 
     @EnvironmentObject var dateHolder: DateHolder
     @Query(sort: [SortDescriptor(\Meal.date, order: .reverse)]) private var meals: [Meal]
+    // dateHolder에 있는 dateSeleted 값을 기반으로 데이터 swiftData의 Data filtering
     var mealDataGroupedByMonth:[Meal] {meals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}.sorted(by: { $0.time.hour < $1.time.hour })}
     private var mealGraphData:[MealDataByHour] {
+        // 시간별 합산해서 dic타입으로 변환
         let sumByMealHour: [Int:Int] = mealDataGroupedByMonth.reduce(into: [Int: Int]()) { $0[$1.time.hour, default: 0] += 1 }
+        // sumByMealHour을 시간별 정렬 > mealGraphData 리스트 변환
         return sumByMealHour.keys.sorted().map{MealDataByHour(hour: String($0), total: sumByMealHour[$0] ?? 0, monthTotal: mealDataGroupedByMonth.count) }
     }
 

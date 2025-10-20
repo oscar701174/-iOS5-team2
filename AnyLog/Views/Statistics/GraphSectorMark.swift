@@ -5,9 +5,13 @@ import Charts
 struct GraphSectorMark: View {
     @EnvironmentObject var dateHolder: DateHolder
     @Query private var meals: [Meal]
+    // dateHolder에 있는 dateSeleted 값을 기반으로 데이터 swiftData의 Data filtering
     var mealDataGroupedByMonth:[Meal] {meals.filter { $0.date.yearMonth == dateHolder.dateSelected.yearMonth}}
+
     private var mealGraphData:[(mealType: MealType, total:Int, ratio: Double)] {
+        // 식단타입별 총합산한 dictype 자료형
         let sumByMealType: [MealType: Int] = mealDataGroupedByMonth.reduce(into: [MealType: Int]()) { $0[$1.mealType, default: 0] += 1 }
+        // 식단타입별 총합산, 비율을 tuple형으로 변환
         return sumByMealType.map{(mealType: $0.key, total: $0.value, ratio: Double($0.value)/Double(mealDataGroupedByMonth.count))}
     }
 

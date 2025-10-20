@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import Combine
 
+// 선택된 date의 state를 전역적으로 관리
 class DateHolder: ObservableObject {
     
     @Published var dateSelected: Date = Date()

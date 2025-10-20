@@ -33,20 +33,20 @@ struct SearchViewQuery: View {
             Spacer()
         }
     }
-    
+    // 식단검색 입력값 유무, 식단 타입을 선택했는지의 여부 
     var filteredByQuery: [Int: [Meal]]? {
     
         let filteredDataByInputText: [Meal] = meals.filter { $0.content.lowercased().contains(searchTextTrimed) }
         let filteredDataByMealType: [Meal] = meals.filter{ selectedMealTypeList.contains($0.mealType)}
     
         guard !filteredDataByInputText.isEmpty || !filteredDataByMealType.isEmpty else { return nil }
-        
+//        A 합집합 B 조건
         if searchText.isEmpty || selectedMealTypeList.isEmpty {
-            
+//            집합은 Set 조건
             let unionList: [Meal] = Array(Set(filteredDataByMealType).union(Set(filteredDataByInputText))).sorted(by: {$0.date < $1.date})
 
             if !unionList.isEmpty { return Dictionary(grouping:unionList){$0.date.month} } else { return nil }
-            
+//            A 교집합 B 조건
        } else if !searchText.isEmpty && !selectedMealTypeList.isEmpty {
            
            let intersectedList: [Meal] = Array(Set(filteredDataByMealType).intersection(Set(filteredDataByInputText))).sorted(by: {$0.date < $1.date})
@@ -125,7 +125,7 @@ struct SearchViewQuery: View {
 }
 
 
-
+//
 struct Databoard: View {
     let day: String
     let mealType: MealType
