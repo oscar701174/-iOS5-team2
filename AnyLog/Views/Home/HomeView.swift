@@ -325,12 +325,19 @@ struct HomeView: View {
                 }
             }
         } // NavigationStack
-        .sheet(isPresented: $isComposePresented) {
-            ZStack {
-                Color.white.ignoresSafeArea()
-                ComposeView(mealItem: selectedMeal, date: selectedDate)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .sheet(isPresented: Binding(get: {
+            isComposePresented || selectedMeal != nil
+        }, set: { newValue in
+            if !newValue {
+                isComposePresented = false
+                selectedMeal = nil
             }
+        })) {
+            ComposeView(
+                mealItem: selectedMeal,
+                date: selectedDate
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
         }
