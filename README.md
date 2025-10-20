@@ -87,11 +87,13 @@
 
 ## 💡 아이패드 가로·세로 구현, 다크모드 지원
 
-<p align="center">
-  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXpuc3F1Z3g0MWpueGQzOWtxNWxsdzN5NHlxMTBtandrbXlxYzFidyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/dLupXPzxaehlerMdo2/giphy.gif" 
-       width="400" 
-       alt="아이패드 가로세로 및 다크모드 구현" />
-</p>
+<img src="https://github.com/user-attachments/assets/bc3ff0f6-e528-49c0-82c3-d471c8ec9b30" />
+
+
+
+
+
+
 
 <br><br>
 
