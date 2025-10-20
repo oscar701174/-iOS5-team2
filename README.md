@@ -173,7 +173,7 @@ AnyLog/
     </td>
     <td align="center" style="padding: 20px;">
       <b>박채윤</b>  팀원<br>
-      깃코드 마크다운 작성<br>
+      마크다운, 디자인<br>
       Home View 제작<br>
       영상, PPT 제작
     </td>
