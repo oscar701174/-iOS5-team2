@@ -150,11 +150,12 @@ AnyLog/
 
 ## 👥 팀원 소개 (Team Members)
 
+
 <table align="center">
   <tr>
     <td align="center" style="padding: 20px;"><img src="https://avatars.githubusercontent.com/u/60869181?s=400&v=4" width="150" height="200" style="border-radius: 12px;" alt="조영준 프로필"/>
     <td align="center" style="padding: 20px;"><img src="https://github.com/user-attachments/assets/64a2e247-3c8e-40ce-812e-f9b7b2b7c50e" width="150" height="200" style="border-radius: 12px;" alt="김태윤 프로필"/><br>
-    <td align="center" style="padding: 20px;"><img src="https://github.com/user-attachments/assets/73475ecb-b2b0-4416-9fbf-44eeda2cf98e" width="150" height="200" style="border-radius: 12px;" alt="박채윤 프로필"/><br>
+    <td align="center" style="padding: 20px;"><img src="https://github.com/user-attachments/assets/934b6555-5c48-4010-a6df-df94ec8181f6" width="150" height="200" style="border-radius: 12px;" alt="박채윤 프로필"/><br>
   </tr>
 
   <tr>
