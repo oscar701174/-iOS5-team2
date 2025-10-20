@@ -1,7 +1,7 @@
 <div align="center">
 
+<img width="1200" height="579" alt="페이지 1 5" src="https://github.com/user-attachments/assets/3698ced6-b60e-4a0a-87e0-f74bad88c309" />
 
-<img width="1200" height="579" alt="페이지 1 5" src="https://github.com/user-attachments/assets/f8602dc6-674c-4beb-a8a5-9348d5e48ce6" />
 
 <!--
 <h1>식사일기</h1>
@@ -87,10 +87,12 @@
 
 ## 💡 아이패드 가로·세로 구현, 다크모드 지원
 
-<img src="https://github.com/user-attachments/assets/bc3ff0f6-e528-49c0-82c3-d471c8ec9b30" />
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/your-uploaded-gif-link.gif" width="800" />
+</p>
 
 
-
+![newIpad](https://github.com/user-attachments/assets/54ca3a86-4d91-47bb-a0d2-6b495d263337)
 
 
 
