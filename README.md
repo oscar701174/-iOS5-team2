@@ -1,14 +1,13 @@
 <div align="center">
-  
-  <p>
-  <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWNod2ZteTlobnRxdTJvaHZibmhwZmtlYmY1YmRvNTZqeWZlbDA4YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/avv5lny1chu5MHiKiF/giphy.gif"
-       width="400"
-       alt="식사일기 시연 GIF" />
-</p>
 
+
+<img width="1200" height="579" alt="페이지 1 5" src="https://github.com/user-attachments/assets/f8602dc6-674c-4beb-a8a5-9348d5e48ce6" />
+
+<!--
 <h1>식사일기</h1>
  <h3>하루 식단을 기록하고 회고하는 앱 🍱</h3>
   <p>-2조 J1Y2-</p>
+  -->
 
 <br><br>
 
