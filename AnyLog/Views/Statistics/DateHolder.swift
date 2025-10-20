@@ -14,7 +14,6 @@ class DateHolder: ObservableObject {
         Calendar.current.date(byAdding: .month, value: -1, to: dateSelected)!
     }
     
-    
     func nextMonthMove() { dateSelected = nextMonth }
     
     func prevMonthMove() { dateSelected = prevMonth }

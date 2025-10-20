@@ -53,10 +53,7 @@ struct GraphSectorMark: View {
                         .frame(maxWidth: 400)
                     } // ForEach
                 }.padding(.horizontal,15)
-             
-                    
-         
-            
+
         }
         .frame(maxWidth: 300)
         .padding(.horizontal,10) //VStacks
